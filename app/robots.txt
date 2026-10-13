@@ -1,0 +1,12 @@
+---
+layout: null
+permalink: /robots.txt
+sitemap: false
+---
+# Crawlers use /robots.txt at the host root.
+# On GitHub Pages, this project file is served under /coretrail/.
+User-agent: *
+User-agent: OAI-SearchBot
+Allow: /
+
+Sitemap: {{ '/sitemap.xml' | absolute_url }}

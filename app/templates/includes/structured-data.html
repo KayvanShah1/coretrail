@@ -1,0 +1,33 @@
+{% assign site_home = '/' | absolute_url %}
+{% assign site_id = site_home | append: '#website' %}
+{% assign schema_type = 'WebPage' %}
+{% if page.layout == 'lesson' %}
+  {% assign schema_type = 'LearningResource' %}
+{% elsif page.layout == 'subject' %}
+  {% assign schema_type = 'CollectionPage' %}
+{% endif %}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": {{ site_id | jsonify }},
+        "url": {{ site_home | jsonify }},
+        "name": {{ site.title | jsonify }},
+        "description": {{ site.description | jsonify }},
+        "inLanguage": "en"
+      },
+      {
+        "@type": {{ schema_type | jsonify }},
+        "url": {{ page.url | absolute_url | jsonify }},
+        "name": {{ meta_title | jsonify }},
+        "description": {{ meta_description | jsonify }},
+        "inLanguage": "en",
+        "isPartOf": { "@id": {{ site_id | jsonify }} }{% if page.layout == 'lesson' %},
+        "learningResourceType": "Revision notes",
+        "isAccessibleForFree": true{% endif %}
+      }
+    ]
+  }
+</script>
