@@ -6,8 +6,12 @@ permalink: /sitemap.xml
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {% assign indexed_pages = site.pages | concat: site.sql | concat: site.ai | concat: site.ml | concat: site.infra %}
 {% for item in indexed_pages %}
+  {% assign route_end = item.url | slice: -1, 1 %}
+  {% assign extension = item.url | split: '.' | last %}
+  {% if route_end == '/' or extension == 'html' %}
   {% unless item.url contains '.json' or item.url contains '.xml' or item.url == '/404.html' or item.sitemap == false or item.noindex == true %}
   <url><loc>{{ item.url | absolute_url }}</loc></url>
   {% endunless %}
+  {% endif %}
 {% endfor %}
 </urlset>
