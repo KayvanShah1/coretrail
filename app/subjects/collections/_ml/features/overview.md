@@ -4,7 +4,7 @@ nav_title: Overview
 description: "Construct features without future information and serve them consistently."
 chapter: features
 order: 0
-sequence: 100
+sequence: 60
 level: Chapter overview
 keywords:
   - feature engineering

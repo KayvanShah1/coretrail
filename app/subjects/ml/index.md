@@ -17,8 +17,8 @@ The model fundamentals chapter covers validation, leakage, tree ensembles and me
 <ul class="topic-list">
 <li><a href="{{ '/ml/fundamentals/overview/' | relative_url }}">Model fundamentals</a><span>Leakage, splits, metrics, trees, ensembles, and monitoring.</span></li>
 <li><a href="{{ '/ml/features/overview/' | relative_url }}">Feature engineering & stores</a><span>Encodings, point-in-time correctness, online/offline features and stale values.</span></li>
-<li><a href="{{ '/ml/operations/overview/' | relative_url }}">MLOps & monitoring</a><span>Experiment tracking, deployment and evidence of model degradation.</span></li>
 <li><a href="{{ '/ml/serving/overview/' | relative_url }}">Model serving</a><span>Follow the chapter overview into the comparison between traditional ML serving and LLM serving.</span></li>
+<li><a href="{{ '/ml/operations/overview/' | relative_url }}">MLOps & monitoring</a><span>Experiment tracking, deployment and evidence of model degradation.</span></li>
 </ul>
 
 See [AI evaluation]({{ '/ai-engineering/evaluation/overview/' | relative_url }}) for retrieval and agent trajectories, and [Infrastructure]({{ '/infrastructure/' | relative_url }}) for general deployment mechanics.
