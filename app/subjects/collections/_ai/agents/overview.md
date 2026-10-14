@@ -14,4 +14,5 @@ Tool contracts, execution state, policies, and reliable agent workflows. Follow 
 
 <ul class="topic-list">
 <li><a href="{{ '/ai-engineering/agents/typed-tools-execution-state/' | relative_url }}">Tool-using agents, state and guardrails</a><span>Reason about how an agent chooses tools, persists progress and recovers from a failed action.</span></li>
+<li><a href="{{ '/ai-engineering/agents/mcp-a2a-orchestration/' | relative_url }}">MCP, A2A and agent orchestration</a><span>Separate tool integration, delegation and durable workflow execution.</span></li>
 </ul>
