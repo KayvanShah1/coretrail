@@ -48,6 +48,7 @@ Use this chapter to check whether you can choose the technique without the chapt
 <li><a href="{{ '/sql/practice/references/' | relative_url }}">Sources, scope & coverage</a><span>Understand what the handbook covers and where to verify dialect-specific details.</span></li>
 <li><a href="{{ '/sql/practice/mixed-drills/' | relative_url }}">Mixed SQL practice with progressive hints</a><span>Identify the grain and technique without being told the pattern in advance.</span></li>
 <li><a href="{{ '/sql/practice/diagnosis-drills/' | relative_url }}">Practice: diagnose before optimizing</a><span>Use symptoms and evidence to choose your next investigation, then compare the reasoning.</span></li>
+<li><a href="{{ '/sql/practice/payment-merchant-queries/' | relative_url }}">Payments and merchants: SQL interview exercises</a><span>Rank recent successful payments and preserve merchants without valid events.</span></li>
 </ul>
 
 ## Mix the problems

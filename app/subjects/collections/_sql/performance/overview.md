@@ -52,6 +52,9 @@ Performance starts with a correct result and a measurable symptom. This chapter 
 <li><a href="{{ '/sql/performance/partition-lab/' | relative_url }}">Lab: prove partition pruning</a><span>Compare a time-bounded request with an asset-only request and inspect the partitions actually accessed.</span></li>
 <li><a href="{{ '/sql/performance/warehouses/' | relative_url }}">Warehouse performance: BigQuery, Redshift, Athena</a><span>Investigate pruning, data movement, and file layout using the warehouse's own evidence.</span></li>
 <li><a href="{{ '/sql/performance/sql-server/' | relative_url }}">SQL Server performance investigation</a><span>Connect actual plans, logical reads, waits, and Query Store history to a specific regression.</span></li>
+<li><a href="{{ '/sql/performance/bigquery-workload-investigation/' | relative_url }}">BigQuery slowdown and cost</a><span>Use execution stages, job metadata, and repeated query cost to decide what to fix.</span></li>
+<li><a href="{{ '/sql/performance/cte-planner-tradeoffs/' | relative_url }}">CTEs, materialization, and optimizer trade-offs</a><span>Compare inline and reused intermediate work in PostgreSQL and BigQuery.</span></li>
+<li><a href="{{ '/sql/performance/pruning-layout-tradeoffs/' | relative_url }}">Partition pruning, clustering order, and layout costs</a><span>See when physical layout helps, and when many small partitions increase overhead.</span></li>
 </ul>
 
 ## Diagnose before changing anything

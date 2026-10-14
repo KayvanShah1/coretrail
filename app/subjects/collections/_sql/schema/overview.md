@@ -38,6 +38,7 @@ Tables and constraints encode assumptions that query authors otherwise have to g
 <li><a href="{{ '/sql/schema/ddl/' | relative_url }}">CREATE, ALTER, DROP & TRUNCATE</a><span>Distinguish changing a table's structure from changing its rows.</span></li>
 <li><a href="{{ '/sql/schema/dml/' | relative_url }}">INSERT, UPDATE & DELETE</a><span>Change exactly the intended rows and inspect the results.</span></li>
 <li><a href="{{ '/sql/schema/upsert-merge/' | relative_url }}">Upserts & MERGE</a><span>Define how incoming records interact with existing keys.</span></li>
+<li><a href="{{ '/sql/schema/replay-merge-versions/' | relative_url }}">MERGE, late updates, and replay correctness</a><span>Use source versions and tombstones to prevent stale updates and duplicate effects.</span></li>
 </ul>
 
 ## Check the invariant

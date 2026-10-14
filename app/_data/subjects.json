@@ -11,8 +11,9 @@
     "id": "data-engineering",
     "title": "Data Engineering",
     "url": "/data-engineering/",
-    "status": "Planned",
-    "description": "Pipelines, data modeling, orchestration, and reliability."
+    "status": "Available",
+    "description": "Ingestion, modeling, GCP, batch and streaming processing, orchestration, and reliability.",
+    "collection": "de"
   },
   {
     "id": "ml",

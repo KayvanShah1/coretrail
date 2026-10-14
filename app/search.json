@@ -7,6 +7,7 @@ layout: null
   | where_exp: 'item', 'item.subject != "home"'
 -%}
 {%- assign lessons = site.sql
+  | concat: site.de
   | concat: site.ai
   | concat: site.ml
   | concat: site.infra

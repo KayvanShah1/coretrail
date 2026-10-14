@@ -37,6 +37,7 @@ SQL becomes easier when you can name the input population and required output gr
 <ul class="topic-list">
 <li><a href="{{ '/sql/foundations/grain/' | relative_url }}">Think in rows and grain</a><span>Establish what one input and output row represents.</span></li>
 <li><a href="{{ '/sql/foundations/query-order/' | relative_url }}">Query structure & execution order</a><span>Understand logical clause order and what to optimize while writing the query.</span></li>
+<li><a href="{{ '/sql/foundations/oltp-olap-storage/' | relative_url }}">PostgreSQL and BigQuery: rows, columns, and workload</a><span>Connect point lookups and large aggregations to their storage and transaction behavior.</span></li>
 <li><a href="{{ '/sql/foundations/query-execution/' | relative_url }}">How a query actually runs</a><span>Follow SQL through parsing, planning, execution, and returned rows.</span></li>
 <li><a href="{{ '/sql/foundations/relational-basics/' | relative_url }}">Relational databases & SQL commands</a><span>Understand relations, keys, and the jobs different SQL statements perform.</span></li>
 <li><a href="{{ '/sql/foundations/data-types/' | relative_url }}">Data types & casting</a><span>Choose representations that preserve precision and meaning.</span></li>

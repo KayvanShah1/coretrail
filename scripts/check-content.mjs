@@ -63,6 +63,7 @@ for (const chapter of chapters.sql) {
 }
 
 const publishedCollections = [
+  { id: 'data-engineering', dir: `${collectionRoot}/_de`, prefix: '/data-engineering/' },
   { id: 'ml', dir: `${collectionRoot}/_ml`, prefix: '/ml/' },
   { id: 'ai-engineering', dir: `${collectionRoot}/_ai`, prefix: '/ai-engineering/' },
   { id: 'infrastructure', dir: `${collectionRoot}/_infra`, prefix: '/infrastructure/' },
