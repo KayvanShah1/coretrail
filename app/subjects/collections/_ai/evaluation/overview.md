@@ -14,4 +14,6 @@ Measure retrieval, answer quality, agent trajectories, regressions, and cost. Fo
 
 <ul class="topic-list">
 <li><a href="{{ '/ai-engineering/evaluation/layered-rag-agent-evaluation/' | relative_url }}">Evaluate retrieval, generation and agent execution separately</a><span>Locate failures using retrieval metrics, groundedness checks, trajectories, and release gates.</span></li>
+<li><a href="{{ '/ai-engineering/evaluation/golden-datasets-contamination/' | relative_url }}">Golden datasets, hard negatives and contamination</a><span>Create representative cases and preserve independent holdouts.</span></li>
+<li><a href="{{ '/ai-engineering/evaluation/metrics-release-gates/' | relative_url }}">Metrics and release gates</a><span>Measure retrieval, completion, groundedness, latency and cost at their actual failure stages.</span></li>
 </ul>
