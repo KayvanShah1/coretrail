@@ -38,6 +38,7 @@ The serving problems in this chapter follow directly from four facts:
 <li><a href="{{ '/ai-engineering/inference/prefill-decode-kv-cache/' | relative_url }}">Prefill, decode, and KV cache</a><span>See why context length changes latency, memory pressure, and concurrency.</span></li>
 <li><a href="{{ '/ai-engineering/inference/batching-scheduling/' | relative_url }}">Continuous batching and request scheduling</a><span>Understand how many active sequences share expensive GPU execution.</span></li>
 <li><a href="{{ '/ai-engineering/inference/efficient-inference/' | relative_url }}">Making inference faster and cheaper</a><span>Place quantization, prefix caching, PagedAttention, and speculative decoding against the bottleneck they address.</span></li>
+<li><a href="{{ '/ai-engineering/inference/transformers-embeddings-adaptation/' | relative_url }}">Transformer attention, embeddings and fine-tuning</a><span>Recall scaled attention, contrastive objectives and parameter-efficient adaptation.</span></li>
 </ul>
 
 A useful rule for the rest of the trail is: **first identify whether the problem is compute, memory, waiting, communication, or model quality.** The optimization follows from that diagnosis.
