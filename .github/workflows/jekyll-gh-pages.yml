@@ -28,7 +28,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
 
     services:
       postgres:
@@ -72,6 +72,19 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
       - run: bundle exec jekyll build --trace
+
+      - name: Install Chromium for rendered checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify equations, diagrams, links and responsive rendering
+        run: node scripts/verify-render.mjs
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-render-evidence
+          path: test-results/browser-qa
+          if-no-files-found: ignore
 
       - uses: actions/upload-artifact@v4
         with:
