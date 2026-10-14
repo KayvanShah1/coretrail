@@ -83,6 +83,16 @@
       "description": "Validation, leakage, tree ensembles, metrics, and deployment drift."
     },
     {
+      "id": "features",
+      "title": "Feature engineering & stores",
+      "description": "Build point-in-time-correct training features and low-latency online values."
+    },
+    {
+      "id": "operations",
+      "title": "MLOps & model monitoring",
+      "description": "Track experiments, validate releases, detect training-serving skew, and respond to drift."
+    },
+    {
       "id": "serving",
       "title": "Model serving",
       "description": "Compare prediction APIs with autoregressive LLM serving and their operating constraints."
