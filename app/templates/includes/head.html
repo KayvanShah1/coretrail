@@ -6,6 +6,9 @@
 {% if page.title %}
   {% assign meta_title = page.title | append: ' · ' | append: site.title %}
 {% endif %}
+{% if page.noindex %}
+  <meta name="robots" content="noindex, follow">
+{% endif %}
 <meta name="description" content="{{ meta_description | escape }}">
 {% if page.keywords %}
   <meta name="keywords" content="{{ page.keywords | join: ', ' | escape }}">
@@ -55,6 +58,9 @@
   name="twitter:image:alt"
   content="CoreTrail home page with the handbook headline and subject directory"
 >
+{% unless page.noindex %}
+  {% include structured-data.html %}
+{% endunless %}
 <script src="{{ '/assets/js/main.js' | relative_url }}" type="module"></script>
 {% if page.mermaid %}
   <script src="{{ '/assets/js/diagrams.js' | relative_url }}" type="module"></script>
