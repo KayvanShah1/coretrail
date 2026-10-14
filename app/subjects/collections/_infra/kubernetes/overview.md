@@ -35,4 +35,5 @@ Do not use “Kubernetes” as the explanation for every deployment behavior. Na
 <li><a href="{{ '/infrastructure/kubernetes/services-networking/' | relative_url }}">Services and networking</a><span>Give changing Pods a stable way to be reached.</span></li>
 <li><a href="{{ '/infrastructure/kubernetes/storage-init-containers/' | relative_url }}">Storage and init containers</a><span>Prepare shared data before the main application starts.</span></li>
 <li><a href="{{ '/infrastructure/kubernetes/probes-rollouts/' | relative_url }}">Startup, readiness, liveness, and rollouts</a><span>Keep initialization, traffic eligibility, restart decisions, and version replacement separate.</span></li>
+<li><a href="{{ '/infrastructure/kubernetes/gpu-scheduling-debugging/' | relative_url }}">GPU scheduling, Pending Pods and inference incidents</a><span>Read scheduler symptoms, resource requests, model startup and GPU metrics.</span></li>
 </ul>

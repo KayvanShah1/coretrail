@@ -32,4 +32,5 @@ The practical questions are: **what is packaged, where is it stored, what starts
 <ul class="topic-list">
 <li><a href="{{ '/infrastructure/containers/images-containers-registries/' | relative_url }}">Images, containers, and registries</a><span>Separate the immutable package from the running process and the place images are distributed from.</span></li>
 <li><a href="{{ '/infrastructure/containers/gpu-containers/' | relative_url }}">How containers use GPUs</a><span>Follow graphics processing unit (GPU) access through host drivers, container libraries, device exposure, and accelerator scheduling.</span></li>
+<li><a href="{{ '/infrastructure/containers/docker-build-isolation/' | relative_url }}">Dockerfiles, image builds and isolated execution</a><span>Build reproducible artifacts and control risks when executing untrusted code.</span></li>
 </ul>
