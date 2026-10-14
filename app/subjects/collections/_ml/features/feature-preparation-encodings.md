@@ -3,7 +3,7 @@ title: "Numerical and categorical feature preparation"
 description: "Fit transformations on training data, choose categorical encodings, and diagnose features that change meaning between environments."
 chapter: features
 order: 1
-sequence: 101
+sequence: 61
 level: Core
 math: true
 keywords:

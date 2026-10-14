@@ -3,7 +3,7 @@ title: "Point-in-time joins and availability leakage"
 description: "Recreate the features a model could have observed at a historical prediction timestamp, including delayed events."
 chapter: features
 order: 2
-sequence: 102
+sequence: 62
 level: Core
 math: true
 mermaid: true

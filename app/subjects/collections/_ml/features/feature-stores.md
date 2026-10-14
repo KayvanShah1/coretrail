@@ -3,7 +3,7 @@ title: "Offline and online feature stores"
 description: "Decide when historical features, online materialization and shared definitions justify feature-store infrastructure."
 chapter: features
 order: 3
-sequence: 103
+sequence: 63
 level: Core
 mermaid: true
 keywords:
