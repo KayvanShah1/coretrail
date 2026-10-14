@@ -1,0 +1,31 @@
+.math-expression {
+  max-width: 100%;
+}
+.math-inline {
+  display: inline;
+}
+.math-block {
+  display: block;
+  margin: 1.35rem 0;
+  padding: 1rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow-x: auto;
+  background: var(--bg);
+  text-align: center;
+}
+.math-fallback {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.math-inline .math-fallback {
+  padding: 0 0.25em;
+}
+.katex-display {
+  margin: 0.25rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.katex {
+  font-size: 1.05em;
+}

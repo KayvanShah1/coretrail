@@ -65,3 +65,7 @@
 {% if page.mermaid %}
   <script src="{{ '/assets/js/diagrams.js' | relative_url }}" type="module"></script>
 {% endif %}
+{% if page.math %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script src="{{ '/assets/js/math.js' | relative_url }}" type="module"></script>
+{% endif %}

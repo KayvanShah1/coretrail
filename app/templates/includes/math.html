@@ -1,0 +1,13 @@
+{% comment %}
+  Render a repository-authored LaTeX expression. A readable escaped fallback remains
+  visible if the remote rendering library cannot load. For multi-line TeX, use capture:
+  {% capture equation %}...{% endcapture %}{% include math.html tex=equation block=true %}
+{% endcomment %}
+{% if include.block %}
+<div class="math-expression math-block" role="math" aria-label="{{ include.tex | strip_newlines | escape }}">
+  <template class="math-source">{{ include.tex | escape }}</template>
+  <code class="math-fallback">{{ include.tex | escape }}</code>
+</div>
+{% else %}
+<span class="math-expression math-inline" role="math" aria-label="{{ include.tex | strip_newlines | escape }}"><template class="math-source">{{ include.tex | escape }}</template><code class="math-fallback">{{ include.tex | escape }}</code></span>
+{% endif %}
