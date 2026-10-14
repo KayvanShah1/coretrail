@@ -48,4 +48,5 @@ That sequence matters during incidents: a rising replica target does not create 
 
 <ul class="topic-list">
 <li><a href="{{ '/infrastructure/scaling/workload-node-autoscaling/' | relative_url }}">Workload versus node autoscaling</a><span>Place HPA, KEDA, Kubernetes scheduling, and Karpenter in one control flow.</span></li>
+<li><a href="{{ '/infrastructure/scaling/cloud-workload-selection/' | relative_url }}">Cloud Run, GKE, Vertex AI and EKS</a><span>Choose compute from workload lifecycle, control requirements and accelerator limits.</span></li>
 </ul>
