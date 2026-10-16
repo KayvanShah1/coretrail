@@ -36,4 +36,5 @@ What changes is the resource profile. Model replicas are large, graphics process
 <li><a href="{{ '/ai-engineering/production/cold-starts-capacity/' | relative_url }}">Cold starts and warm capacity</a><span>See why model loading changes autoscaling and capacity planning.</span></li>
 <li><a href="{{ '/ai-engineering/production/failures/' | relative_url }}">Failures and recovery</a><span>Define the real failure unit when a replica spans several GPUs or machines.</span></li>
 <li><a href="{{ '/ai-engineering/production/tradeoffs/' | relative_url }}">Serving trade-offs</a><span>Connect latency, throughput, quality, context length, and cost.</span></li>
+<li><a href="{{ '/ai-engineering/production/stack-tradeoffs/' | relative_url }}">AI platform tool choices and replacement triggers</a><span>Compare search, inference, orchestration and storage alternatives by operating constraint.</span></li>
 </ul>
