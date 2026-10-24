@@ -57,7 +57,7 @@ Metadata maintenance, small-file compaction and snapshot retention are ongoing c
 
 ## Partitioning, clustering and file size
 
-A path partition such as \`date=2026-10-24/\` can limit scan scope when queries filter that date. Overpartitioning by a high-cardinality key creates huge numbers of tiny files and metadata requests. Clustering sorts data within partitions to help row-group pruning. Optimal choices depend on query patterns, ingest rate and update frequency.
+A path partition such as `date=2026-10-24/` can limit scan scope when queries filter that date. Overpartitioning by a high-cardinality key creates huge numbers of tiny files and metadata requests. Clustering sorts data within partitions to help row-group pruning. Optimal choices depend on query patterns, ingest rate and update frequency.
 
 BigQuery managed columnar storage and transactional PostgreSQL tables expose different storage abstractions. A team may retain Parquet in Cloud Storage or S3 for portable raw/curated data while placing serving facts in an analytical warehouse.
 
