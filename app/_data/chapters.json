@@ -160,6 +160,11 @@
       "id": "observability",
       "title": "Operations & observability",
       "description": "Connect metrics, logs, traces, health, and deployment state during incidents."
+    },
+    {
+      "id": "cloud",
+      "title": "Cloud architecture, IAM & cost",
+      "description": "Assign compute, storage, networking, identities and cost controls to the right service."
     }
   ],
   "data-engineering": [
