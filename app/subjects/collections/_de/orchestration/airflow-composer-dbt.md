@@ -5,6 +5,7 @@ chapter: orchestration
 order: 1
 sequence: 601
 level: Core
+mermaid: true
 keywords:
   - Airflow, Composer, dbt, and repeatable backfills
 interview_queries:
@@ -29,9 +30,20 @@ A shared dbt model can enforce a declared output contract, while an incremental 
 
 ## A dependable dependency chain
 
-~~~text
-extract interval → archive raw data → validate staging
-         → merge target → reconcile & test → publish checkpoint
-~~~
+{% capture diagram_code %}
+flowchart TD
+T["Scheduled interval / logical date"] --> E["Extract interval"]
+E --> A["Archive immutable raw files"]
+A --> S["Normalize and validate staging"]
+S --> M["Idempotent MERGE at target grain"]
+M --> R{"Reconciliation + data tests pass?"}
+R -- "Yes" --> C["Publish checkpoint / downstream readiness"]
+R -- "No" --> F["Inspect source, repair and retry interval"]
+F --> S
+{% endcapture %}
+{% capture diagram_fallback %}
+The scheduled logical interval drives extraction, raw archival, staging validation and an idempotent merge. Reconciliation permits publication of a checkpoint only after tests pass; failed intervals can be replayed from immutable raw data.
+{% endcapture %}
+{% include diagram.html title="Backfill-safe pipeline checkpoints follow verification" code=diagram_code fallback=diagram_fallback caption=true %}
 
 An Airflow task reporting success does not prove that every expected device contributed data. Treat readiness, freshness and business reconciliation as explicit checks. Monitor task retries, dependency queues, processing latency and downstream data age separately.
