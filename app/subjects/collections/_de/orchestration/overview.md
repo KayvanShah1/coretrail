@@ -14,4 +14,5 @@ Airflow, Cloud Composer, dbt, retries, and backfills. Start by identifying the r
 
 <ul class="topic-list">
 <li><a href="{{ '/data-engineering/orchestration/airflow-composer-dbt/' | relative_url }}">Airflow, Composer, dbt, and repeatable backfills</a><span>Separate orchestration from distributed execution and preserve interval correctness.</span></li>
+<li><a href="{{ '/data-engineering/orchestration/dagster-argo-workload-control/' | relative_url }}">Dagster, Argo and workload orchestration trade-offs</a><span>Asset materialization, DAG scheduling, Kubernetes workflows and safe retries.</span></li>
 </ul>
