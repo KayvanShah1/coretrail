@@ -42,4 +42,5 @@ The pages here own the reusable mechanics. Artificial Intelligence (AI) Engineer
 <li><a href="{{ '/infrastructure/kubernetes/overview/' | relative_url }}">Kubernetes</a><span>Pods, nodes, Deployments, Services, storage, init containers, and probes.</span></li>
 <li><a href="{{ '/infrastructure/scaling/overview/' | relative_url }}">Scaling</a><span>Workload replicas versus machine capacity, with the Horizontal Pod Autoscaler (HPA), Kubernetes Event-driven Autoscaling (KEDA), and node autoscaling.</span></li>
 <li><a href="{{ '/infrastructure/observability/overview/' | relative_url }}">Operations & observability</a><span>Metrics, logs, traces, health, and the evidence used during incidents.</span></li>
+<li><a href="{{ '/infrastructure/cloud/overview/' | relative_url }}">Cloud architecture, IAM & cost</a><span>Service identities, secure request paths, managed data services and cost trade-offs.</span></li>
 </ul>
