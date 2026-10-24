@@ -145,6 +145,14 @@ docker compose up --build
 
 Open [localhost:4000](http://localhost:4000/coretrail/). Compose mounts `app/` and `_config.yml`; changes to pages, styles, and scripts rebuild the site and refresh the browser. Restart the service after changing `_config.yml`. Stop it with `docker compose down`.
 
+To preview the production image, build and run the static site with:
+
+```sh
+docker compose up --build production
+```
+
+Open [localhost:8080](http://localhost:8080/coretrail/). This image is built with `Dockerfile.prod` and serves the generated site through Nginx. It does not rebuild when source files change; run the command again with `--build` after edits. Stop it with `docker compose --profile production down`. The default `docker compose up --build` continues to use `Dockerfile.dev` for live development. GitHub Pages publishing still uses its existing workflow.
+
 For a local Ruby installation, use Ruby 3.3 with Bundler:
 
 ```sh

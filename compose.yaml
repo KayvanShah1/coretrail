@@ -2,10 +2,18 @@ services:
   site:
     build:
       context: .
-      target: development
+      dockerfile: Dockerfile.dev
     ports:
       - '4000:4000'
       - '35729:35729'
     volumes:
       - ./app:/site/app:ro
       - ./_config.yml:/site/_config.yml:ro
+
+  production:
+    profiles: [production]
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - '8080:80'
