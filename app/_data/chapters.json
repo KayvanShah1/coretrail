@@ -78,6 +78,11 @@
   ],
   "ml": [
     {
+      "id": "fundamentals",
+      "title": "Model fundamentals",
+      "description": "Validation, leakage, tree ensembles, metrics, and deployment drift."
+    },
+    {
       "id": "serving",
       "title": "Model serving",
       "description": "Compare prediction APIs with autoregressive LLM serving and their operating constraints."
@@ -108,6 +113,21 @@
       "id": "observability",
       "title": "LLM observability",
       "description": "Use latency, queue, cache, GPU, and cost signals to explain serving behavior."
+    },
+    {
+      "id": "retrieval",
+      "title": "RAG & retrieval",
+      "description": "Parsing, embeddings, hybrid ranking, retrieval quality, and context assembly."
+    },
+    {
+      "id": "agents",
+      "title": "Agents & tool execution",
+      "description": "Tool contracts, execution state, policies, and reliable agent workflows."
+    },
+    {
+      "id": "evaluation",
+      "title": "AI evaluation",
+      "description": "Measure retrieval, answer quality, agent trajectories, regressions, and cost."
     }
   ],
   "infrastructure": [
@@ -130,6 +150,43 @@
       "id": "observability",
       "title": "Operations & observability",
       "description": "Connect metrics, logs, traces, health, and deployment state during incidents."
+    }
+  ],
+  "data-engineering": [
+    {
+      "id": "foundations",
+      "title": "Pipeline architecture",
+      "description": "ETL, ELT, batch, streaming, and choosing where transformations run."
+    },
+    {
+      "id": "incremental",
+      "title": "Incremental ingestion & CDC",
+      "description": "Watermarks, change streams, idempotency and recovery."
+    },
+    {
+      "id": "storage",
+      "title": "Storage & modeling",
+      "description": "File formats, lakehouse tables, facts, dimensions, and history."
+    },
+    {
+      "id": "gcp",
+      "title": "GCP & BigQuery",
+      "description": "Query execution, physical layout, capacity and costs."
+    },
+    {
+      "id": "processing",
+      "title": "Distributed processing",
+      "description": "Spark, Beam, Dataflow, event time, stream schema evolution and state migration."
+    },
+    {
+      "id": "orchestration",
+      "title": "Orchestration & transformations",
+      "description": "Airflow, Cloud Composer, dbt, retries, and backfills."
+    },
+    {
+      "id": "reliability",
+      "title": "Reliability & operations",
+      "description": "Quality, schema evolution, data contracts, reconciliation and recovery."
     }
   ]
 }

@@ -20,6 +20,9 @@ collections:
   sql:
     output: true
     permalink: /sql/:path/
+  de:
+    output: true
+    permalink: /data-engineering/:path/
   ai:
     output: true
     permalink: /ai-engineering/:path/
@@ -36,6 +39,12 @@ defaults:
     values:
       layout: lesson
       subject: sql
+  - scope:
+      path: ''
+      type: de
+    values:
+      layout: lesson
+      subject: data-engineering
   - scope:
       path: ''
       type: ai

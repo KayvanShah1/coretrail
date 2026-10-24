@@ -17,9 +17,9 @@ aliases:
 
 ## Start from what the model is actually doing
 
-The current Artificial Intelligence (AI) Engineering trail focuses on large language model (LLM) inference and serving. A hosted model can hide most of that machinery until latency, capacity, cost, or a production failure makes the execution path relevant.
+The Artificial Intelligence (AI) Engineering trail covers large language model (LLM) serving, retrieval, tool-using agents and evaluation. A hosted model can hide most of that machinery until latency, capacity, cost, or a production failure makes the execution path relevant.
 
-The trail starts with one model request, then adds serving, deployment, production traffic, and observability around it.
+The serving chapters start with one model request, then add deployment, production traffic, and observability. The next chapters follow retrieved evidence and tool calls through a user-facing application.
 
 {% capture diagram_code %}
 flowchart LR
@@ -44,6 +44,9 @@ Each component should answer a concrete question: where the request goes, where 
 <li><a href="{{ '/ai-engineering/deployment/overview/' | relative_url }}">Deploying LLMs</a><span>Artifacts, containers, model weights, GPU startup, readiness, and rollouts.</span></li>
 <li><a href="{{ '/ai-engineering/production/overview/' | relative_url }}">Production LLM systems</a><span>Gateways, queues, backpressure, autoscaling, cold starts, capacity, and failures.</span></li>
 <li><a href="{{ '/ai-engineering/observability/overview/' | relative_url }}">LLM observability</a><span>Time to first token (TTFT), time per output token (TPOT), queue pressure, KV-cache utilization, GPU signals, and cost.</span></li>
+<li><a href="{{ '/ai-engineering/retrieval/overview/' | relative_url }}">RAG & retrieval</a><span>Parsing, embeddings, hybrid search, reranking, context selection, and scale.</span></li>
+<li><a href="{{ '/ai-engineering/agents/overview/' | relative_url }}">Agents & tools</a><span>Typed tool contracts, execution state, authorization and retries.</span></li>
+<li><a href="{{ '/ai-engineering/evaluation/overview/' | relative_url }}">AI evaluation</a><span>Retrieval diagnostics, groundedness, trajectories, latency and cost.</span></li>
 </ul>
 
 ## Keep the boundary with general infrastructure clear

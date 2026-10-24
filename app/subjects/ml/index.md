@@ -10,14 +10,15 @@ keywords:
   - MLOps
 ---
 
-## Start with model serving
+## Start with training, evaluation, and serving
 
-The first chapter compares a conventional prediction API with autoregressive large language model (LLM) serving. It starts with the production concerns both systems share, then looks at the request shape and resource constraints that change the serving architecture.
+The model fundamentals chapter covers validation, leakage, tree ensembles and metric choice. The serving chapter compares a conventional prediction API with autoregressive large language model (LLM) serving. It starts with the production concerns both systems share, then looks at the request shape and resource constraints that change the serving architecture.
 
 <ul class="topic-list">
+<li><a href="{{ '/ml/fundamentals/overview/' | relative_url }}">Model fundamentals</a><span>Leakage, splits, metrics, trees, ensembles, and monitoring.</span></li>
 <li><a href="{{ '/ml/serving/overview/' | relative_url }}">Model serving</a><span>Follow the chapter overview into the comparison between traditional ML serving and LLM serving.</span></li>
 </ul>
 
 ## What comes next
 
-The broader Machine Learning trail will cover problem framing, data splits, leakage, feature engineering, model selection, evaluation, error analysis, deployment, and monitoring. Those chapters are still being built.
+Further chapters can deepen feature engineering, experiment design, and ongoing model monitoring.
