@@ -35,15 +35,15 @@ Read only the target date and necessary columns. Partial aggregation precedes a 
 {% endcapture %}
 {% include diagram.html title="A distributed aggregate followed by a ranking window" code=diagram_code fallback=diagram_fallback caption=true %}
 
-If date partition pruning works, the scan need not read historical partitions for other dates. Examine \`PartitionFilters\` and \`PushedFilters\` in the physical plan instead of inferring it from a SQL predicate alone. A function wrapped around the partition column can interfere with pruning, depending on expression and data source.
+If date partition pruning works, the scan need not read historical partitions for other dates. Examine `PartitionFilters` and `PushedFilters` in the physical plan instead of inferring it from a SQL predicate alone. A function wrapped around the partition column can interfere with pruning, depending on expression and data source.
 
-Grouping by exchange and stock creates a shuffled aggregate by key. The next \`ROW_NUMBER\` or \`RANK\` window may require repartitioning by exchange and sorting. Use \`RANK\` when multiple tied stocks must survive. If exactly one is required, \`ROW_NUMBER\` needs an explicit stable secondary sort to make the choice deterministic.
+Grouping by exchange and stock creates a shuffled aggregate by key. The next `ROW_NUMBER` or `RANK` window may require repartitioning by exchange and sorting. Use `RANK` when multiple tied stocks must survive. If exactly one is required, `ROW_NUMBER` needs an explicit stable secondary sort to make the choice deterministic.
 
 ## AQE and skew mitigation
 
 Adaptive Query Execution (AQE) uses runtime exchange statistics to coalesce shuffle partitions, change certain join strategies and handle some skewed joins. It cannot automatically repair every skewed aggregation. One key holding half the records may still create an expensive final aggregation task.
 
-A broadcast join avoids shuffling a large side when the other side is sufficiently small and available. A poorly chosen broadcast can exhaust executor memory. \`repartition\` usually introduces data movement; \`coalesce\` can reduce partitions with less movement at the cost of parallelism and balance.
+A broadcast join avoids shuffling a large side when the other side is sufficiently small and available. A poorly chosen broadcast can exhaust executor memory. `repartition` usually introduces data movement; `coalesce` can reduce partitions with less movement at the cost of parallelism and balance.
 
 | Symptom | Inspect | Plausible change |
 |---|---|---|
@@ -55,4 +55,4 @@ A broadcast join avoids shuffling a large side when the other side is sufficient
 
 Storage partitioning and runtime execution partitioning are related but different. Physical files organized by date help skip input; Spark still decides task and shuffle partition counts. Hadoop Distributed File System (HDFS) merely provides file storage in many deployments and does not change the query's logical requirements.
 
-Use \`df.explain("formatted")\` and Spark UI stage statistics to validate improvement. Measure bytes read, shuffle volume, p95 task duration and elapsed time on the same data. The [SQL window chapter]({{ '/sql/windows/overview/' | relative_url }}) owns ranking semantics; this chapter owns distributed execution.
+Use `df.explain("formatted")` and Spark UI stage statistics to validate improvement. Measure bytes read, shuffle volume, p95 task duration and elapsed time on the same data. The [SQL window chapter]({{ '/sql/windows/overview/' | relative_url }}) owns ranking semantics; this chapter owns distributed execution.
