@@ -4,10 +4,21 @@
   {% capture equation %}...{% endcapture %}{% include math.html tex=equation block=true %}
 {% endcomment %}
 {% if include.block %}
-<div class="math-expression math-block" role="math" aria-label="{{ include.tex | strip_newlines | escape }}">
-  <template class="math-source">{{ include.tex | escape }}</template>
-  <code class="math-fallback">{{ include.tex | escape }}</code>
-</div>
+  <div
+    class="math-expression math-block"
+    role="math"
+    aria-label="{{ include.tex | strip_newlines | escape }}"
+  >
+    <template class="math-source">{{ include.tex | escape }}</template>
+    <code class="math-fallback">{{ include.tex | escape }}</code>
+  </div>
 {% else %}
-<span class="math-expression math-inline" role="math" aria-label="{{ include.tex | strip_newlines | escape }}"><template class="math-source">{{ include.tex | escape }}</template><code class="math-fallback">{{ include.tex | escape }}</code></span>
+  <span
+    class="math-expression math-inline"
+    role="math"
+    aria-label="{{ include.tex | strip_newlines | escape }}"
+  >
+    <template class="math-source">{{ include.tex | escape }}</template>
+    <code class="math-fallback">{{ include.tex | escape }}</code>
+  </span>
 {% endif %}
