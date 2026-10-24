@@ -126,6 +126,7 @@ const cases = [
     route: '/coretrail/ai-engineering/retrieval/vector-search-ranking/',
     text: 'retrieval metrics',
     math: true,
+    mermaid: true,
   },
   {
     name: 'embeddings-capacity',
@@ -194,6 +195,45 @@ const cases = [
     math: true,
   },
 ];
+cases.push(
+  {
+    name: 'model-lifecycle',
+    route: '/coretrail/ml/operations/model-lifecycle-monitoring/',
+    text: 'Model release uses data and evaluation gates',
+    math: true,
+    mermaid: true,
+  },
+  {
+    name: 'rag-architecture',
+    route: '/coretrail/ai-engineering/retrieval/rag-search-at-scale/',
+    text: 'Source preparation and online evidence use',
+    mermaid: true,
+  },
+  {
+    name: 'evidence-survival',
+    route: '/coretrail/ai-engineering/evaluation/evidence-survival-oracle-tests/',
+    text: 'Evidence survival exposes loss at each stage',
+    math: true,
+    mermaid: true,
+  },
+  {
+    name: 'nlp-fundamentals',
+    route: '/coretrail/ai-engineering/inference/nlp-representations-preprocessing/',
+    text: 'Entity linking',
+  },
+  {
+    name: 'gcp-decisions',
+    route: '/coretrail/infrastructure/cloud/gcp-service-decisions/',
+    text: 'The shortest deadline controls an attempt',
+    mermaid: true,
+  },
+  {
+    name: 'linear-pca-clustering',
+    route: '/coretrail/ml/fundamentals/linear-models-pca-clustering/',
+    text: 'Principal component analysis',
+    math: true,
+  },
+);
 const types = {
   '.css': 'text/css',
   '.js': 'text/javascript',
@@ -261,7 +301,8 @@ try {
       if (test.math) {
         try {
           await page.waitForFunction(
-            () => [...document.querySelectorAll('.math-expression')].length > 0 &&
+            () =>
+              [...document.querySelectorAll('.math-expression')].length > 0 &&
               [...document.querySelectorAll('.math-expression')].every((e) =>
                 e.querySelector('.katex'),
               ),
@@ -272,13 +313,14 @@ try {
           errors.push('KaTeX did not render');
         }
       }
-      if (test.diagnostic && await page.locator('.diagnostic-step').count() < 3) {
+      if (test.diagnostic && (await page.locator('.diagnostic-step').count()) < 3) {
         errors.push('Diagnostic steps missing');
       }
       if (test.mermaid) {
         try {
           await page.waitForFunction(
-            () => [...document.querySelectorAll('.diagram-canvas')].length > 0 &&
+            () =>
+              [...document.querySelectorAll('.diagram-canvas')].length > 0 &&
               [...document.querySelectorAll('.diagram-canvas')].every(
                 (e) => !e.hidden && e.querySelector('svg'),
               ),
@@ -307,7 +349,7 @@ try {
   const page = await browser.newPage();
   await page.goto(origin + cases[0].route);
   const next = page.locator('.lesson-pagination a.next');
-  if (await next.count() === 0) throw new Error('Missing Next lesson navigation');
+  if ((await next.count()) === 0) throw new Error('Missing Next lesson navigation');
   await next.click();
   const navigated = new URL(page.url()).pathname;
   if (navigated === cases[0].route || !navigated.startsWith('/coretrail/ml/')) {

@@ -51,7 +51,7 @@ Scaled metrics such as mean absolute scaled error (MASE) and root mean squared s
 
 {% include math.html tex="\mathrm{Bias}=\frac{1}{n}\sum_t(\hat y_t-y_t)" block=true %}
 
-Bias matters where systematic underprediction creates procurement penalties even when mean absolute error remains stable.
+With this forecast-minus-actual convention, positive bias means systematic overprediction. Bias matters where persistent underprediction creates procurement penalties even when mean absolute error remains stable.
 
 ## Evaluate the horizon and the decision
 

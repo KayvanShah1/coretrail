@@ -18,4 +18,5 @@ Model quality is a property of the evaluation population, prediction target and 
 <li><a href="{{ '/ml/fundamentals/regression-forecasting-metrics/' | relative_url }}">Regression and time-series forecasting evaluation</a><span>MAE, RMSE, WAPE, bias, rolling-origin splits and economic impact.</span></li>
 <li><a href="{{ '/ml/fundamentals/model-selection-error-analysis/' | relative_url }}">Model selection, calibration and error analysis</a><span>Baselines, group/time splits, probability quality and error cohorts.</span></li>
 <li><a href="{{ '/ml/fundamentals/deep-learning-training/' | relative_url }}">Neural-network optimization and architecture choices</a><span>Backpropagation, SGD/Adam, CNNs, LSTMs and training diagnostics.</span></li>
+<li><a href="{{ '/ml/fundamentals/linear-models-pca-clustering/' | relative_url }}">Linear models, PCA and clustering baselines</a><span>Understand prediction objectives, coefficient penalties, variance projections and distance-based groups.</span></li>
 </ul>

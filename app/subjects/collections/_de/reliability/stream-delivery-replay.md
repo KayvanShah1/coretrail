@@ -10,10 +10,31 @@ keywords: [Pub/Sub, at least once, exactly once, ack deadline, DLQ, idempotency,
 aliases: [Pub/Sub acknowledgment window, dead letter queue, streaming retry]
 interview_queries: [is PubSub message lost after acknowledgment deadline, how to avoid duplicate BigQuery writes]
 references:
+  - title: Pub/Sub subscription properties
+    url: https://docs.cloud.google.com/pubsub/docs/subscription-properties
+  - title: Pub/Sub lease management
+    url: https://docs.cloud.google.com/pubsub/docs/lease-management
+  - title: Pub/Sub dead-letter topics
+    url: https://docs.cloud.google.com/pubsub/docs/dead-letter-topics
   - title: Google Cloud Pub/Sub subscriber guidance
     url: https://cloud.google.com/pubsub/docs/subscriber
 ---
 An acknowledgment deadline is the period during which a subscriber holds a delivered message before the broker considers it eligible for redelivery. Expiration normally makes the message available again; it does not mean the record is automatically lost. Subscriber libraries may extend the lease during long processing, and delivery guarantees depend on subscription configuration.
+
+## Acknowledgment deadline, retention and dead-letter policy
+
+The initial subscription acknowledgment deadline is configurable from **10 to 600 seconds**, according to the linked service documentation checked in October 2026. Pull clients can extend a message's lease while processing, subject to client settings and service limits. A 600-second deadline is therefore different from a ten-minute lifetime for the event.
+
+| Setting | What it controls | Consequence |
+|---|---|---|
+| Acknowledgment deadline | How long an attempt holds a delivered message | Expiry makes redelivery eligible |
+| Lease management | Extensions while a pull worker is still processing | Reduces unnecessary concurrent attempts |
+| Message retention | How long retained messages remain available | Expired data may no longer be replayable |
+| Dead-letter policy | Forwarding after approximately configured delivery attempts | Needs topic permissions and a receiving subscription |
+
+A five-minute micro-batch cadence describes when processing runs. It does not determine acknowledgment, retention or dead-letter behavior. The subscriber library, trigger or managed processing engine may handle acknowledgments on the application's behalf; inspect that path before assuming every worker needs a hand-written acknowledgment loop.
+
+Dead-letter forwarding is best effort, with an approximate attempt threshold. Pub/Sub cannot infer that an application considers a record permanently invalid. The worker can durably quarantine an invalid event itself, or allow configured delivery attempts to reach the dead-letter policy. Both paths need source identity, error details and a repair/replay procedure.
 
 ## Acknowledgment follows durable processing
 
@@ -25,8 +46,8 @@ W --> V{"Validate + persist sink result"}
 V -- "Committed" --> A["Acknowledge message"]
 V -- "Transient failure" --> R["Retry / lease extension / redelivery"]
 R --> W
-V -- "Permanent poison message" --> D["Dead-letter topic, inspection and repair"]
-A --> C["Advance source checkpoint / freshness"]
+V -- "Repeated failures under policy" --> D["Dead-letter topic, inspection and repair"]
+A --> C["Record processing and freshness telemetry"]
 {% endcapture %}
 {% capture diagram_fallback %}
 Publisher → subscription → worker validates and commits a durable sink result → acknowledge. Transient failures trigger retry/redelivery; poison records can route to a dead-letter topic for repair.

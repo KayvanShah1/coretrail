@@ -34,7 +34,7 @@ chunker_release: sections-v4
 collection_release: knowledge-index-v9
 ```
 
-Changing only the generation language model ordinarily leaves document embeddings intact, since the generator receives retrieved text. Changing passage text, embedding preprocessing or encoder space requires recomputing affected embeddings. Changing only a search-time HNSW parameter may require no vector update, while changing index-building configuration can require an index rebuild.
+Changing only the generation language model ordinarily leaves document embeddings intact, since the generator receives retrieved text. Changing passage text, embedding preprocessing or encoder space requires recomputing affected embeddings. Changing only a search-time Hierarchical Navigable Small World (HNSW) parameter may require no vector update, while changing index-building configuration can require an index rebuild.
 
 ## Migration with two indexes
 
@@ -58,6 +58,26 @@ Snapshot corpus → build current and candidate indexes → compare with the sam
 A fair comparison fixes document coverage, source revision, filters and labeled queries. Run both paths in shadow before switching the serving alias or router. If source records continue changing during the rebuild, reconcile those changes into the candidate index before promotion.
 
 A collection alias switch simplifies global cutover, but writing vectors and switching an external pointer do not inherently form one distributed transaction. Readers should resolve one coherent release per request. Long-running agent tasks may pin the index release used for their evidence.
+
+### Backfill ten million chunks while updates continue
+
+Consider an illustrative corpus of ten million chunks. Building the candidate index can take long enough that live documents change during the backfill. Record a source-log position or another durable change cursor when taking the snapshot. Retain subsequent changes until the candidate has caught up; a cursor without retained events cannot repair the gap.
+
+Partition the backfill into retryable batches keyed by logical document/chunk identity and source revision. A checkpoint records completed batches, failures and the encoder release. Retry with the same identities so a restarted worker upserts the same derived records. If parser or encoder configuration changes midway, begin a clearly identified release instead of mixing representations.
+
+Replay changes newer than the snapshot cursor, including tombstones and permission updates. A delayed backfill record for revision 8 must be rejected when revision 9 or a revision-10 deletion has already been applied. Compare source and index manifests by revision and partition; a matching total count can hide one missing document and one duplicate.
+
+| Promotion check | Evidence needed |
+|---|---|
+| Corpus coverage | Expected IDs and revisions, not only total vectors |
+| Catch-up | Applied change cursor and bounded source-to-index lag |
+| Retrieval | Paired authorized queries, relevance and sufficient-evidence coverage |
+| Operations | Build failures, latency under load, memory and replica cost |
+| Rollback | Compatible old query encoder and a current, permitted old index |
+
+Shadow queries need the query encoder paired with each candidate index. An atomic router configuration can select an encoder/index release together. Changing only an index alias while leaving the old query encoder active can break retrieval.
+
+During a rollback window, continue applying source changes and permission revocations to the retained release, or define how it will be caught up before serving again. Pinned historical tasks still need live authorization checks. Retaining old vectors for recovery cannot preserve access that has been revoked.
 
 ## Cache invalidation follows dependency changes
 

@@ -10,7 +10,7 @@ keywords: [Recall@k, MRR, nDCG, agent success, p95, cost per successful task]
 interview_queries: [which metrics should an AI agent track, how do you evaluate RAG relevance, when should you alert or retrain]
 ---
 
-A final answer can be wrong because parsing lost a table, retrieval missed a passage, context assembly discarded it, or generation ignored it. Operational metrics may remain healthy throughout. Record where the failure occurred.
+A retrieval-augmented generation (RAG) answer can be wrong because parsing lost a table, retrieval missed a passage, context assembly discarded it, or generation ignored it. Operational metrics may remain healthy throughout. Record where the failure occurred.
 
 ## Retrieval metrics
 
@@ -34,7 +34,7 @@ For agent workflows, evaluate the tool choice, input arguments, ordering, loops,
 | Time to first token (TTFT) | Queueing, prefill, model load |
 | Inter-token latency | Decode throughput and serving pressure |
 | Tool timeout rate and step count | Dependency failure or agent loop |
-| Key-value (KV) cache use, waiting requests | GPU concurrency and memory |
+| Key-value (KV) cache use, waiting requests | Graphics processing unit (GPU) concurrency and memory |
 | Cost per successful task | Total service spend relative to actual completed work |
 
 {% include math.html tex="\operatorname{CostPerSuccess}=\frac{\operatorname{TotalSpend}}{\operatorname{SuccessfulTasks}}" block=true %}
@@ -47,4 +47,4 @@ Golden datasets and adversarial tests run before release. Shadow traffic checks 
 
 Alert immediately for infrastructure outages, authorization violations, missing critical features or error-rate breaches. Retraining is a candidate response to verified predictive degradation; it cannot repair a broken embedding index, a bad tool contract or missing source documents.
 
-A successful rollout needs explicit quality, safety, latency and cost gates. See [LLM serving metrics]({{ '/ai-engineering/observability/metrics/' | relative_url }}) for inference-side diagnostics.
+A successful rollout needs explicit quality, safety, latency and cost gates. See [large language model (LLM) serving metrics]({{ '/ai-engineering/observability/metrics/' | relative_url }}) for inference-side diagnostics.

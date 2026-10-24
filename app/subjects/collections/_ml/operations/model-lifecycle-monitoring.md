@@ -5,6 +5,7 @@ chapter: operations
 order: 1
 sequence: 201
 level: Core
+mermaid: true
 math: true
 keywords:
   - MLOps
@@ -21,12 +22,12 @@ interview_queries:
   - when should you retrain a model
 ---
 
-An experiment is reproducible when another run can identify the same source snapshot, label definition, feature transformations, code, dependency versions, random seeds and model configuration. Tracking a single AUC score does not provide that guarantee.
+An experiment is reproducible when another run can identify the same source snapshot, label definition, feature transformations, code, dependency versions, random seeds and model configuration. Tracking a single area under the curve (AUC) score does not provide that guarantee.
 
 ## From training to a controlled release
 
 {% capture diagram_code %}
-flowchart LR
+flowchart TD
 A["Versioned data + features"] --> B["Train + track experiment"]
 B --> C["Holdout evaluation"]
 C --> D{"Meets release gate?"}
@@ -40,7 +41,7 @@ Versioned data and features → train and track → holdout evaluation → relea
 {% endcapture %}
 {% include diagram.html title="Model release uses data and evaluation gates" code=diagram_code fallback=diagram_fallback caption=true %}
 
-Experiment trackers such as MLflow record run parameters, metrics and artifacts. A model registry records deployable versions and their promotion status. The CI pipeline checks code and data contracts. A scheduled or event-triggered training pipeline produces candidates that must pass evaluation before they replace a deployed model.
+Experiment trackers such as MLflow record run parameters, metrics and artifacts. A model registry records deployable versions and their promotion status. The continuous integration (CI) pipeline checks code and data contracts. A scheduled or event-triggered training pipeline produces candidates that must pass evaluation before they replace a deployed model.
 
 **Shadow deployment** computes predictions on copied traffic without exposing new decisions to users. **Canary deployment** sends a controlled slice of real traffic to the candidate. The acceptance thresholds should include latency, error rate and model quality, with rollback conditions agreed before rollout.
 
@@ -51,7 +52,7 @@ Experiment trackers such as MLflow record run parameters, metrics and artifacts.
 {% include math.html tex="P_{\mathrm{train}}(X)\ne P_{\mathrm{live}}(X)" block=true %}
 {% include math.html tex="P_{\mathrm{train}}(Y\mid X)\ne P_{\mathrm{live}}(Y\mid X)" block=true %}
 
-In practice, a rising null rate may be an ingestion failure, not a population change. A changed feature distribution need not imply worse predictions. Check versioned inputs, feature freshness and training-serving parity before drawing conclusions.
+A rising null rate can originate in a broken ingestion job. A changed feature distribution can also leave predictive quality stable. Check versioned inputs, feature freshness and training-serving parity before drawing conclusions.
 
 Accuracy, precision or forecast error often require labels that arrive days or weeks later. Until then, monitor input distributions, scores, serving latency, schema failures and delayed-outcome coverage. Report whether the quality sample is mature and representative.
 

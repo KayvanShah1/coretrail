@@ -148,10 +148,13 @@ This is a scope map, not a claim of exhaustive SQL coverage. Each chapter has a 
 
 PostgreSQL query results are checked with deterministic fixtures. Native PostgreSQL CI checks the index and pruning labs. SQL Server and cloud warehouse guidance is source-backed but requires those platforms for execution. Multi-session replication, failover, and sharding behavior is explained through scenarios rather than simulated by single-session tests.
 
-## Planned subjects
+## Other published subjects
 
-- Data Engineering
-- Machine Learning
-- AI Engineering
-- System Design
-- DSA
+- [Data Engineering](../app/subjects/data-engineering/index.md): pipeline design, storage, incremental changes, GCP, orchestration, distributed processing and reliability.
+- [Machine Learning](../app/subjects/ml/index.md): model fundamentals, features, serving and operations.
+- [AI Engineering](../app/subjects/ai-engineering/index.md): inference, serving, deployment, retrieval, agents, evaluation and production operations.
+- [Infrastructure & DevOps](../app/subjects/infrastructure/index.md): containers, Kubernetes, scaling, cloud architecture and observability.
+- [System Design](../app/subjects/systems/index.md).
+- [DSA](../app/subjects/dsa/index.md).
+
+See the [October interview-content audit](INTERVIEW_CONTENT_AUDIT_2026_10.md) for the source-to-chapter mapping, substantive corrections and verification scope.

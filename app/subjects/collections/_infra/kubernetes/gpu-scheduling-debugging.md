@@ -9,7 +9,7 @@ keywords: [GPU scheduling, Pending Pod, OOMKilled, readiness, device plugin, HPA
 interview_queries: [why is my GPU pod Pending, how do you debug an OOMKilled model server, how does Kubernetes scale LLM inference]
 ---
 
-The Kubernetes scheduler chooses a node for each Pod using resource requests and placement constraints. GPU device plugins expose allocatable accelerator resources such as `nvidia.com/gpu`. A container image may contain CUDA userspace libraries, but it does not create physical GPU capacity or install the host driver.
+The Kubernetes scheduler chooses a node for each Pod using resource requests and placement constraints. Graphics processing unit (GPU) device plugins expose allocatable accelerator resources such as `nvidia.com/gpu`. A container image may contain CUDA userspace libraries, but it does not create physical GPU capacity or install the host driver.
 
 ## Trace the symptom before changing capacity
 
@@ -26,7 +26,7 @@ A Pod with a GPU request remains Pending when no suitable node has capacity. A n
 
 ## Resource limits and probes
 
-CPU requests inform placement and resource share; CPU limits can throttle processing. A container exceeding its memory limit can be killed. GPU allocation uses extended resource requests rather than ordinary CPU percentages.
+Central processing unit (CPU) requests inform placement and resource share; CPU limits can throttle processing. A container exceeding its memory limit can be killed. GPU allocation uses extended resource requests rather than ordinary CPU percentages.
 
 Use a startup probe for long model initialization, readiness to control when a loaded model receives traffic, and liveness for conditions where restarting the process helps. A port that accepts connections may become available long before all weights are loaded.
 

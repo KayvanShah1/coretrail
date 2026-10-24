@@ -61,4 +61,4 @@ A path partition such as `date=2026-10-24/` can limit scan scope when queries fi
 
 BigQuery managed columnar storage and transactional PostgreSQL tables expose different storage abstractions. A team may retain Parquet in Cloud Storage or S3 for portable raw/curated data while placing serving facts in an analytical warehouse.
 
-See [lakehouse grain and data layout]({{ '/data-engineering/storage/parquet-lakehouse-and-grain/' | relative_url }}) and [incremental CDC/MERGE]({{ '/data-engineering/incremental/cdc-checkpoints-and-merge/' | relative_url }}).
+See [lakehouse grain and data layout]({{ '/data-engineering/storage/parquet-lakehouse-and-grain/' | relative_url }}) and [incremental change-data-capture (CDC)/MERGE]({{ '/data-engineering/incremental/cdc-checkpoints-and-merge/' | relative_url }}).

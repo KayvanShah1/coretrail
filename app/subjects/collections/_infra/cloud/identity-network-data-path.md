@@ -17,7 +17,7 @@ references:
 ---
 A cloud application commonly mixes request-serving workloads, queued processing, transactional state, object storage and analytics. Selecting one managed service for every task can make the system harder to scale or secure. Each component should have a clearly bounded responsibility and a measurable failure condition.
 
-## A retrieval application's control and data paths
+## A retrieval-augmented generation (RAG) application's control and data paths
 
 {% capture diagram_code %}
 flowchart TD
@@ -39,15 +39,15 @@ Client → API gateway → stateless agent. Agent reads transactional state from
 {% endcapture %}
 {% include diagram.html title="A cloud RAG application separates request state, indexing and analytics" code=diagram_code fallback=diagram_fallback caption=true %}
 
-Cloud Run is convenient for stateless HTTP workloads and event handlers, including supported GPU configurations; Google Kubernetes Engine (GKE) provides deeper scheduling and cluster control. Vertex AI exposes managed ML and model-hosting capabilities. Cloud Storage stores large versioned objects, Cloud SQL provides transactional records, BigQuery handles analytical scans, and Pub/Sub decouples producers and consumers. Dataflow processes batch and streaming pipelines using Apache Beam.
+Cloud Run is convenient for stateless HTTP workloads and event handlers, including supported graphics processing unit (GPU) configurations; Google Kubernetes Engine (GKE) provides deeper scheduling and cluster control. Vertex AI exposes managed ML and model-hosting capabilities. Cloud Storage stores large versioned objects, Cloud SQL provides transactional records, BigQuery handles analytical scans, and Pub/Sub decouples producers and consumers. Dataflow processes batch and streaming pipelines using Apache Beam.
 
-AWS has comparable building blocks with different configuration and pricing: S3 for objects, RDS/Aurora for transactions, EKS/ECS for containers, SNS/SQS/Kinesis for events, and SageMaker/Bedrock for managed ML or model access. A service-to-service migration still requires examining semantics; mapping product names does not preserve acknowledgement, autoscaling or permission behavior.
+AWS has comparable building blocks with different configuration and pricing: S3 for objects, RDS/Aurora for transactions, Elastic Kubernetes Service (EKS) / Elastic Container Service (ECS) for containers, SNS/SQS/Kinesis for events, and SageMaker/Bedrock for managed ML or model access. A service-to-service migration still requires examining semantics; mapping product names does not preserve acknowledgement, autoscaling or permission behavior.
 
 ## Identity is attached to workloads
 
 Human credentials and long-lived keys copied into images create unnecessary exposure. Managed service identities and workload identity federation allow code to request short-lived credentials under assigned policies. Give the ingestion worker read permission to the relevant source bucket and write permission only to the designated staging/index resources. A model endpoint generally should not acquire administrator privileges over every database.
 
-Identity and authorization solve separate questions: the cloud IAM role establishes which services a process may access; application checks determine which tenant, row or document a specific user is authorized to see. A system-wide search index must apply tenant/document permissions at retrieval time. Hiding restricted results only in the final LLM answer is insufficient.
+Identity and authorization solve separate questions: the cloud IAM role establishes which services a process may access; application checks determine which tenant, row or document a specific user is authorized to see. A system-wide search index must apply tenant/document permissions at retrieval time. Hiding restricted results only in the final large language model (LLM) answer is insufficient.
 
 ## Network and secrets
 

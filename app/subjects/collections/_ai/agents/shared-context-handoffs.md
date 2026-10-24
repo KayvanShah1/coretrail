@@ -25,7 +25,7 @@ A task that passes through a research agent, analysis agent and report agent nee
 | Memory | Reusable information across sessions | Long-term store with user and policy scope |
 | Evidence | Documents, source spans, validated outputs | Versioned artifact/document store |
 
-A model context window is reconstructed from these stores when a model call occurs. The authoritative record remains outside the model. A summary can preserve conversational continuity, but must not silently overwrite verified amounts, permissions, executed actions or source citations.
+A model context window is reconstructed from these stores when a model call occurs. The authoritative record remains outside the model. A summary preserves conversational continuity. Verified amounts, permissions, operation status and citations remain in typed records with their own versions, so summarization cannot change the authoritative values.
 
 {% capture diagram_code %}
 flowchart TD
@@ -33,10 +33,11 @@ A["User and request identity"] --> B["Supervisor / workflow controller"]
 B --> C["Research agent"]
 B --> D["Analysis agent"]
 B --> E["Report agent"]
-C --> F["Shared artifact and checkpoint stores"]
-D --> F
-E --> F
-F --> G["Versioned evidence / DB / retrieval"]
+C <-->|"Permitted artifact versions"| F["Artifact store"]
+D <-->|"Permitted artifact versions"| F
+E <-->|"Permitted artifact versions"| F
+B <-->|"Task transitions and state versions"| G["Durable workflow checkpoints"]
+F --> H["Source spans and knowledge release"]
 {% endcapture %}
 {% capture diagram_fallback %}
 User request → supervisor → research, analysis and report agents. Agents read permitted versioned artifacts and write results/checkpoints to a shared store. The controller manages task transitions.
@@ -60,6 +61,12 @@ A handoff can contain a task ID, sender and recipient, target objective, permitt
 ```
 
 The result can be independently tested for cited values and calculation correctness. Sending only a prose summary loses the connection to the underlying documents.
+
+### A version conflict in practice
+
+Suppose research and analysis both read workflow state version 9. Research writes a new evidence artifact and advances the state to 10. An analysis result based on version 9 now needs validation against the changed evidence. A compare-and-swap write requiring version 9 fails, exposing the conflict before a stale result replaces current work.
+
+The controller can rerun analysis against the new artifact or accept independent fields through a defined merge rule. Appending two result artifacts is usually easier to reconcile than allowing both agents to replace one shared summary. Reducers need deliberate ordering and duplicate-handling rules; concatenating every retry can repeat the same result.
 
 ## Concurrent agents and failed handoffs
 

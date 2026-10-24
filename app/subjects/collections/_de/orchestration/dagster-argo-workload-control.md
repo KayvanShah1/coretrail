@@ -40,7 +40,7 @@ Raw source records are validated, transformed into a warehouse fact table, then 
 
 **Airflow** schedules directed acyclic graphs (DAGs) of tasks. It has broad integrations and clear time-interval scheduling, while lineage and asset semantics may require additional metadata or provider features. Airflow operators should submit large transformations to Spark, Dataflow, BigQuery or another execution engine rather than run memory-intensive data jobs in scheduler processes.
 
-**Argo Workflows** coordinates containerized jobs as Kubernetes-native workflows. This can fit ephemeral batch execution and GPU or CPU tasks already packaged as images. Cluster policy, resource requests and observability become important responsibilities. An Argo Workflows controller is distinct from Argo CD, which manages GitOps application deployment.
+**Argo Workflows** coordinates containerized jobs as Kubernetes-native workflows. This can fit ephemeral batch execution and graphics processing unit (GPU) or central processing unit (CPU) tasks already packaged as images. Cluster policy, resource requests and observability become important responsibilities. An Argo Workflows controller is distinct from Argo CD, which manages GitOps application deployment.
 
 ## How retries affect output correctness
 

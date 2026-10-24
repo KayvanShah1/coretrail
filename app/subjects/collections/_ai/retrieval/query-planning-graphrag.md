@@ -37,7 +37,7 @@ Decompose the question into delay-event lookup and project-provider relationship
 
 A knowledge graph represents entities as nodes and relations as edges, often with source references and effective dates. A graph traversal can answer relationship-heavy questions by walking project → contract → supplier → region paths. The graph still needs ingestion, entity resolution, deduplicated IDs and relation freshness.
 
-GraphRAG approaches vary. Some use graph traversal to gather facts; others derive community summaries to answer broad corpus-level questions. These have different index-build costs and different failure modes. An enterprise graph built from LLM-extracted relations can propagate entity-merging errors unless edges retain provenance and confidence.
+GraphRAG approaches vary. Some use graph traversal to gather facts; others derive community summaries to answer broad corpus-level questions. These have different index-build costs and different failure modes. An enterprise graph built from large language model (LLM)-extracted relations can propagate entity-merging errors unless edges retain provenance and confidence.
 
 | Workload | Starting approach | When to escalate |
 |---|---|---|

@@ -9,7 +9,7 @@ keywords: [FAISS, Elasticsearch, vLLM, LangGraph, Qdrant, pgvector, BigQuery, Du
 aliases: [AI engineering stack alternatives, tool limitations]
 interview_queries: [FAISS vs vector database, when to replace LangGraph, vLLM vs managed inference]
 ---
-Technology selection becomes easier when the failure or operating constraint is explicit. An approximate-nearest-neighbor library, a distributed search server, an agent orchestrator and a graphics processing unit (GPU) inference engine are different layers of an application. Their product names do not substitute for the responsibilities around them.
+Technology selection becomes easier when the failure or operating constraint is explicit. A similarity-search library owns vector search; a search service also owns request handling and index operations. An agent orchestrator manages task transitions, while a graphics processing unit (GPU) inference engine schedules model execution. Assigning these responsibilities exposes what each product still needs around it.
 
 ## Retrieval libraries and services
 
@@ -30,7 +30,7 @@ FAISS is a vector index library; a cache layered over it still needs an explicit
 | Managed model endpoint | Provider-operated model infrastructure | Application state, tool safety, prompt/model evaluation and provider risk |
 | LangGraph | Explicit state transitions and checkpoints | Authorization, side-effect idempotency and artifact versions |
 | Typed Python tool loop | Small controlled agent workflows | Durable state, retries and observability when requirements grow |
-| Temporal | Durable general-purpose workflow execution | LLM planning and tool semantics |
+| Temporal | Durable general-purpose workflow execution | large language model (LLM) planning and tool semantics |
 | Docker | Image/runtime packaging | Scheduling, security controls and monitoring |
 | Kubernetes | Workload controllers and node scheduling | Model quality, application correctness and workload-specific autoscaling |
 

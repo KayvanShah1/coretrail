@@ -84,6 +84,10 @@ for (const collection of publishedCollections) {
 
     for (const key of ['title', 'description', 'chapter', 'order', 'sequence'])
       assert.notEqual(data[key], undefined, key + ' ' + file);
+    if (match[2].includes('include diagram.html'))
+      assert.equal(data.mermaid, true, 'diagram renderer disabled ' + file);
+    if (match[2].includes('include math.html'))
+      assert.equal(data.math, true, 'math renderer disabled ' + file);
     assert.ok(validChapters.has(data.chapter), 'unknown chapter ' + data.chapter + ' ' + file);
     assert.ok(!collectionSequences.has(data.sequence), 'duplicate sequence ' + file);
     collectionSequences.add(data.sequence);

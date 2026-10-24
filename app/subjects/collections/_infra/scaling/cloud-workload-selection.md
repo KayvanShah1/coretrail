@@ -14,18 +14,20 @@ references:
     url: https://docs.aws.amazon.com/eks/latest/userguide/fargate.html
 ---
 
-A model endpoint, a request-handling agent and an ingestion worker do not necessarily need the same compute environment. Service selection follows request lifetime, memory footprint, accelerator needs and the level of operational control the team is prepared to maintain.
+A model endpoint, a request-handling agent and an ingestion worker have different request lifetimes and resource needs. Service selection follows request lifetime, memory footprint, accelerator needs and the level of operational control the team is prepared to maintain.
+
+Google Kubernetes Engine (GKE) and Amazon Elastic Kubernetes Service (EKS) provide managed Kubernetes environments. Their workload controls can matter when an application needs specialized scheduling or cluster policies.
 
 | Workload | Starting choice | Reason to consider another option |
 |---|---|---|
 | Stateless FastAPI agent using a managed model | Cloud Run | Complex service networking or custom cluster policies |
 | Managed foundation-model inference | Vertex AI | Need model weights/runtime not supported by managed offering |
-| Custom GPU model server | GKE GPU nodes or configured Cloud Run GPU service | Multi-node topology, specialized scheduling or fine-grained GPU control |
+| Custom graphics processing unit (GPU) model server | GKE GPU nodes or configured Cloud Run GPU service | Multi-node topology, specialized scheduling or fine-grained GPU control |
 | Streaming ETL | Dataflow | Workload needs different runtime or operational model |
-| Cluster-scheduled CPU jobs on AWS | EKS Fargate | GPU, privileged containers or DaemonSets needed |
+| Cluster-scheduled central processing unit (CPU) jobs on AWS | EKS Fargate | GPU, privileged containers or DaemonSets needed |
 | Long-running GPU inference on AWS | GPU-capable EC2/EKS nodes or managed inference | Requirement for a different scaling and operational model |
 
-Google Cloud Run supports selected GPU configurations. It should no longer be described categorically as CPU-only. Compare GPU availability, cold start, model size, scaling limits and cost with a Kubernetes deployment.
+Google Cloud Run supports selected GPU configurations. Compare GPU availability, cold start, model size, scaling limits and cost with a Kubernetes deployment.
 
 Amazon EKS Fargate does not provide GPUs. A CPU data-processing job on Fargate can still submit predictions to a separate model endpoint that owns GPU inference.
 

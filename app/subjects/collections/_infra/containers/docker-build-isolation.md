@@ -33,12 +33,12 @@ Large model weights can live in an image, object storage or a mounted model cach
 
 Linux namespaces isolate selected process views, while control groups (cgroups) account for and constrain resource consumption. A container is not inherently a strong hostile-code sandbox. Generated code may still abuse kernel interfaces, open outbound connections or consume resources if execution policies allow it.
 
-For coding-agent evaluation, record a repository revision, dependency lock, deterministic test command and time limit. Apply network restrictions, filesystem permissions, CPU/memory limits, dropped capabilities and a suitable sandboxing profile. Stronger isolation mechanisms or dedicated workers may be required for adversarial code.
+For coding-agent evaluation, record a repository revision, dependency lock, deterministic test command and time limit. Apply network restrictions, filesystem permissions, central processing unit (CPU)/memory limits, dropped capabilities and a suitable sandboxing profile. Stronger isolation mechanisms or dedicated workers may be required for adversarial code.
 
 A reproducible image removes many environmental differences, but flaky tests, external services and nondeterministic timing can still make results vary.
 
 ## Containers versus orchestration
 
-An image registry distributes immutable artifacts. Docker or another runtime creates the process. Kubernetes schedules Pods, handles replica declarations, service discovery and rollout. None of these automatically provides GPU model batching or efficient key-value cache management; the inference engine owns those decisions.
+An image registry distributes immutable artifacts. Docker or another runtime creates the process. Kubernetes schedules Pods, handles replica declarations, service discovery and rollout. None of these automatically provides graphics processing unit (GPU) model batching or efficient key-value cache management; the inference engine owns those decisions.
 
-For the model-specific startup sequence, see [LLM startup lifecycle]({{ '/ai-engineering/deployment/startup-lifecycle/' | relative_url }}).
+For the model-specific startup sequence, see [large language model (LLM) startup lifecycle]({{ '/ai-engineering/deployment/startup-lifecycle/' | relative_url }}).

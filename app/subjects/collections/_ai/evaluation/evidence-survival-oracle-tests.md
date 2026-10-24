@@ -6,6 +6,7 @@ order: 4
 sequence: 804
 level: Intermediate
 math: true
+mermaid: true
 keywords: [oracle retrieval, evidence survival, layer wise evaluation, RAG debugging, context sufficiency]
 aliases: [layer by layer RAG evaluation, oracle context experiment]
 interview_queries: [where did the correct evidence disappear, how to identify a RAG bottleneck]
@@ -20,7 +21,7 @@ Every evaluation case should identify the source revision, relevant document/sec
 |---|---|---|
 | Source and parser | Correct fields, tables, code and section relationships | Extraction completeness, table fidelity |
 | Chunker | Required facts still co-located or recoverable | Evidence coverage, split boundaries |
-| ANN retrieval | Known neighbors compared with exact search | Approximate-index recall |
+| Approximate nearest-neighbor (ANN) retrieval | Known neighbors compared with exact search | Approximate-index recall |
 | Lexical/vector candidates | Ground-truth passages returned | Recall@k, first-hit rank, nDCG |
 | Reranker | Relevant passages retained | Conditional evidence survival |
 | Context packing | Every required fact reaches final prompt | Sufficient-evidence coverage, token utilization |
@@ -28,6 +29,26 @@ Every evaluation case should identify the source revision, relevant document/sec
 | Agent | Tools and effects consistent with task contract | Task success, policy violations, recovery |
 
 For example, among 200 questions the correct source might exist in 194, initial search find it for 176, reranking retain it for 164, context packing include it for 157 and generation answer correctly for 139. These hypothetical counts describe a *query-level survival funnel*, not Precision@k. A query needing three facts only survives a stage when all required evidence remains accessible.
+
+{% capture survival_diagram %}
+flowchart TD
+Q["200 evaluation questions"] --> S["194 have sufficient source evidence"]
+Q --> L0["6 missing-source cases"]
+S --> R["176 retain evidence after candidate search"]
+S --> L1["18 retrieval losses"]
+R --> K["164 retain evidence after reranking"]
+R --> L2["12 reranking losses"]
+K --> C["157 retain evidence in final context"]
+K --> L3["7 context-packing losses"]
+C --> G["139 correct answers"]
+C --> L4["18 generation failures despite sufficient context"]
+{% endcapture %}
+{% capture survival_fallback %}
+Illustrative query-level counts: 200 questions, 194 with sufficient source evidence, 176 surviving candidate retrieval, 164 surviving reranking, 157 surviving context packing and 139 answered correctly. Inspect the cases lost at each transition.
+{% endcapture %}
+{% include diagram.html title="Evidence survival exposes loss at each stage" code=survival_diagram fallback=survival_fallback caption=true %}
+
+These counts assume that each query follows one fixed path. A system with fallback searches can recover an earlier miss; record the initial path and the recovery separately instead of forcing all production behavior into a decreasing funnel.
 
 {% include math.html tex="\operatorname{RerankSurvival}=\frac{\text{queries retaining sufficient evidence}}{\text{queries with sufficient evidence before reranking}}" block=true %}
 

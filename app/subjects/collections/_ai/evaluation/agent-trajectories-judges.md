@@ -44,7 +44,7 @@ Trajectory equality is usually too strict for flexible tasks: calling search twi
 
 Stateful evaluation should include corrections, interrupted runs and long sessions. A request such as “change the budget, keep the city” tests whether the application state honors the update without losing retained constraints.
 
-## LLM-as-judge is a measurement instrument
+## Large language model (LLM) judges need calibration
 
 A model judge can score open-ended explanations for correctness, grounding and completeness using an explicit rubric. It may reward verbosity, familiar phrasing or its own preferred answer. Pairwise judging can exhibit position bias; pointwise scoring can drift as the judge model changes.
 

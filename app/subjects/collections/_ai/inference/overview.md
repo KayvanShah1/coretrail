@@ -40,6 +40,7 @@ The serving problems in this chapter follow directly from four facts:
 <li><a href="{{ '/ai-engineering/inference/efficient-inference/' | relative_url }}">Making inference faster and cheaper</a><span>Place quantization, prefix caching, PagedAttention, and speculative decoding against the bottleneck they address.</span></li>
 <li><a href="{{ '/ai-engineering/inference/transformers-embeddings-adaptation/' | relative_url }}">Transformer attention, embeddings and fine-tuning</a><span>Recall scaled attention, contrastive objectives and parameter-efficient adaptation.</span></li>
 <li><a href="{{ '/ai-engineering/inference/tokenizers-decoding-sampling/' | relative_url }}">Tokenization, logits, sampling and generation behavior</a><span>BPE, subword tokens, softmax temperature, top-p/top-k and decoding cost.</span></li>
+<li><a href="{{ '/ai-engineering/inference/nlp-representations-preprocessing/' | relative_url }}">NLP preprocessing, representations and entity resolution</a><span>Trace normalization, sparse features, sentence pooling and canonical record identity.</span></li>
 </ul>
 
-A useful rule for the rest of the trail is: **first identify whether the problem is compute, memory, waiting, communication, or model quality.** The optimization follows from that diagnosis.
+Compute, memory, waiting, communication and model quality create different symptoms. Identify which one constrains the request before choosing an optimization.

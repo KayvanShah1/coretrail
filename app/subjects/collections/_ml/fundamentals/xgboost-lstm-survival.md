@@ -23,7 +23,7 @@ A decision tree splits feature space into regions. A random forest fits largely 
 
 XGBoost uses gradients and second derivatives (Hessians) of the chosen loss to estimate the gain from candidate splits. Regularization penalizes excessive leaves or large leaf scores. A split on cost deviation can interact with contractor category or project stage without hand-writing all pairwise feature combinations.
 
-Tree ensembles suit structured mixed-feature datasets and can be strong with moderate amounts of data. Explain a prediction with feature attribution cautiously: SHAP contributions describe the fitted model, not causal effects. Training cost, class imbalance, temporal validation and calibration still matter.
+Tree ensembles suit structured mixed-feature datasets and can be strong with moderate amounts of data. Explain a prediction with feature attribution cautiously: SHapley Additive exPlanations (SHAP) contributions describe the fitted model, not causal effects. Training cost, class imbalance, temporal validation and calibration still matter.
 
 When time influences the target, lag features and rolling changes can supply the history to a boosted tree. This is a substantial baseline before adopting a recurrent network.
 
@@ -54,6 +54,6 @@ The survival function measures probability of surviving beyond time `t`. The haz
 | XGBoost survival objective | Tabular features and boosting flexibility | Requires correct objective and censoring design |
 | LSTM survival | Meaningful evolving histories | More data and sequence-model complexity |
 
-Use concordance index to study comparable risk orderings; use time-dependent ROC-AUC and calibrated survival estimates at specific horizons. A standard binary ROC-AUC only describes a fixed event classification target. Define the event, horizon and censoring treatment before quoting a metric.
+Use concordance index to study comparable risk orderings; use time-dependent receiver operating characteristic area under the curve (ROC-AUC) and calibrated survival estimates at specific horizons. A standard binary ROC-AUC only describes a fixed event classification target. Define the event, horizon and censoring treatment before quoting a metric.
 
 Time-aware splits matter because earlier project snapshots can otherwise borrow information from future outcomes. For general classification thresholds, see [precision, recall and AUC]({{ '/ml/fundamentals/classification-metrics-thresholds/' | relative_url }}).

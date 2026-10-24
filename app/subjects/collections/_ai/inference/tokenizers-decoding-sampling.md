@@ -16,7 +16,7 @@ A language model predicts distributions over its tokenizer's vocabulary. The tok
 
 Byte Pair Encoding (BPE) iteratively learns common symbol merges and typically represents text as a mix of word fragments and longer frequent units. WordPiece and unigram tokenization learn alternative subword segmentations; SentencePiece is a toolkit supporting several approaches. Byte-level schemes can represent previously unseen strings through smaller pieces.
 
-A token rarely equals a word. Identifiers, rare product codes, non-English scripts, whitespace and punctuation may be split into multiple tokens. This affects embedding input limits, truncation, billing and latency. Token counts should come from the specific model's tokenizer rather than a universal words-per-token rule.
+A token rarely equals a word. Identifiers, rare product codes, non-English scripts, whitespace and punctuation may be split into multiple tokens. This affects embedding input limits, truncation, billing and latency. Count tokens with the specific model's tokenizer; the same words can produce different counts across vocabularies.
 
 Tokenizers often include reserved markers for beginning/end of sequences or special message roles. Changing the tokenizer can invalidate input-ID assumptions and require compatible model weights; two models trained on different vocabularies cannot exchange raw token IDs safely.
 
@@ -26,7 +26,7 @@ The final transformer representation produces a vector of vocabulary **logits**.
 
 {% include math.html tex="P_i(T)=\frac{\exp(z_i/T)}{\sum_j\exp(z_j/T)}" block=true %}
 
-For positive temperature \(T\), smaller values concentrate probability on the largest logits. Higher values flatten the distribution, increasing sampling diversity. Very low temperature does not guarantee factuality, nor does higher temperature directly increase model knowledge.
+For positive temperature T, smaller values concentrate probability on the largest logits. Higher values flatten the distribution, increasing sampling diversity. Very low temperature does not guarantee factuality, nor does higher temperature directly increase model knowledge.
 
 **Greedy decoding** picks the highest-probability token at each step. It is fast and repeatable under controlled conditions but can become trapped in locally likely continuations.
 

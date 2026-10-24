@@ -1,6 +1,6 @@
 ---
 title: "MCP, A2A and agent orchestration"
-description: "Distinguish tool discovery from agent delegation, and reason through persistent execution and authorization."
+description: "Follow tool integration and remote-agent tasks through discovery, delegation, progress, recovery and authorization."
 chapter: agents
 order: 2
 sequence: 702
@@ -42,6 +42,45 @@ MCP uses structured messages and can communicate over standard input/output or S
 A2A supports communication between agents. Agent Cards advertise skills and endpoints; tasks, messages, artifacts and lifecycle states allow one agent to follow work delegated to another.
 
 For a procurement workflow, an agent can delegate tax analysis to a finance agent. The finance agent may internally call accounting tools through MCP, while the caller receives the result and task status. These protocols can coexist because they connect different participants.
+
+### A remote task has an observable lifecycle
+
+The caller discovers an Agent Card, selects an advertised skill and authenticates to the remote endpoint. It sends the objective with the allowed evidence references and retains the returned task ID when the server creates a tracked task. Simple interactions can return a message directly.
+
+{% capture task_diagram %}
+flowchart TD
+C["Discover capability and authenticate"] --> S["Send task and retain remote task ID"]
+S --> W["Remote agent working"]
+W --> I{"More input or authorization needed?"}
+I -- "Yes" --> U["Obtain permitted input or credentials"]
+U --> W
+I -- "No" --> V{"Result available?"}
+V -- "Completed" --> A["Read and validate artifacts"]
+V -- "Failed / rejected / canceled" --> F["Record outcome and choose recovery"]
+W -. "Caller connection lost" .-> R["Reconnect using known task ID"]
+R --> W
+{% endcapture %}
+{% capture task_fallback %}
+Discover and authenticate, send the task and retain its ID, then follow progress. Input or authorization may interrupt work. Completion returns artifacts for validation; failed, rejected or canceled work needs an explicit recovery decision. Reconnect to known work after a connection loss.
+{% endcapture %}
+{% include diagram.html title="A2A task progress and recovery" code=task_diagram fallback=task_fallback caption=true %}
+
+**Submitted** and **working** describe progress. **Input required** and **authorization required** describe interruptions that need a response. **Completed**, **failed**, **rejected** and **canceled** are terminal outcomes. These are conceptual labels; enum spelling and transport methods depend on the protocol version supported by both endpoints.
+
+Polling can retrieve the known task's status. Streaming provides updates while connected, and supported push notifications can report asynchronous progress. The Agent Card advertises supported capabilities. A dropped connection leaves completion uncertain: retrieve or subscribe to the existing task before submitting replacement work.
+
+If the first submission times out before the caller receives a task ID, recovery needs an application correlation record or a server-supported duplicate-submission mechanism. A fresh request can otherwise create a second task. Cancellation also needs confirmation; an already committed external action may require reconciliation or compensation.
+
+### Task, context, message and artifact identity
+
+| Identifier or output | Purpose |
+|---|---|
+| Task ID | Follow one remote unit of work and its lifecycle |
+| Context ID | Group related interactions where supported |
+| Message ID | Identify an exchanged message |
+| Artifact | Deliver a result, structured data or a file reference |
+
+A shared context identifier associates work; it gives no automatic access to another agent's private messages, model state or storage. The receiving service checks the caller's identity and the permitted artifact scope. Credentials should travel through supported authentication mechanisms, not through a model-generated prose handoff.
 
 ## Orchestration is application responsibility
 

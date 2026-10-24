@@ -14,6 +14,9 @@ keywords:
   - ingestion time
   - late arriving data
   - as of join
+references:
+  - title: Feast point-in-time joins and backfilled corrections
+    url: https://docs.feast.dev/getting-started/concepts/point-in-time-joins
 interview_queries:
   - how do you prevent data leakage in feature engineering
   - why is event time not enough for a point in time join
@@ -24,16 +27,18 @@ A late-arriving event can make a historical training row look more informed than
 
 {% include diagnostic-map.html id="point-in-time" %}
 
-## Two clocks constrain each training row
+## Availability and observation time answer different questions
 
-**Event time** records when the underlying observation occurred. **Availability time** records when a production predictor could read that version. For a prediction at time `t`, the selected feature version must satisfy both conditions:
+**Availability time** records when a production predictor could read a feature version. Every selected value must have been available by the prediction cutoff. For a feature derived from observed historical events, the observations must also precede that cutoff:
 
 {% capture validity %}
 t_{\mathrm{event}}\le t_{\mathrm{predict}}\quad\text{and}\quad t_{\mathrm{available}}\le t_{\mathrm{predict}}
 {% endcapture %}
 {% include math.html tex=validity block=true %}
 
-Availability might reflect the ingestion of an external provider's update or publication of a materialized aggregate. A provider's weather forecast for 14:00, issued at 12:00, can be valid for a 13:00 prediction. The actual 14:00 weather reading cannot.
+Availability might reflect the ingestion of an external provider's update or publication of a materialized aggregate. The event-time condition above applies to **observed-history features**. A future-known covariate uses different time semantics: a provider's weather forecast targeting 14:00, issued and available at 12:00, can be used for a 13:00 prediction. Its target time is in the future while its issue and availability times are in the past. The actual 14:00 weather reading remains unavailable at 13:00.
+
+Store forecast issue time, target time and availability separately. For calendar features, a known future holiday can also be valid input. Applying an observed-event cutoff blindly to every timestamp would discard legitimate future-known information.
 
 ## A PostgreSQL point-in-time lookup
 
@@ -55,7 +60,7 @@ LEFT JOIN LATERAL (
 
 The lateral join returns the newest eligible value per prediction. Indexing by entity and relevant timestamps can make this feasible at moderate scale; large training datasets often use dedicated point-in-time join execution in a warehouse or feature platform.
 
-One subtlety: a later correction to an old observation may be backdated in event time. Immutable version records and availability timestamps are needed to reconstruct what was originally visible.
+A later correction to an old observation may be backdated in event time. Immutable version records and availability timestamps reconstruct what was originally visible. Check a feature platform's exact semantics: Feast documents that its default point-in-time join constrains event timestamps, while a creation timestamp can choose the latest correction without independently enforcing an availability cutoff.
 
 ## Aggregates also leak
 
