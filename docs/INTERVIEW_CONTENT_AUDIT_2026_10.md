@@ -45,3 +45,7 @@ Added twelve topic pages and two chapter overviews for entity/relationship model
 Every topic includes primary references and a verification date. The [source ledger](DATA_MODELLING_PIPELINES_SOURCES.md) distinguishes official product behavior, original methodology descriptions, hard limits, adjustable quotas and illustrative estimates. The render matrix includes every new topic at desktop/mobile sizes.
 
 The final wording pass follows the site's revision philosophy: causal explanations, canonical headings, worked failures and cross-links to the owning topic. Repeated contrast scaffolding and several generic headings were rewritten. Search-only interview queries help retrieval without turning the pages into Q&A. Core mechanisms and their follow-ups are retained; product choices are tied to the workload rather than presented as universal recommendations.
+
+### ER diagram label contrast
+
+Visual review found that Mermaid’s entity-relationship renderer used the muted border color for relationship labels. The diagram styles now assign the site text color to SVG edge text and the page background to its label rectangle. Browser checks require non-empty relationship labels with at least 4.5:1 contrast on all three topics containing entity-relationship diagrams.

@@ -237,6 +237,7 @@ cases.push(
 cases.push(
   {
     name: 'de-modelling-models-keys-relationships',
+    relationshipLabels: true,
     route: '/coretrail/data-engineering/modelling/models-keys-relationships/',
     text: 'Data models, keys and relationship cardinality',
     mermaid: true,
@@ -244,6 +245,7 @@ cases.push(
   },
   {
     name: 'de-modelling-dimensional-facts-schemas',
+    relationshipLabels: true,
     route: '/coretrail/data-engineering/modelling/dimensional-facts-schemas/',
     text: 'Dimensional modelling, star schemas and fact grain',
     mermaid: true,
@@ -265,6 +267,7 @@ cases.push(
   },
   {
     name: 'de-architecture-warehouse-integration-patterns',
+    relationshipLabels: true,
     route: '/coretrail/data-engineering/architecture/warehouse-integration-patterns/',
     text: 'Kimball, Inmon, Data Vault and hybrid warehouse design',
     mermaid: true,
@@ -441,6 +444,45 @@ try {
               ).length,
           );
         if (unreadable) errors.push('Diagram labels scaled below readable size');
+      }
+      if (test.relationshipLabels) {
+        const labels = await page
+          .locator('.diagram-canvas .edgeLabel text')
+          .evaluateAll((nodes) => {
+            const rgb = (value) => (value.match(/[\d.]+/g) || []).slice(0, 3).map(Number);
+            const luminance = (value) =>
+              rgb(value)
+                .map((channel) => {
+                  const s = channel / 255;
+                  return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+                })
+                .reduce((sum, channel, i) => sum + channel * [0.2126, 0.7152, 0.0722][i], 0);
+            return nodes.map((label) => {
+              const parent = label.closest('.edgeLabel');
+              const background = parent.querySelector('rect');
+              const foreground = luminance(getComputedStyle(label).fill);
+              const backdrop = luminance(
+                background
+                  ? getComputedStyle(background).fill
+                  : getComputedStyle(label.closest('.diagram')).backgroundColor,
+              );
+              return {
+                text: label.textContent.trim(),
+                contrast:
+                  (Math.max(foreground, backdrop) + 0.05) / (Math.min(foreground, backdrop) + 0.05),
+              };
+            });
+          });
+        if (
+          !labels.length ||
+          labels.some(
+            (label) => !label.text || !Number.isFinite(label.contrast) || label.contrast < 4.5,
+          )
+        ) {
+          errors.push(
+            'ER relationship labels missing or below 4.5:1 contrast: ' + JSON.stringify(labels),
+          );
+        }
       }
       const sizes = await page.evaluate(() => ({
         scroll: document.documentElement.scrollWidth,
