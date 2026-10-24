@@ -5,6 +5,7 @@ chapter: retrieval
 order: 4
 sequence: 604
 level: Intermediate
+mermaid: true
 keywords: [embedding version, embedding space, blue green index, vector migration, index alias, cache invalidation]
 aliases: [re-embedding, embedding model upgrade, dual index]
 interview_queries: [can two embedding models share vectors, how to migrate embedding model without downtime]
