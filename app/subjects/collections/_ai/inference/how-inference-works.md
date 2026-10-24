@@ -45,16 +45,21 @@ Prompt text → Tokenize → Prefill prompt → Generate next token → repeat u
 
 Prefill and decode describe **when** the model runs. Inside each model step, the computation still passes through the transformer:
 
-```text
-token IDs
-→ embeddings
-→ transformer layers
-   → self-attention
-   → feed-forward network
-→ final hidden state
-→ vocabulary logits
-→ select / sample next token
-```
+{% capture diagram_code %}
+flowchart TD
+I["Token IDs"] --> E["Token embeddings + position information"]
+E --> A["Attention: exchange information across positions"]
+A --> F["Feed-forward transformation + residual path"]
+F --> N["Final hidden state"]
+N --> L["Vocabulary logits"]
+L --> P["Sampling / decoding rule"]
+P --> O["Next token"]
+O -. "append token and reuse KV cache" .-> A
+{% endcapture %}
+{% capture diagram_fallback %}
+Token IDs become embeddings and positional representations. Transformer attention and feed-forward blocks produce hidden states; the output projection produces vocabulary logits, a decoding rule selects a token, and autoregressive decoding repeats with cached prior keys and values.
+{% endcapture %}
+{% include diagram.html title="A token's path through Transformer computation and decoding" code=diagram_code fallback=diagram_fallback caption=true %}
 
 During prefill, this computation covers the prompt positions needed to build reusable attention state. During decode, the same model produces the logits for the next token while reusing cached attention state from earlier tokens.
 
