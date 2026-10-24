@@ -5,6 +5,7 @@ chapter: processing
 order: 2
 sequence: 502
 level: Core
+mermaid: true
 keywords:
   - streaming schema evolution
   - event schema
@@ -33,13 +34,20 @@ A stream keeps processing while application versions change. The rollout has to 
 
 A low-latency payment-risk service might look like this:
 
-~~~text
-payment API
-  → Kafka topic: payments.events
-  → Flink / Kafka Streams: detect unusual velocity
-  → risk service or alert topic
-  → separate sink for analytics
-~~~
+{% capture diagram_code %}
+flowchart TD
+P["Payment producers v1 / v2"] --> K["Kafka event log"]
+K --> S["Flink or Kafka Streams: keyed velocity state"]
+S --> R["Risk decisions / alert topic"]
+K --> A["Independent archive / analytics consumer"]
+A --> W["Warehouse / immutable source archive"]
+V["Schema registry"] -. "writer schema and compatibility" .-> P
+V -. "reader decoding" .-> S
+{% endcapture %}
+{% capture diagram_fallback %}
+Versioned payment producers write to Kafka. A stateful stream processor issues risk decisions; an independent consumer archives events. Registry compatibility applies at producer and consumer edges.
+{% endcapture %}
+{% include diagram.html title="A live risk decision and analytics sink consume one event log independently" code=diagram_code fallback=diagram_fallback caption=true %}
 
 The payment-risk processor reads from the topic and publishes a decision directly. A separate consumer could archive the same events or load BigQuery for analytics. In this setup, the topic's event contract and the processor's expectations control the live decision.
 
@@ -70,11 +78,18 @@ These JSON records show the idea; a registered Avro or Protobuf message normally
 
 When old and new event versions require different decoding or field mapping, an adapter can publish a common event format:
 
-~~~text
-payments.events.v1 ─┐
-                    ├→ version-aware adapter → payment canonical event → consumers
-payments.events.v2 ─┘
-~~~
+{% capture diagram_code %}
+flowchart LR
+V1["Version 1 events"] --> N["Version-aware normalizer"]
+V2["Version 2 events"] --> N
+N --> C["Stable canonical event"]
+C --> D["Risk + analytical consumers"]
+N -. "unknown versions" .-> X["Invalid event queue"]
+{% endcapture %}
+{% capture diagram_fallback %}
+Version 1 and version 2 event streams feed a normalizer. Supported versions become a stable canonical contract; unknown or malformed messages follow an invalid-event path.
+{% endcapture %}
+{% include diagram.html title="Canonical event adapters support overlapping producer versions" code=diagram_code fallback=diagram_fallback caption=true %}
 
 A normalizer may be a stream-processing job or a small service. It maps supported versions to a stable event contract; an unknown or invalid version goes to a classified error path for repair or replay. A new topic/version is often warranted when required fields, keys, or business meaning change incompatibly.
 
@@ -120,14 +135,19 @@ Test event decoding and state restoration independently. A passing registry comp
 
 A real-time Google Cloud implementation might be:
 
-~~~text
-application
-  → Pub/Sub (Avro / Protobuf schema and revisions)
-  → Dataflow / Apache Beam (decode, validate, normalize)
-      ├→ BigQuery real-time table
-      ├→ Cloud Storage raw archive
-      └→ classified invalid-message sink / dead-letter queue
-~~~
+{% capture diagram_code %}
+flowchart TD
+A["Application publisher"] --> P["Pub/Sub schema-validated events"]
+P --> D["Dataflow / Beam: decode + normalize"]
+D --> B["BigQuery real-time table"]
+D --> C["Cloud Storage archive"]
+D -. "invalid records" .-> Q["Dead-letter queue / repair"]
+S["Permitted schema revisions"] -.-> P
+{% endcapture %}
+{% capture diagram_fallback %}
+Application events pass Pub/Sub schema validation, then Dataflow decodes and normalizes them. Valid outputs reach BigQuery and Cloud Storage; invalid records are classified for repair.
+{% endcapture %}
+{% include diagram.html title="Separate streaming data destinations and invalid-record handling" code=diagram_code fallback=diagram_fallback caption=true %}
 
 Pub/Sub can validate published messages against an attached schema and its allowed revisions, rejecting nonconforming publishes. Its schema revisions use stricter compatibility constraints than arbitrary changes to a JSON payload, and consumers can use revision metadata to decode messages. A Pub/Sub topic without a schema attachment does not obtain those checks automatically.
 
