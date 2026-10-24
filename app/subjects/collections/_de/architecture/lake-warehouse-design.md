@@ -48,7 +48,8 @@ S["Devices and source changes"] --> R["Immutable raw objects and input manifest"
 R --> T["Normalize, deduplicate and validate"]
 T -- "Rejected records" --> Q["Quarantine with source position"]
 Q -- "Approved repair" --> T
-T -- "Accepted records" --> D["Delta-aware writer commits curated table"]
+T -- "Accepted records" --> W["Delta-aware writer"]
+W --> D["Curated Delta table: data files and log"]
 C["Catalog, schema and access policies"] -. "Resolve and authorize" .-> D
 D --> L["Lakehouse SQL engine"]
 D --> P["Publish reconciled analytical marts"]

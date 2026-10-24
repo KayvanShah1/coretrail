@@ -27,14 +27,14 @@ A file format describes how records become bytes and how readers recover them. C
 | Format | Representation and useful workload | Cost or obligation |
 |---|---|---|
 | CSV | Row-oriented text exchanged with widely available tools | Declare types, escaping, null representation and date conventions |
-| JSON or newline-delimited JSON | Nested records and source/API interchange | Repeated field names, parsing cost and explicit schema validation |
+| JSON or newline-delimited JSON | Nested records and source-system interchange | Repeated field names, parsing cost and explicit schema validation |
 | Avro | Schema-based binary row records and reader/writer schema resolution | Evolution must obey compatibility rules; it is not a column-pruning format |
 | Parquet | Typed columnar analytical files with nested-data support | Writer layout, statistics, codec and reader compatibility affect scans |
 | ORC | Typed columnar files with stripes, indexes and statistics | Select it when the engine ecosystem and measured workload fit |
 
 A Parquet row group contains column chunks for a group of rows. Reading amount and event_date need not require decoding an unrelated description column. Statistics such as minimum and maximum values can also exclude ranges that cannot match a filter, if the reader supports that optimization.
 
-ORC stripes likewise contain column streams and associated metadata. Both formats can reduce analytical I/O; the engine's implementation and the data determine the observed result.
+ORC stripes likewise contain column streams and associated metadata. Both formats can reduce the bytes read for analytics; the engine's implementation and the data determine the observed result.
 
 For an event consumer that normally decodes the complete record, a row serialization can be appropriate. Kafka or Pub/Sub carries messages; Avro or JSON can encode a message's payload. The transport and payload format have separate contracts.
 
@@ -44,7 +44,7 @@ A CSV value such as 00123 may be an identifier, not an integer. A JSON field can
 
 Avro writer and reader schemas support controlled evolution; a newly accepted source field still needs a business mapping downstream. The [schema-contract reference]({{ '/data-engineering/reliability/schema-evolution-and-contracts/' | relative_url }}) works through those semantic migrations.
 
-Compression codecs trade bytes transferred against encoding/decoding CPU and compatibility. Test supported options such as Snappy or Zstandard on representative data. Compression ratio varies with repetition, types and ordering, so a fixed storage multiplier should be an explicit capacity assumption.
+Compression codecs trade bytes transferred against processor time used for encoding and decoding, and reader compatibility. Test supported options such as Snappy or Zstandard on representative data. Compression ratio varies with repetition, types and ordering, so a fixed storage multiplier should be an explicit capacity assumption.
 
 A compressed file size is not its decoded memory footprint. File size and row-group size are separate controls; use [partitioning and file sizing]({{ '/data-engineering/storage/partitioning-file-sizing/' | relative_url }}) for that design.
 

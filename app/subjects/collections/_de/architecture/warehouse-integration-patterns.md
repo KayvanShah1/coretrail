@@ -52,7 +52,7 @@ Joining line-level sales directly to multiple returns can multiply the sale amou
 
 ## Inmon-style enterprise integration
 
-An integrated enterprise warehouse reconciles source entities and history in a common, commonly normalized model. Consumer marts then reshape that representation. The normalization rules belong to [functional dependencies and normal forms]({{ '/sql/design/normalization/' | relative_url }}).
+An integrated enterprise warehouse reconciles source entities and history in a shared enterprise model, typically normalized. Consumer marts then reshape that representation. The normalization rules belong to [functional dependencies and normal forms]({{ '/sql/design/normalization/' | relative_url }}).
 
 {% capture inmon_diagram %}
 flowchart TD

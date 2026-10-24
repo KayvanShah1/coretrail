@@ -44,7 +44,7 @@ Also identify skew: which tenant, device or key dominates traffic? Average throu
 | Small reusable current values with tight read latency | Key-value serving store or cache | Stable lookup keys and explicit expiry/invalidation | Memory, durability choices and stale values |
 | Multi-hop relationship traversal | Relational adjacency model or graph representation | Traversal patterns and indexes | Relationship fan-out and consistency across updates |
 
-JSON arriving from an API does not by itself require a document database. It can be normalized into relations or stored as raw objects with curated analytical columns. The [model representation reference]({{ '/data-engineering/modelling/models-keys-relationships/' | relative_url }}) explains the entity and relationship choices.
+JSON arriving from an application programming interface (API) does not by itself require a document database. It can be normalized into relations or stored as raw objects with curated analytical columns. The [model representation reference]({{ '/data-engineering/modelling/models-keys-relationships/' | relative_url }}) explains the entity and relationship choices.
 
 Partitioning is also not an authorization mechanism. Tenant isolation requires access policies and tests even when each tenant has its own physical range.
 

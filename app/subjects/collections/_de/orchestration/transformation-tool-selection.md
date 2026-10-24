@@ -43,7 +43,7 @@ Airflow launching a Spark job does not turn Airflow workers into the data-proces
 | Workload | Candidate | Why it fits | Evidence to reconsider |
 |---|---|---|---|
 | Joins and aggregates over warehouse-resident tables | SQL with a transformation project | Avoids exporting data and reimplements fewer platform capabilities | Unsupported computation, repeated costly scans or an unmet deadline |
-| Bounded files and relational analysis on one machine | DuckDB | Columnar scans and SQL joins with supported disk spilling | Spill capacity, CPU, I/O or concurrency misses the target |
+| Bounded files and relational analysis on one machine | DuckDB | Columnar scans and SQL joins with supported disk spilling | Spill capacity, processor, input/output (I/O) or concurrency limits miss the target |
 | Typed DataFrame expressions and file normalization | Polars lazy execution | Projection/filter optimization and supported streaming operators | Required operators materialize too much state or cannot meet the deadline |
 | Large distributed batch joins, reshaping or lake-table writes | Spark SQL/DataFrames | Distributes computation and integrates with suitable lake connectors | Small-job startup dominates or skew remains the limiting stage |
 | Continuous event-time computation with late data | Beam on a suitable runner or Flink | Explicit windows, keyed state and recovery mechanisms | State growth, hot keys, sink limits or recovery time breach requirements |

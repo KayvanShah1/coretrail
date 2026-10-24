@@ -62,7 +62,7 @@ Queue/latency pressure → HPA/KEDA → desired replicas increase → Kubernetes
 
 The Horizontal Pod Autoscaler (HPA) and Kubernetes Event-driven Autoscaling (KEDA) adjust workload demand; a node autoscaler supplies suitable machines. The [infrastructure scaling reference]({{ '/infrastructure/scaling/workload-node-autoscaling/' | relative_url }}) explains those control loops and scheduling constraints.
 
-For an illustrative two-graphics-processing-unit (GPU) replica, six desired replicas require twelve allocatable GPUs with the required placement. If the cluster can place only four replicas, the remaining two stay Pending. Their future capacity cannot satisfy the current queue, and newly provisioned replicas still need model startup.
+For an illustrative replica using two graphics processing units (GPUs), six desired replicas require twelve allocatable GPUs with the required placement. If the cluster can place only four replicas, the remaining two stay Pending. Their future capacity cannot satisfy the current queue, and newly provisioned replicas still need model startup.
 
 ## Why GPU utilization alone can mislead
 
