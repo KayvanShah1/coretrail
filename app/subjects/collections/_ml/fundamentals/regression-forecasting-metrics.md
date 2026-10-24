@@ -18,7 +18,7 @@ A forecast of electricity use, inventory demand or transaction volume is often e
 
 ## Absolute and squared error
 
-For actual value {% include math.html tex="y_t" %} and prediction {% include math.html tex="\\hat y_t" %}, define the residual as actual minus forecast. Mean absolute error (MAE) treats every unit of error linearly:
+For actual value {% include math.html tex="y_t" %} and prediction {% include math.html tex="\hat y_t" %}, define the residual as actual minus forecast. Mean absolute error (MAE) treats every unit of error linearly:
 
 {% include math.html tex="\mathrm{MAE}=\frac{1}{n}\sum_{t=1}^{n}|y_t-\hat y_t|" block=true %}
 
