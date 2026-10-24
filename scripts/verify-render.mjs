@@ -29,6 +29,13 @@ const cases = [
   { name: 'embeddings-capacity', route: '/coretrail/ai-engineering/retrieval/vector-model-capacity/', text: 'Embedding dimensions', math: true },
   { name: 'index-migration', route: '/coretrail/ai-engineering/retrieval/embedding-index-migrations/', text: 'Embedding versions', mermaid: true },
   { name: 'agent-context', route: '/coretrail/ai-engineering/agents/shared-context-handoffs/', text: 'Shared agent context', mermaid: true },
+  { name: 'etl-path', route: '/coretrail/data-engineering/foundations/etl-elt-and-pipelines/', text: 'ETL', mermaid: true },
+  { name: 'schema-evolution', route: '/coretrail/data-engineering/processing/streaming-schema-evolution/', text: 'Schema evolution', mermaid: true },
+  { name: 'backpressure', route: '/coretrail/ai-engineering/production/traffic-backpressure/', text: 'backpressure', mermaid: true },
+  { name: 'token-flow', route: '/coretrail/ai-engineering/inference/how-inference-works/', text: 'inference', mermaid: true },
+  { name: 'data-formats', route: '/coretrail/data-engineering/storage/file-formats-table-formats/', text: 'Parquet', mermaid: true },
+  { name: 'dagster-argo', route: '/coretrail/data-engineering/orchestration/dagster-argo-workload-control/', text: 'Dagster', mermaid: true },
+  { name: 'tokenization', route: '/coretrail/ai-engineering/inference/tokenizers-decoding-sampling/', text: 'Tokenization', math: true },
 
 ];
 const types = { '.css': 'text/css', '.js': 'text/javascript', '.html': 'text/html', '.svg': 'image/svg+xml', '.json': 'application/json', '.png': 'image/png', '.woff2': 'font/woff2' };
@@ -85,7 +92,12 @@ try {
       if (!content.toLowerCase().includes(test.text.toLowerCase())) errors.push('Text missing: ' + test.text);
       if (test.math) {
         try {
-          await page.locator('.math-expression .katex').first().waitFor({ timeout: 20000 });
+          await page.waitForFunction(
+            () => [...document.querySelectorAll('.math-expression')].length > 0 &&
+              [...document.querySelectorAll('.math-expression')].every(e => e.querySelector('.katex')),
+            null,
+            { timeout: 20000 },
+          );
         } catch {
           errors.push('KaTeX did not render');
         }
@@ -95,7 +107,12 @@ try {
       }
       if (test.mermaid) {
         try {
-          await page.locator('.diagram-canvas:not([hidden]) svg').first().waitFor({ timeout: 20000 });
+          await page.waitForFunction(
+            () => [...document.querySelectorAll('.diagram-canvas')].length > 0 &&
+              [...document.querySelectorAll('.diagram-canvas')].every(e => !e.hidden && e.querySelector('svg')),
+            null,
+            { timeout: 20000 },
+          );
         } catch {
           errors.push('Mermaid did not render');
         }
