@@ -134,6 +134,12 @@ const cases = [
     math: true,
   },
   {
+    name: 'incremental-chunk-updates',
+    route: '/coretrail/ai-engineering/retrieval/document-chunks-incremental-updates/',
+    text: 'Incremental update lifecycle',
+    mermaid: true,
+  },
+  {
     name: 'index-migration',
     route: '/coretrail/ai-engineering/retrieval/embedding-index-migrations/',
     text: 'Embedding versions',
