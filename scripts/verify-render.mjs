@@ -457,21 +457,30 @@ try {
                   return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
                 })
                 .reduce((sum, channel, i) => sum + channel * [0.2126, 0.7152, 0.0722][i], 0);
-            return nodes.map((label) => {
-              const parent = label.closest('.edgeLabel');
-              const background = parent.querySelector('rect');
-              const foreground = luminance(getComputedStyle(label).fill);
-              const backdrop = luminance(
-                background
-                  ? getComputedStyle(background).fill
-                  : getComputedStyle(label.closest('.diagram')).backgroundColor,
-              );
-              return {
-                text: label.textContent.trim(),
-                contrast:
-                  (Math.max(foreground, backdrop) + 0.05) / (Math.min(foreground, backdrop) + 0.05),
-              };
-            });
+            return nodes
+              .filter((label) =>
+                label
+                  .closest('.diagram')
+                  .querySelector('.diagram-source')
+                  .content.textContent.trim()
+                  .startsWith('erDiagram'),
+              )
+              .map((label) => {
+                const parent = label.closest('.edgeLabel');
+                const background = parent.querySelector('rect');
+                const foreground = luminance(getComputedStyle(label).fill);
+                const backdrop = luminance(
+                  background
+                    ? getComputedStyle(background).fill
+                    : getComputedStyle(label.closest('.diagram')).backgroundColor,
+                );
+                return {
+                  text: label.textContent.trim(),
+                  contrast:
+                    (Math.max(foreground, backdrop) + 0.05) /
+                    (Math.min(foreground, backdrop) + 0.05),
+                };
+              });
           });
         if (
           !labels.length ||
