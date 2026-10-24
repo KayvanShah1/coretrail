@@ -5,6 +5,7 @@ chapter: retrieval
 order: 2
 sequence: 602
 level: Intermediate
+mermaid: true
 keywords: [chunking, semantic chunking, parent child retrieval, content hash, incremental embedding, index freshness]
 aliases: [document revision indexing, chunk update strategy]
 interview_queries: [how do you update embeddings when a document changes, how do you version RAG chunks]
