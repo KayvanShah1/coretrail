@@ -38,16 +38,16 @@ Changing only the generation language model ordinarily leaves document embedding
 ## Migration with two indexes
 
 {% capture diagram_code %}
-flowchart LR
-A["Versioned source snapshot"] --> B["Existing embeddings / Index A"]
-A --> C["Candidate embeddings / Index B"]
+flowchart TD
+A["Versioned source snapshot"] --> B["Current embeddings and index"]
+A --> C["Candidate embeddings and index"]
 B --> D["Paired retrieval evaluation"]
 C --> D
-D --> E{"Quality, latency and cost acceptable?"}
-E -- "No" --> C
-E -- "Yes" --> F["Shadow queries + synchronize source changes"]
-F --> G["Controlled alias / route switch"]
-G --> H["Monitor and retain rollback"]
+D --> E{"Quality and latency gates pass?"}
+E -- "No" --> R["Retain current index; revise candidate"]
+E -- "Yes" --> F["Shadow queries and synchronize live updates"]
+F --> G["Switch active alias to candidate release"]
+G --> H["Monitor production and retain rollback"]
 {% endcapture %}
 {% capture diagram_fallback %}
 Snapshot corpus → build current and candidate indexes → compare with the same queries → synchronize changes → shadow traffic → route switch → monitor and retain prior version for rollback.
