@@ -4,9 +4,8 @@ const formulas = [...document.querySelectorAll('.math-expression')];
 
 if (formulas.length) {
   try {
-    const { default: katex } = await import(
-      'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.mjs'
-    );
+    const katexModule = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.mjs';
+    const { default: katex } = await import(katexModule);
 
     for (const element of formulas) {
       const tex = element.querySelector('.math-source')?.content.textContent?.trim();
