@@ -40,3 +40,5 @@ Assume version intervals are non-overlapping and half-open. Overlaps create mult
 A surrogate key identifies a dimension version; the business key identifies the real-world customer. Keeping them separate lets facts refer to the version that was valid at the event time.
 
 For a current-state report, joining only the current dimension version may be deliberate. For a historical report, it can rewrite the apparent past. Ask which meaning the stakeholder needs.
+
+For the full reference, see [star schemas and fact patterns]({{ '/data-engineering/modelling/dimensional-facts-schemas/' | relative_url }}) and [SCD Types 0–7 with temporal corrections]({{ '/data-engineering/modelling/scd-temporal-history/' | relative_url }}).

@@ -158,3 +158,7 @@ PostgreSQL query results are checked with deterministic fixtures. Native Postgre
 - [DSA](../app/subjects/dsa/index.md).
 
 See the [October interview-content audit](INTERVIEW_CONTENT_AUDIT_2026_10.md) for the source-to-chapter mapping, substantive corrections and verification scope.
+
+## Data modelling and pipeline expansion
+
+Two dedicated chapters cover [data modelling and transactions](../app/subjects/collections/_de/modelling/overview.md) and [warehouse/processing architecture choices](../app/subjects/collections/_de/architecture/overview.md). New reference pages also cover capacity arithmetic, pipeline contracts, Delta/Iceberg/Hudi operations, failure diagnosis, resumable/replayable backfills and metadata tools. See the [official source verification ledger](DATA_MODELLING_PIPELINES_SOURCES.md) for primary references and scope.

@@ -8,10 +8,12 @@ sequence: 200
 level: Chapter overview
 ---
 
-Watermarks, change streams, idempotency and recovery. Start by identifying the record grain, the actual computation, and what would break if a dependency failed.
+A cursor is useful only while its source history remains available. Define source ordering, stable event identity and sink-version rules so duplicates and delayed updates converge to the correct state.
 
 ## In this chapter
 
 <ul class="topic-list">
 <li><a href="{{ '/data-engineering/incremental/cdc-checkpoints-and-merge/' | relative_url }}">Watermarks, CDC, MERGE, and idempotency</a><span>Keep incremental data accurate despite duplicates, late events, updates and retries.</span></li>
 </ul>
+
+For a full recovery procedure, see [resumable pipelines, replay and backfills]({{ '/data-engineering/reliability/recovery-replay-backfills/' | relative_url }}).

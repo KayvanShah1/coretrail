@@ -174,14 +174,24 @@
       "description": "ETL, ELT, batch, streaming, and choosing where transformations run."
     },
     {
+      "id": "modelling",
+      "title": "Data modelling & transactions",
+      "description": "Entities, relationships, dimensional grain, SCD history and transaction scope."
+    },
+    {
+      "id": "architecture",
+      "title": "Warehouse & processing architectures",
+      "description": "Kimball, Inmon, Data Vault, Lambda, Kappa, medallion and hybrid choices."
+    },
+    {
       "id": "incremental",
       "title": "Incremental ingestion & CDC",
       "description": "Watermarks, change streams, idempotency and recovery."
     },
     {
       "id": "storage",
-      "title": "Storage & modeling",
-      "description": "File formats, lakehouse tables, facts, dimensions, and history."
+      "title": "Storage & lakehouse tables",
+      "description": "File formats, table protocols, layout and operational trade-offs."
     },
     {
       "id": "gcp",

@@ -234,6 +234,105 @@ cases.push(
     math: true,
   },
 );
+cases.push(
+  {
+    name: 'de-modelling-models-keys-relationships',
+    route: '/coretrail/data-engineering/modelling/models-keys-relationships/',
+    text: 'Data models, keys and relationship cardinality',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-modelling-dimensional-facts-schemas',
+    route: '/coretrail/data-engineering/modelling/dimensional-facts-schemas/',
+    text: 'Dimensional modelling, star schemas and fact grain',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-modelling-scd-temporal-history',
+    route: '/coretrail/data-engineering/modelling/scd-temporal-history/',
+    text: 'Slowly changing dimensions and temporal history',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-modelling-transactions-acid-consistency',
+    route: '/coretrail/data-engineering/modelling/transactions-acid-consistency/',
+    text: 'ACID, transactional workloads and cross-system consistency',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-architecture-warehouse-integration-patterns',
+    route: '/coretrail/data-engineering/architecture/warehouse-integration-patterns/',
+    text: 'Kimball, Inmon, Data Vault and hybrid warehouse design',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-architecture-lambda-kappa-medallion',
+    route: '/coretrail/data-engineering/architecture/lambda-kappa-medallion/',
+    text: 'Lambda, Kappa, medallion and hybrid processing',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-storage-delta-iceberg-hudi-operations',
+    route: '/coretrail/data-engineering/storage/delta-iceberg-hudi-operations/',
+    text: 'Delta Lake, Iceberg and Hudi: selection and operations',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-foundations-capacity-estimation',
+    route: '/coretrail/data-engineering/foundations/capacity-estimation/',
+    text: 'Data capacity and back-of-the-envelope calculations',
+    mermaid: false,
+    math: true,
+  },
+  {
+    name: 'de-foundations-pipeline-run-lifecycle',
+    route: '/coretrail/data-engineering/foundations/pipeline-run-lifecycle/',
+    text: 'Pipeline fundamentals: contracts, checkpoints and publication',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-reliability-recovery-replay-backfills',
+    route: '/coretrail/data-engineering/reliability/recovery-replay-backfills/',
+    text: 'Resumable pipelines, replay, backfills and safe recovery',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-reliability-metadata-lineage-tools',
+    route: '/coretrail/data-engineering/reliability/metadata-lineage-tools/',
+    text: 'Pipeline metadata, lineage and tracking tools',
+    mermaid: true,
+    math: false,
+  },
+  {
+    name: 'de-reliability-diagnosis-symptoms-evidence',
+    route: '/coretrail/data-engineering/reliability/diagnosis-symptoms-evidence/',
+    text: 'Diagnosing data failures from symptoms and evidence',
+    mermaid: true,
+    math: false,
+  },
+);
+cases.push(
+  {
+    name: 'de-modelling-overview',
+    route: '/coretrail/data-engineering/modelling/overview/',
+    text: 'Data modelling and transactions',
+  },
+  {
+    name: 'de-architecture-overview',
+    route: '/coretrail/data-engineering/architecture/overview/',
+    text: 'Warehouse and processing architectures',
+  },
+  { name: 'de-subject-navigation', route: '/coretrail/data-engineering/', text: 'Data modelling' },
+);
 const types = {
   '.css': 'text/css',
   '.js': 'text/javascript',

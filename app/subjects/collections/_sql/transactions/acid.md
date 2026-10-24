@@ -46,3 +46,5 @@ Only the first increment remains. A savepoint is a rollback boundary within a tr
 ## Interview check
 
 An error can leave a PostgreSQL transaction in an aborted state until rollback or rollback to a suitable savepoint. Keep transactions short, and do not hold database locks while waiting for a user or a slow external service.
+
+For workload categories and cross-system effects, see [ACID, OLTP/OLAP/HTAP, outbox and distributed coordination]({{ '/data-engineering/modelling/transactions-acid-consistency/' | relative_url }}).

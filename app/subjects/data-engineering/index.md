@@ -4,7 +4,7 @@ title: Data Engineering
 subject: data-engineering
 permalink: /data-engineering/
 description: Ingestion, warehousing, distributed computation, and dependable datasets.
-keywords: [ETL, ELT, CDC, BigQuery, Spark, Dataflow, Airflow, dbt]
+keywords: [ETL, ELT, CDC, data modelling, SCD, ACID, Kimball, Lambda, Delta Lake, BigQuery, Spark, Dataflow, Airflow, dbt]
 ---
 
 ## Start with what the data promises
@@ -16,8 +16,10 @@ The chapters follow an event from source to warehouse, including how records are
 ## Chapters
 
 - [Pipeline architecture]({{ '/data-engineering/foundations/overview/' | relative_url }}) — ETL, ELT, batch, streaming, and choosing where transformations run.
+- [Data modelling & transactions]({{ '/data-engineering/modelling/overview/' | relative_url }}) - Entities, relationships, facts, dimensions, SCD history and transactional guarantees.
+- [Warehouse & processing architectures]({{ '/data-engineering/architecture/overview/' | relative_url }}) - Kimball, Inmon, Data Vault, Lambda, Kappa, medallion and hybrid designs.
 - [Incremental ingestion & CDC]({{ '/data-engineering/incremental/overview/' | relative_url }}) — Watermarks, change streams, idempotency and recovery.
-- [Storage & modeling]({{ '/data-engineering/storage/overview/' | relative_url }}) — File formats, lakehouse tables, facts, dimensions, and history.
+- [Storage & lakehouse tables]({{ '/data-engineering/storage/overview/' | relative_url }}) — File formats, table protocols, layout, maintenance and choosing between Delta Lake, Iceberg and Hudi.
 - [GCP & BigQuery]({{ '/data-engineering/gcp/overview/' | relative_url }}) — Query execution, physical layout, capacity and costs.
 - [Distributed processing]({{ '/data-engineering/processing/overview/' | relative_url }}) — Spark, Beam, Dataflow, stream schema evolution, event time, and state migration.
 - [Orchestration & transformations]({{ '/data-engineering/orchestration/overview/' | relative_url }}) — Airflow, Cloud Composer, dbt, retries, and backfills.
