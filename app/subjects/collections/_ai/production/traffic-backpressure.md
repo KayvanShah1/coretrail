@@ -5,6 +5,7 @@ chapter: production
 order: 2
 sequence: 402
 level: Core
+mermaid: true
 keywords:
   - rate limiting
   - RPM
@@ -74,14 +75,21 @@ Backpressure is preferable to pretending every request can be served while laten
 
 ## The overload loop to recognize
 
-```text
-arrival rate > service rate
-→ waiting queue grows
-→ TTFT grows
-→ clients timeout
-→ clients retry
-→ arrival rate grows further
-```
+{% capture diagram_code %}
+flowchart TD
+A["Arrival rate exceeds service capacity"] --> Q["Bounded queue starts filling"]
+Q --> T["Time to first token rises"]
+T --> R["Client timeout and retries"]
+R --> A
+Q --> G{"Admission / load shedding"}
+G -- "Reject or defer" --> B["Protect in-flight requests"]
+G -- "Accept" --> I["Inference scheduler"]
+I --> C["Completed responses"]
+{% endcapture %}
+{% capture diagram_fallback %}
+Arrival rate above service capacity grows queue time. Delayed responses induce retries that add demand. Admission controls protect in-flight work by rejecting or deferring excess requests.
+{% endcapture %}
+{% include diagram.html title="Retry amplification and the admission-control feedback loop" code=diagram_code fallback=diagram_fallback caption=true %}
 
 Retries need backoff and jitter, and the server needs admission limits. Otherwise a recoverable traffic spike can become a self-sustaining retry storm.
 
