@@ -6,39 +6,197 @@ import { chromium } from 'playwright';
 const root = resolve('_site');
 const evidence = resolve('test-results/browser-qa');
 const cases = [
-  { name: 'point-in-time', route: '/coretrail/ml/features/point-in-time-features/', text: 'availability leakage', math: true, diagnostic: true },
-  { name: 'feature-stores', route: '/coretrail/ml/features/feature-stores/', text: 'Offline and online feature stores', mermaid: true },
-  { name: 'transformers', route: '/coretrail/ai-engineering/inference/transformers-embeddings-adaptation/', text: 'Transformer attention', math: true },
-  { name: 'agent-protocols', route: '/coretrail/ai-engineering/agents/mcp-a2a-orchestration/', text: 'Model Context Protocol', mermaid: true },
-  { name: 'evaluation', route: '/coretrail/ai-engineering/evaluation/golden-datasets-contamination/', text: 'Golden datasets', diagnostic: true },
-  { name: 'kubernetes-gpu', route: '/coretrail/infrastructure/kubernetes/gpu-scheduling-debugging/', text: 'GPU scheduling' },
-  { name: 'ai-subject-map', route: '/coretrail/ai-engineering/', text: 'AI Engineering', mermaid: true },
-  { name: 'infra-subject-map', route: '/coretrail/infrastructure/', text: 'Infrastructure', mermaid: true },
-  { name: 'forecast-metrics', route: '/coretrail/ml/fundamentals/regression-forecasting-metrics/', text: 'time-series forecasting', math: true, mermaid: true },
-  { name: 'model-selection', route: '/coretrail/ml/fundamentals/model-selection-error-analysis/', text: 'Model selection', math: true },
-  { name: 'neural-training', route: '/coretrail/ml/fundamentals/deep-learning-training/', text: 'Neural-network', math: true },
-  { name: 'structured-rag', route: '/coretrail/ai-engineering/retrieval/structured-multimodal-content/', text: 'tables, images, code', mermaid: true },
-  { name: 'graphrag', route: '/coretrail/ai-engineering/retrieval/query-planning-graphrag/', text: 'GraphRAG', mermaid: true },
-  { name: 'agent-judges', route: '/coretrail/ai-engineering/evaluation/agent-trajectories-judges/', text: 'Agent trajectory', mermaid: true },
-  { name: 'agent-security', route: '/coretrail/ai-engineering/agents/trust-policy-boundaries/', text: 'Prompt injection', mermaid: true },
-  { name: 'spark-aqe', route: '/coretrail/data-engineering/processing/spark-partitions-aqe/', text: 'Spark SQL plans', mermaid: true },
-  { name: 'stream-retries', route: '/coretrail/data-engineering/reliability/stream-delivery-replay/', text: 'Streaming acknowledgments', mermaid: true },
-  { name: 'orchestration-flow', route: '/coretrail/data-engineering/orchestration/airflow-composer-dbt/', text: 'backfills', mermaid: true },
-  { name: 'cloud-network', route: '/coretrail/infrastructure/cloud/identity-network-data-path/', text: 'Cloud identity', mermaid: true },
-  { name: 'ranking-metrics', route: '/coretrail/ai-engineering/retrieval/vector-search-ranking/', text: 'retrieval metrics', math: true },
-  { name: 'embeddings-capacity', route: '/coretrail/ai-engineering/retrieval/vector-model-capacity/', text: 'Embedding dimensions', math: true },
-  { name: 'index-migration', route: '/coretrail/ai-engineering/retrieval/embedding-index-migrations/', text: 'Embedding versions', mermaid: true },
-  { name: 'agent-context', route: '/coretrail/ai-engineering/agents/shared-context-handoffs/', text: 'Shared agent context', mermaid: true },
-  { name: 'etl-path', route: '/coretrail/data-engineering/foundations/etl-elt-and-pipelines/', text: 'ETL', mermaid: true },
-  { name: 'schema-evolution', route: '/coretrail/data-engineering/processing/streaming-schema-evolution/', text: 'Schema evolution', mermaid: true },
-  { name: 'backpressure', route: '/coretrail/ai-engineering/production/traffic-backpressure/', text: 'backpressure', mermaid: true },
-  { name: 'token-flow', route: '/coretrail/ai-engineering/inference/how-inference-works/', text: 'inference', mermaid: true },
-  { name: 'data-formats', route: '/coretrail/data-engineering/storage/file-formats-table-formats/', text: 'Parquet', mermaid: true },
-  { name: 'dagster-argo', route: '/coretrail/data-engineering/orchestration/dagster-argo-workload-control/', text: 'Dagster', mermaid: true },
-  { name: 'tokenization', route: '/coretrail/ai-engineering/inference/tokenizers-decoding-sampling/', text: 'Tokenization', math: true },
-
+  {
+    name: 'point-in-time',
+    route: '/coretrail/ml/features/point-in-time-features/',
+    text: 'availability leakage',
+    math: true,
+    diagnostic: true,
+  },
+  {
+    name: 'feature-stores',
+    route: '/coretrail/ml/features/feature-stores/',
+    text: 'Offline and online feature stores',
+    mermaid: true,
+  },
+  {
+    name: 'transformers',
+    route: '/coretrail/ai-engineering/inference/transformers-embeddings-adaptation/',
+    text: 'Transformer attention',
+    math: true,
+  },
+  {
+    name: 'agent-protocols',
+    route: '/coretrail/ai-engineering/agents/mcp-a2a-orchestration/',
+    text: 'Model Context Protocol',
+    mermaid: true,
+  },
+  {
+    name: 'evaluation',
+    route: '/coretrail/ai-engineering/evaluation/golden-datasets-contamination/',
+    text: 'Golden datasets',
+    diagnostic: true,
+  },
+  {
+    name: 'kubernetes-gpu',
+    route: '/coretrail/infrastructure/kubernetes/gpu-scheduling-debugging/',
+    text: 'GPU scheduling',
+  },
+  {
+    name: 'ai-subject-map',
+    route: '/coretrail/ai-engineering/',
+    text: 'AI Engineering',
+    mermaid: true,
+  },
+  {
+    name: 'infra-subject-map',
+    route: '/coretrail/infrastructure/',
+    text: 'Infrastructure',
+    mermaid: true,
+  },
+  {
+    name: 'forecast-metrics',
+    route: '/coretrail/ml/fundamentals/regression-forecasting-metrics/',
+    text: 'time-series forecasting',
+    math: true,
+    mermaid: true,
+  },
+  {
+    name: 'model-selection',
+    route: '/coretrail/ml/fundamentals/model-selection-error-analysis/',
+    text: 'Model selection',
+    math: true,
+  },
+  {
+    name: 'neural-training',
+    route: '/coretrail/ml/fundamentals/deep-learning-training/',
+    text: 'Neural-network',
+    math: true,
+  },
+  {
+    name: 'structured-rag',
+    route: '/coretrail/ai-engineering/retrieval/structured-multimodal-content/',
+    text: 'tables, images, code',
+    mermaid: true,
+  },
+  {
+    name: 'graphrag',
+    route: '/coretrail/ai-engineering/retrieval/query-planning-graphrag/',
+    text: 'GraphRAG',
+    mermaid: true,
+  },
+  {
+    name: 'agent-judges',
+    route: '/coretrail/ai-engineering/evaluation/agent-trajectories-judges/',
+    text: 'Agent trajectory',
+    mermaid: true,
+  },
+  {
+    name: 'agent-security',
+    route: '/coretrail/ai-engineering/agents/trust-policy-boundaries/',
+    text: 'Prompt injection',
+    mermaid: true,
+  },
+  {
+    name: 'spark-aqe',
+    route: '/coretrail/data-engineering/processing/spark-partitions-aqe/',
+    text: 'Spark SQL plans',
+    mermaid: true,
+  },
+  {
+    name: 'stream-retries',
+    route: '/coretrail/data-engineering/reliability/stream-delivery-replay/',
+    text: 'Streaming acknowledgments',
+    mermaid: true,
+  },
+  {
+    name: 'orchestration-flow',
+    route: '/coretrail/data-engineering/orchestration/airflow-composer-dbt/',
+    text: 'backfills',
+    mermaid: true,
+  },
+  {
+    name: 'cloud-network',
+    route: '/coretrail/infrastructure/cloud/identity-network-data-path/',
+    text: 'Cloud identity',
+    mermaid: true,
+  },
+  {
+    name: 'ranking-metrics',
+    route: '/coretrail/ai-engineering/retrieval/vector-search-ranking/',
+    text: 'retrieval metrics',
+    math: true,
+  },
+  {
+    name: 'embeddings-capacity',
+    route: '/coretrail/ai-engineering/retrieval/vector-model-capacity/',
+    text: 'Embedding dimensions',
+    math: true,
+  },
+  {
+    name: 'index-migration',
+    route: '/coretrail/ai-engineering/retrieval/embedding-index-migrations/',
+    text: 'Embedding versions',
+    mermaid: true,
+  },
+  {
+    name: 'agent-context',
+    route: '/coretrail/ai-engineering/agents/shared-context-handoffs/',
+    text: 'Shared agent context',
+    mermaid: true,
+  },
+  {
+    name: 'etl-path',
+    route: '/coretrail/data-engineering/foundations/etl-elt-and-pipelines/',
+    text: 'ETL',
+    mermaid: true,
+  },
+  {
+    name: 'schema-evolution',
+    route: '/coretrail/data-engineering/processing/streaming-schema-evolution/',
+    text: 'Schema evolution',
+    mermaid: true,
+  },
+  {
+    name: 'backpressure',
+    route: '/coretrail/ai-engineering/production/traffic-backpressure/',
+    text: 'backpressure',
+    mermaid: true,
+  },
+  {
+    name: 'token-flow',
+    route: '/coretrail/ai-engineering/inference/how-inference-works/',
+    text: 'inference',
+    mermaid: true,
+  },
+  {
+    name: 'data-formats',
+    route: '/coretrail/data-engineering/storage/file-formats-table-formats/',
+    text: 'Parquet',
+    mermaid: true,
+  },
+  {
+    name: 'dagster-argo',
+    route: '/coretrail/data-engineering/orchestration/dagster-argo-workload-control/',
+    text: 'Dagster',
+    mermaid: true,
+  },
+  {
+    name: 'tokenization',
+    route: '/coretrail/ai-engineering/inference/tokenizers-decoding-sampling/',
+    text: 'Tokenization',
+    math: true,
+  },
 ];
-const types = { '.css': 'text/css', '.js': 'text/javascript', '.html': 'text/html', '.svg': 'image/svg+xml', '.json': 'application/json', '.png': 'image/png', '.woff2': 'font/woff2' };
+const types = {
+  '.css': 'text/css',
+  '.js': 'text/javascript',
+  '.html': 'text/html',
+  '.svg': 'image/svg+xml',
+  '.json': 'application/json',
+  '.png': 'image/png',
+  '.woff2': 'font/woff2',
+};
 const server = createServer(async (request, response) => {
   try {
     let name = decodeURIComponent(new URL(request.url, 'http://127.0.0.1').pathname);
@@ -55,7 +213,9 @@ const server = createServer(async (request, response) => {
       return;
     }
     const body = await readFile(target);
-    response.writeHead(200, { 'Content-Type': types[extname(target)] || 'application/octet-stream' });
+    response.writeHead(200, {
+      'Content-Type': types[extname(target)] || 'application/octet-stream',
+    });
     response.end(body);
   } catch {
     response.writeHead(404).end();
@@ -89,12 +249,16 @@ try {
       const title = await page.title();
       if (!title.includes('CoreTrail')) errors.push('Unexpected title ' + title);
       const content = await page.locator('main').innerText();
-      if (!content.toLowerCase().includes(test.text.toLowerCase())) errors.push('Text missing: ' + test.text);
+      if (!content.toLowerCase().includes(test.text.toLowerCase())) {
+        errors.push('Text missing: ' + test.text);
+      }
       if (test.math) {
         try {
           await page.waitForFunction(
             () => [...document.querySelectorAll('.math-expression')].length > 0 &&
-              [...document.querySelectorAll('.math-expression')].every(e => e.querySelector('.katex')),
+              [...document.querySelectorAll('.math-expression')].every((e) =>
+                e.querySelector('.katex'),
+              ),
             null,
             { timeout: 20000 },
           );
@@ -109,7 +273,9 @@ try {
         try {
           await page.waitForFunction(
             () => [...document.querySelectorAll('.diagram-canvas')].length > 0 &&
-              [...document.querySelectorAll('.diagram-canvas')].every(e => !e.hidden && e.querySelector('svg')),
+              [...document.querySelectorAll('.diagram-canvas')].every(
+                (e) => !e.hidden && e.querySelector('svg'),
+              ),
             null,
             { timeout: 20000 },
           );
@@ -117,9 +283,17 @@ try {
           errors.push('Mermaid did not render');
         }
       }
-      const sizes = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, viewport: document.documentElement.clientWidth }));
-      if (sizes.scroll > sizes.viewport + 2) errors.push('Horizontal overflow: ' + sizes.scroll + ' > ' + sizes.viewport);
-      await page.screenshot({ path: resolve(evidence, test.name + '-' + v.label + '.png'), fullPage: true });
+      const sizes = await page.evaluate(() => ({
+        scroll: document.documentElement.scrollWidth,
+        viewport: document.documentElement.clientWidth,
+      }));
+      if (sizes.scroll > sizes.viewport + 2) {
+        errors.push('Horizontal overflow: ' + sizes.scroll + ' > ' + sizes.viewport);
+      }
+      await page.screenshot({
+        path: resolve(evidence, test.name + '-' + v.label + '.png'),
+        fullPage: true,
+      });
       outcomes.push({ name: test.name, viewport: v.label, route: test.route, errors, sizes });
       await page.close();
     }
@@ -141,7 +315,13 @@ try {
 }
 await writeFile(resolve(evidence, 'results.json'), JSON.stringify(outcomes, null, 2));
 for (const item of outcomes) {
-  console.log(item.name + ' ' + (item.viewport || '') + ': ' + (item.errors.length ? item.errors.join('; ') : 'PASS'));
+  console.log(
+    item.name +
+      ' ' +
+      (item.viewport || '') +
+      ': ' +
+      (item.errors.length ? item.errors.join('; ') : 'PASS'),
+  );
 }
 const failures = outcomes.filter((x) => x.errors.length);
 if (failures.length) throw new Error(String(failures.length) + ' rendered-page checks failed');
