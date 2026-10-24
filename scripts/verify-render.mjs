@@ -331,6 +331,18 @@ try {
           errors.push('Mermaid did not render');
         }
       }
+      if (test.mermaid) {
+        const unreadable = await page
+          .locator('.diagram-canvas > svg')
+          .evaluateAll(
+            (graphics) =>
+              graphics.filter(
+                (graphic) =>
+                  graphic.getBoundingClientRect().width / graphic.viewBox.baseVal.width < 0.8,
+              ).length,
+          );
+        if (unreadable) errors.push('Diagram labels scaled below readable size');
+      }
       const sizes = await page.evaluate(() => ({
         scroll: document.documentElement.scrollWidth,
         viewport: document.documentElement.clientWidth,
@@ -346,6 +358,16 @@ try {
       await page.close();
     }
   }
+  const diagramPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await diagramPage.goto(origin + '/coretrail/ai-engineering/retrieval/rag-search-at-scale/');
+  const scrollRegion = diagramPage.locator('.diagram-canvas[data-scrollable="true"]').first();
+  await scrollRegion.waitFor({ state: 'visible' });
+  await scrollRegion.focus();
+  await scrollRegion.press('ArrowRight');
+  await diagramPage.waitForFunction(() => document.activeElement?.scrollLeft > 0);
+  outcomes.push({ name: 'mobile-diagram-keyboard-scroll', errors: [] });
+  await diagramPage.close();
+
   const page = await browser.newPage();
   await page.goto(origin + cases[0].route);
   const next = page.locator('.lesson-pagination a.next');
