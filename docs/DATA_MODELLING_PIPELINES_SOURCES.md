@@ -114,3 +114,32 @@ Verified on **October 25, 2026**. Product behavior is grounded in official proje
 Worked volumes, file counts, history growth, state estimates, scan envelopes and catch-up times are derived examples with explicit assumptions. They are not measured vendor throughput, prices or platform ceilings. Production sizing needs representative load, skew, concurrent reads/writes, maintenance and recovery tests.
 
 SQL examples are checked locally on a PostgreSQL-compatible engine for row and time-boundary behavior. This does not establish multi-session concurrency, distributed transaction recovery or deployed lakehouse connector behavior. CI builds and renders the authored diagrams and equations on desktop and mobile.
+
+## Lake design, layout and tool selection verification
+
+Checked October 25, 2026. These references support the new workload-selection pages. Decision tables and numerical scenarios are reasoned examples with explicit assumptions; they are not benchmark results.
+
+| Source                                                                                                         | Verified use                                                                         |
+| -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [Delta best practices](https://docs.delta.io/best-practices/)                                                  | Conventional partition cardinality/volume guidance and supported compaction          |
+| [Delta liquid clustering](https://docs.delta.io/delta-clustering/)                                             | Feature compatibility, clustering keys and incompatibility with partitioning/Z-order |
+| [Databricks clustering](https://docs.databricks.com/aws/en/tables/clustering)                                  | Platform-specific recommendation and runtime qualification                           |
+| [Delta storage configuration](https://docs.delta.io/delta-storage/)                                            | Supported storage/write coordination rather than generic object-directory writes     |
+| [DuckDB file formats](https://duckdb.org/docs/2.0/guides/performance/file_formats)                             | Row-group parallelism, file-size trade-offs and selective scans                      |
+| [DuckDB workload tuning](https://duckdb.org/docs/2.0/guides/performance/how_to_tune_workloads)                 | Larger-than-memory execution, blocking operators and spill constraints               |
+| [Polars streaming](https://docs.pola.rs/user-guide/concepts/streaming/)                                        | Operator support, physical plan and in-memory fallbacks                              |
+| [Spark EXPLAIN](https://spark.apache.org/docs/latest/sql-ref-syntax-qry-explain.html)                          | Logical/physical plan explanation modes                                              |
+| [Spark SQL tuning](https://spark.apache.org/docs/latest/sql-performance-tuning.html)                           | Scan, statistics, join, shuffle and adaptive execution considerations                |
+| [BigQuery partitioning](https://docs.cloud.google.com/bigquery/docs/partitioned-tables)                        | Engine-specific partition granularity and clustering guidance                        |
+| [BigQuery external tables](https://docs.cloud.google.com/bigquery/docs/external-tables)                        | External-table capabilities and limitations depend on the source and connector       |
+| [dbt introduction](https://docs.getdbt.com/docs/introduction)                                                  | Transformation-project scope; product/compute edition must be identified             |
+| [Dataform overview](https://docs.cloud.google.com/dataform/docs/overview)                                      | Versioned SQL workflows executed in BigQuery                                         |
+| [PostgreSQL index types](https://www.postgresql.org/docs/current/indexes-types.html)                           | Access-path selection for operational predicates                                     |
+| [MongoDB modelling](https://www.mongodb.com/docs/manual/data-modeling/)                                        | Document representation follows access patterns and relationships                    |
+| [Bigtable row keys](https://docs.cloud.google.com/bigtable/docs/schema-design)                                 | Lexicographic ranges, device/time keys and timestamp-leading hotspots                |
+| [ClickHouse MergeTree](https://clickhouse.com/docs/reference/engines/table-engines/mergetree-family/mergetree) | Sorted parts, partitions and merge-related operating considerations                  |
+| [Elasticsearch mappings and indexing](https://www.elastic.co/docs/solutions/search/get-started/index-basics)   | Search-oriented documents, mappings and indexes                                      |
+| [Avro specification](https://avro.apache.org/docs/1.12.0/specification/)                                       | Schema-based row serialization and reader/writer resolution                          |
+| [ORC specification](https://orc.apache.org/specification/ORCv1/)                                               | Columnar stripes, projection and statistics                                          |
+
+Partition volume, target file size, row-group size, processing partition size and in-memory state are explicitly distinguished. No claim is made that choosing a named tool alone guarantees a particular data-volume ceiling.

@@ -19,10 +19,14 @@ The chapters follow an event from source to warehouse, including how records are
 - [Data modelling & transactions]({{ '/data-engineering/modelling/overview/' | relative_url }}) - Entities, relationships, facts, dimensions, SCD history and transactional guarantees.
 - [Warehouse & processing architectures]({{ '/data-engineering/architecture/overview/' | relative_url }}) - Kimball, Inmon, Data Vault, Lambda, Kappa, medallion and hybrid designs.
 - [Incremental ingestion & CDC]({{ '/data-engineering/incremental/overview/' | relative_url }}) — Watermarks, change streams, idempotency and recovery.
-- [Storage & lakehouse tables]({{ '/data-engineering/storage/overview/' | relative_url }}) — File formats, table protocols, layout, maintenance and choosing between Delta Lake, Iceberg and Hudi.
+- [Storage & lakehouse tables]({{ '/data-engineering/storage/overview/' | relative_url }}) — File formats, table protocols, partitioning, file sizing and workload-based database selection.
 - [GCP & BigQuery]({{ '/data-engineering/gcp/overview/' | relative_url }}) — Query execution, physical layout, capacity and costs.
 - [Distributed processing]({{ '/data-engineering/processing/overview/' | relative_url }}) — Spark, Beam, Dataflow, stream schema evolution, event time, and state migration.
-- [Orchestration & transformations]({{ '/data-engineering/orchestration/overview/' | relative_url }}) — Airflow, Cloud Composer, dbt, retries, and backfills.
+- [Orchestration & transformations]({{ '/data-engineering/orchestration/overview/' | relative_url }}) — Transformation-tool selection, execution engines, Airflow, dbt and reproducible intervals.
 - [Reliability & operations]({{ '/data-engineering/reliability/overview/' | relative_url }}) — Data quality, schema evolution, data contracts, migrations and incident recovery.
 
 For SQL semantics and indexing, visit [SQL]({{ '/sql/' | relative_url }}). Infrastructure mechanics shared with other applications live under [Infrastructure & DevOps]({{ '/infrastructure/' | relative_url }}).
+
+## Design a data platform from the workload
+
+Use [lake and warehouse design]({{ '/data-engineering/architecture/lake-warehouse-design/' | relative_url }}) for platform responsibilities, [physical layout]({{ '/data-engineering/storage/partitioning-file-sizing/' | relative_url }}) for partitions and files, and [query-plan evidence]({{ '/data-engineering/processing/query-plans-pruning/' | relative_url }}) to verify the work. [Storage selection]({{ '/data-engineering/storage/workload-storage-selection/' | relative_url }}) and [transformation selection]({{ '/data-engineering/orchestration/transformation-tool-selection/' | relative_url }}) connect those mechanics to a workload.

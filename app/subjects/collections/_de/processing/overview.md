@@ -16,4 +16,5 @@ Distributed processing includes both finite jobs and continuously running proces
 <li><a href="{{ '/data-engineering/processing/spark-beam-and-time/' | relative_url }}">Spark execution, Dataflow, shuffles, and watermarks</a><span>Compare distributed processing engines and explain skew or late-event failures.</span></li>
 <li><a href="{{ '/data-engineering/processing/streaming-schema-evolution/' | relative_url }}">Schema evolution in real-time pipelines</a><span>Kafka/Pub/Sub schema versions, rolling upgrades, state migration, Dataflow replacement and sink compatibility.</span></li>
 <li><a href="{{ '/data-engineering/processing/spark-partitions-aqe/' | relative_url }}">Spark SQL plans, partitioning, AQE and skew</a><span>Scans, aggregates, shuffles and ranking windows in Spark.</span></li>
+<li><a href="{{ '/data-engineering/processing/query-plans-pruning/' | relative_url }}">Lakehouse query plans: pruning, pushdown and runtime evidence</a><span>Interpret scan metadata and compare it with files, bytes and stage metrics.</span></li>
 </ul>

@@ -41,6 +41,18 @@ for (const location of locations) {
     assert.equal(page.isAccessibleForFree, true);
   }
 }
+const searchPages = JSON.parse(fs.readFileSync(path.join(output, 'search.json'), 'utf8'));
+for (const entry of searchPages) {
+  assert.ok(
+    locations.includes(origin + entry.url),
+    'searchable page missing from sitemap: ' + entry.url,
+  );
+}
+assert.ok(
+  searchPages.some((entry) => entry.subject === 'data-engineering'),
+  'Data Engineering lessons must be discoverable',
+);
+
 const notFound = fs.readFileSync(path.join(output, '404.html'), 'utf8');
 assert.match(notFound, /<meta name="robots" content="noindex, follow">/);
 console.log(

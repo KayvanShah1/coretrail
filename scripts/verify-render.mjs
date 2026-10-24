@@ -180,7 +180,6 @@ const cases = [
     name: 'data-formats',
     route: '/coretrail/data-engineering/storage/file-formats-table-formats/',
     text: 'Parquet',
-    mermaid: true,
   },
   {
     name: 'dagster-argo',
@@ -335,6 +334,87 @@ cases.push(
     text: 'Warehouse and processing architectures',
   },
   { name: 'de-subject-navigation', route: '/coretrail/data-engineering/', text: 'Data modelling' },
+);
+cases.push(
+  {
+    name: 'lake-warehouse-design',
+    route: '/coretrail/data-engineering/architecture/lake-warehouse-design/',
+    text: 'Data lake and Delta Lake design',
+    mermaid: true,
+  },
+  {
+    name: 'lake-physical-layout',
+    route: '/coretrail/data-engineering/storage/partitioning-file-sizing/',
+    text: 'Lake partitioning, clustering',
+    mermaid: true,
+  },
+  {
+    name: 'storage-workload-selection',
+    route: '/coretrail/data-engineering/storage/workload-storage-selection/',
+    text: 'Choosing storage from data shape',
+  },
+  {
+    name: 'lakehouse-query-plans',
+    route: '/coretrail/data-engineering/processing/query-plans-pruning/',
+    text: 'Lakehouse query plans',
+  },
+  {
+    name: 'transformation-selection',
+    route: '/coretrail/data-engineering/orchestration/transformation-tool-selection/',
+    text: 'Choosing a data transformation tool',
+  },
+  {
+    name: 'obt-modelling',
+    route: '/coretrail/data-engineering/modelling/one-big-table-feature-data/',
+    text: 'One Big Table',
+  },
+  {
+    name: 'evaluation-canonical-overview',
+    route: '/coretrail/ai-engineering/evaluation/overview/',
+    text: 'Choose the test by the failure',
+  },
+  {
+    name: 'model-startup-lifecycle',
+    route: '/coretrail/ai-engineering/deployment/startup-lifecycle/',
+    text: 'From container start to ready replica',
+    mermaid: true,
+  },
+  {
+    name: 'llm-autoscaling',
+    route: '/coretrail/ai-engineering/production/autoscaling/',
+    text: 'Autoscaling LLM inference',
+    mermaid: true,
+  },
+  {
+    name: 'dimensional-sql',
+    route: '/coretrail/sql/design/dimensional-modeling/',
+    text: 'Resolving dimension versions',
+  },
+  {
+    name: 'pipeline-release-validation',
+    route: '/coretrail/data-engineering/reliability/quality-incidents-and-cicd/',
+    text: 'Data pipeline CI/CD',
+  },
+  {
+    name: 'streaming-time-semantics',
+    route: '/coretrail/data-engineering/processing/spark-beam-and-time/',
+    text: 'Event time, processing time and watermarks',
+  },
+  {
+    name: 'storage-chapter-layout',
+    route: '/coretrail/data-engineering/storage/overview/',
+    text: 'Lake partitioning',
+  },
+  {
+    name: 'transformation-chapter-navigation',
+    route: '/coretrail/data-engineering/orchestration/overview/',
+    text: 'Choosing a data transformation tool',
+  },
+  {
+    name: 'bigquery-canonical-navigation',
+    route: '/coretrail/data-engineering/gcp/overview/',
+    text: 'BigQuery slots',
+  },
 );
 const types = {
   '.css': 'text/css',

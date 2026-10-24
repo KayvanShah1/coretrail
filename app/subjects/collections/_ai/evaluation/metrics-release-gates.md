@@ -12,13 +12,11 @@ interview_queries: [which metrics should an AI agent track, how do you evaluate 
 
 A retrieval-augmented generation (RAG) answer can be wrong because parsing lost a table, retrieval missed a passage, context assembly discarded it, or generation ignored it. Operational metrics may remain healthy throughout. Record where the failure occurred.
 
-## Retrieval metrics
+## Retrieval metrics in the release decision
 
-**Recall@k** measures how many relevant passages appear in the top k results. **Precision@k** measures how many of the returned k are relevant. **Mean reciprocal rank (MRR)** rewards the rank of the first relevant result; **normalized discounted cumulative gain (nDCG)** supports graded relevance.
+Use the [retrieval metrics reference]({{ '/ai-engineering/retrieval/vector-search-ranking/' | relative_url }}) for Precision@k, Recall@k, mean reciprocal rank (MRR) and normalized discounted cumulative gain (nDCG), including formulas and worked rankings.
 
-{% include math.html tex="\operatorname{Recall@k}=\frac{|\operatorname{Relevant}\cap\operatorname{TopK}|}{|\operatorname{Relevant}|}" block=true %}
-
-If three of four relevant passages appear in the top ten, recall at ten is 0.75. Evaluate candidate retrieval, fusion, reranking and final context selection separately. A good Recall@20 does not guarantee that the model received the correct top-five passages.
+Set gates for the stage that feeds the consumer. Candidate recall can remain healthy while reranking or context selection discards required evidence. Compare overall scores and important slices, including missing-answer cases and restricted documents, against the same held-out corpus.
 
 ## Generation and tool execution
 

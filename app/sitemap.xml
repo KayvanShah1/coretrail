@@ -4,7 +4,7 @@ permalink: /sitemap.xml
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{% assign indexed_pages = site.pages | concat: site.sql | concat: site.ai | concat: site.ml | concat: site.infra %}
+{% assign indexed_pages = site.pages | concat: site.sql | concat: site.de | concat: site.ai | concat: site.ml | concat: site.infra %}
 {% for item in indexed_pages %}
   {% assign route_end = item.url | slice: -1, 1 %}
   {% assign extension = item.url | split: '.' | last %}

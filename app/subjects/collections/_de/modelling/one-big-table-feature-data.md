@@ -1,9 +1,9 @@
 ---
 title: "One Big Table, dimensional models and ML training grain"
 description: "Choose a wide table, star schema or feature history according to query workload and required time semantics."
-chapter: storage
-order: 2
-sequence: 302
+chapter: modelling
+order: 5
+sequence: 155
 level: Core
 keywords:
   - One Big Table
@@ -47,10 +47,6 @@ A wide table may hold all features needed by one training job. Feature stores ad
 
 A reasonable small-system design is a versioned warehouse feature table plus a deterministic training dataset build. Add a separate online store when the model's serving latency and freshness requirements demand it.
 
-## Warehouse, lakehouse and application database
+Physical storage follows the [consumer access pattern]({{ '/data-engineering/storage/workload-storage-selection/' | relative_url }}); the row grain follows the prediction or reporting task.
 
-Keep large analytical scans in storage designed for them. Low-latency individual entity updates and transaction guarantees may favor PostgreSQL or another operational database. A lakehouse table can manage files and snapshot history while warehouse or distributed engines run the actual queries.
-
-The physical layout follows the workload. The model-training grain follows the prediction task.
-
-Continue with [Point-in-time feature construction]({{ '/ml/features/point-in-time-features/' | relative_url }}) and [dimensional modeling]({{ '/sql/design/dimensional-modeling/' | relative_url }}).
+Continue with [Point-in-time feature construction]({{ '/ml/features/point-in-time-features/' | relative_url }}) and [dimensional modelling]({{ '/data-engineering/modelling/dimensional-facts-schemas/' | relative_url }}).

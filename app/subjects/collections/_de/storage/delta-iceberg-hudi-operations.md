@@ -2,8 +2,8 @@
 title: "Delta Lake, Iceberg and Hudi: selection and operations"
 description: "Compare table protocols, update costs, engine compatibility, retention and the evidence needed before choosing a lakehouse format."
 chapter: "storage"
-order: 4
-sequence: 304
+order: 2
+sequence: 302
 level: "Core"
 mermaid: true
 keywords: ["Delta Lake","Iceberg","Hudi","transaction log","copy on write","merge on read","compaction","vacuum","schema evolution","lakehouse selection"]

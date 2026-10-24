@@ -110,4 +110,4 @@ When comparing separate facts, aggregate each fact to compatible conformed keys 
 
 Validate the declared fact key, dimension-key uniqueness, orphan rates, temporal match counts and reconciliation totals. A metric that changes after adding a descriptive join suggests non-unique dimension keys or temporal overlaps. A growing unknown-member rate suggests missing dimensions, late-arriving references or a failed mapping.
 
-A wide reporting table may simplify a repeated workload; [One Big Table and training grain]({{ '/data-engineering/storage/one-big-table-feature-data/' | relative_url }}) covers its maintenance costs. [Slowly changing dimensions]({{ '/data-engineering/modelling/scd-temporal-history/' | relative_url }}) explains how dimension changes affect these facts.
+A wide reporting table may simplify a repeated workload; [One Big Table and training grain]({{ '/data-engineering/modelling/one-big-table-feature-data/' | relative_url }}) covers its maintenance costs. [Slowly changing dimensions]({{ '/data-engineering/modelling/scd-temporal-history/' | relative_url }}) explains how dimension changes affect these facts.

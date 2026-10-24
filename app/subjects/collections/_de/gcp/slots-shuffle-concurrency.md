@@ -2,8 +2,8 @@
 title: "BigQuery slots, shuffle, and concurrency"
 description: "Explain how stages share capacity and why skew, spill, or competing queries can increase latency."
 chapter: "gcp"
-order: 2
-sequence: 402
+order: 1
+sequence: 401
 level: "Intermediate"
 keywords:
   - "BigQuery slots"

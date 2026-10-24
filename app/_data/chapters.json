@@ -171,7 +171,7 @@
     {
       "id": "foundations",
       "title": "Pipeline architecture",
-      "description": "ETL, ELT, batch, streaming, and choosing where transformations run."
+      "description": "Contracts, ETL/ELT, batch, streaming and capacity estimates."
     },
     {
       "id": "modelling",
@@ -191,7 +191,7 @@
     {
       "id": "storage",
       "title": "Storage & lakehouse tables",
-      "description": "File formats, table protocols, layout and operational trade-offs."
+      "description": "File formats, table protocols, layout, file sizing and database choices."
     },
     {
       "id": "gcp",
@@ -206,7 +206,7 @@
     {
       "id": "orchestration",
       "title": "Orchestration & transformations",
-      "description": "Airflow, Cloud Composer, dbt, retries, and backfills."
+      "description": "Choose execution engines, coordinate dependencies and reproduce intervals."
     },
     {
       "id": "reliability",

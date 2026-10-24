@@ -1,18 +1,19 @@
 ---
 title: "GCP & BigQuery"
 nav_title: Overview
-description: "Query execution, physical layout, capacity and costs."
+description: "Understand distributed query work and investigate analytical capacity."
 chapter: gcp
 order: 0
 sequence: 400
 level: Chapter overview
 ---
 
-Query execution, physical layout, capacity and costs. Start by identifying the record grain, the actual computation, and what would break if a dependency failed.
+BigQuery exposes distributed stages, slots and shuffle. Use the execution reference below to connect those mechanics to stage work. [Workload investigation]({{ '/sql/performance/bigquery-workload-investigation/' | relative_url }}) applies them to query history and the 40 TB sales-table example; [layout trade-offs]({{ '/sql/performance/pruning-layout-tradeoffs/' | relative_url }}) works through BigQuery predicates and clustering.
 
 ## In this chapter
 
 <ul class="topic-list">
-<li><a href="{{ '/data-engineering/gcp/bigquery-execution-and-cost/' | relative_url }}">BigQuery execution, partitioning, clustering, and cost</a><span>Diagnose stage-level work and explain how physical layout changes scans.</span></li>
-<li><a href="{{ '/data-engineering/gcp/slots-shuffle-concurrency/' | relative_url }}">BigQuery slots, shuffle, and concurrency</a><span>Explain stage work, join skew, reservation contention and runtime regressions.</span></li>
+<li><a href="{{ '/data-engineering/gcp/slots-shuffle-concurrency/' | relative_url }}">BigQuery slots, shuffle, and concurrency</a><span>Stage work, join skew, reservations and runtime regressions.</span></li>
 </ul>
+
+For cloud-service selection, see [GCP execution, messaging and storage choices]({{ '/infrastructure/cloud/gcp-service-decisions/' | relative_url }}).

@@ -16,4 +16,5 @@ A data architecture assigns responsibility for source capture, integration, hist
 <ul class="topic-list">
 <li><a href="{{ '/data-engineering/architecture/warehouse-integration-patterns/' | relative_url }}">Kimball, Inmon, Data Vault and hybrid warehouse design</a><span>Choose integration and presentation models from audit and delivery needs.</span></li>
 <li><a href="{{ '/data-engineering/architecture/lambda-kappa-medallion/' | relative_url }}">Lambda, Kappa, medallion and hybrid processing</a><span>Separate processing/replay, data-quality and domain-ownership decisions.</span></li>
+<li><a href="{{ '/data-engineering/architecture/lake-warehouse-design/' | relative_url }}">Data lake and Delta Lake design: when a warehouse is needed</a><span>Place raw retention, catalogs, table commits, compute and analytical serving.</span></li>
 </ul>

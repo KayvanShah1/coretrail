@@ -49,3 +49,17 @@ The final wording pass follows the site's revision philosophy: causal explanatio
 ### ER diagram label contrast
 
 Visual review found that Mermaid’s entity-relationship renderer used the muted border color for relationship labels. The diagram styles now assign the site text color to SVG edge text and the page background to its label rectangle. Browser checks require non-empty relationship labels with at least 4.5:1 contrast on all three topics containing entity-relationship diagrams.
+
+## Lake design and cross-site ownership pass
+
+The audit added platform design, lake physical layout, lakehouse plan investigation, transformation-engine selection and storage selection by workload. Numerical examples distinguish decimal and binary units, assumed trial settings, engine-specific guidance and achieved capacity.
+
+Kimball bus integration, Inmon enterprise integration and medallion quality/repair flows now have explanatory Mermaid diagrams. The existing Data Vault, Lambda, Kappa and hybrid diagrams remain. Airflow's diagram now follows scheduler/operator/remote-job behavior rather than repeating the generic pipeline publication flow.
+
+The pass inventoried the published collection pages and compared repeated paragraphs, headings and responsibilities. The [ownership map](CONTENT_OWNERSHIP.md) explains the resulting canonical references. Three overlapping introductions were consolidated; One Big Table moved to modelling. SQL dimension joins now focus on version resolution, including missing/overlapping matches and COUNT(column) versus COUNT(*). The unique BigQuery partition/clustering DDL was retained with SQL layout guidance.
+
+Repeated generic ranking definitions, health-probe semantics, autoscaling loops, transaction properties and recovery procedures were replaced by relevant canonical links. Applied examples and local context remain. Pipeline CI/CD and streaming time/watermark semantics have focused sections.
+
+Retired pages are deleted without redirects or compatibility stubs. The sitemap omission of Data Engineering was corrected. Discovery validation now requires every searchable page to appear in the sitemap. The rendered matrix includes the new pages, relocated topic, changed AI/SQL references and chapter navigation.
+
+Product-specific statements were checked against the official references listed in [the source ledger](DATA_MODELLING_PIPELINES_SOURCES.md). The file-size trial grid and workload scenarios are authored examples, not vendor benchmarks or universal product limits.

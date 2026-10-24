@@ -1,20 +1,20 @@
 ---
 title: "Storage & lakehouse tables"
 nav_title: Overview
-description: "File formats, lakehouse tables, facts, dimensions, and history."
+description: "File formats, table protocols, physical layout and storage selection."
 chapter: storage
 order: 0
 sequence: 300
 level: Chapter overview
 ---
 
-Choose data files, transactional table metadata and query engines from access patterns, update frequency and recovery needs. The [modelling chapter]({{ '/data-engineering/modelling/overview/' | relative_url }}) owns entities, relationships and historical meaning.
+Choose record serialization, table semantics and physical layout from the workload. The [modelling chapter]({{ '/data-engineering/modelling/overview/' | relative_url }}) explains row meaning and relationships; [platform design]({{ '/data-engineering/architecture/lake-warehouse-design/' | relative_url }}) explains catalogs, compute and analytical serving.
 
 ## In this chapter
 
 <ul class="topic-list">
-<li><a href="{{ '/data-engineering/storage/parquet-lakehouse-and-grain/' | relative_url }}">Storage formats, lakehouse tables, and analytical grain</a><span>Understand files, table metadata, partition layout and dimensional correctness.</span></li>
-<li><a href="{{ '/data-engineering/storage/one-big-table-feature-data/' | relative_url }}">One Big Table, dimensional models and ML training grain</a><span>Choose representations based on the consumer, updates and join semantics.</span></li>
-<li><a href="{{ '/data-engineering/storage/file-formats-table-formats/' | relative_url }}">Parquet, Avro, row formats and lakehouse transactions</a><span>Distinguish serialized records, columnar scans and transactional table metadata.</span></li>
-<li><a href="{{ '/data-engineering/storage/delta-iceberg-hudi-operations/' | relative_url }}">Delta Lake, Iceberg and Hudi: selection and operations</a><span>Compare commit semantics, compatibility, update costs and maintenance.</span></li>
+<li><a href="{{ '/data-engineering/storage/file-formats-table-formats/' | relative_url }}">Parquet, Avro, ORC and row-oriented file formats</a><span>Choose serialization, columnar scans, schema handling and compression.</span></li>
+<li><a href="{{ '/data-engineering/storage/delta-iceberg-hudi-operations/' | relative_url }}">Delta Lake, Iceberg and Hudi: selection and operations</a><span>Commit semantics, compatibility, update costs and retention.</span></li>
+<li><a href="{{ '/data-engineering/storage/partitioning-file-sizing/' | relative_url }}">Lake partitioning, clustering and Parquet file sizing</a><span>Estimate bytes per partition and test file layout against reads and updates.</span></li>
+<li><a href="{{ '/data-engineering/storage/workload-storage-selection/' | relative_url }}">Choosing storage from data shape, access pattern and scale</a><span>Match transactions, telemetry, documents, analytics and search to a store.</span></li>
 </ul>

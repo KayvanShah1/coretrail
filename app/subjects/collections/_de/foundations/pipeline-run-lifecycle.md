@@ -64,7 +64,7 @@ This illustrative application manifest records each stage's evidence. Its cursor
 
 ## Transformation and publication choices
 
-A small bounded file may need only a Python/Polars job and transactional sink. Warehouse SQL can transform tables already stored there. Spark or Beam can handle distributed computation where size, state or parallelism justify it. An orchestrator coordinates these engines and records attempts.
+Choose execution from data location, operation shape, active state and the completion deadline. The [transformation-tool comparison]({{ '/data-engineering/orchestration/transformation-tool-selection/' | relative_url }}) connects those requirements to engines; this page follows durable stages and publication.
 
 For replacement outputs, write a new table/partition or staged release, verify it and switch a supported pointer or transaction. For incremental outputs, enforce stable keys and source-version rules. Direct append is appropriate only when duplicates and corrections are addressed by the model.
 

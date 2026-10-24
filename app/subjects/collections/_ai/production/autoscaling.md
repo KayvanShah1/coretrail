@@ -58,29 +58,11 @@ Queue/latency pressure → HPA/KEDA → desired replicas increase → Kubernetes
 {% endcapture %}
 {% include diagram.html title="Workload scaling and node scaling are separate" code=diagram_code fallback=diagram_fallback caption=true %}
 
-## Workload scaling asks for more serving replicas
+## Replica demand and placement
 
-A workload autoscaler changes the desired replica count from demand signals.
+The Horizontal Pod Autoscaler (HPA) and Kubernetes Event-driven Autoscaling (KEDA) adjust workload demand; a node autoscaler supplies suitable machines. The [infrastructure scaling reference]({{ '/infrastructure/scaling/workload-node-autoscaling/' | relative_url }}) explains those control loops and scheduling constraints.
 
-In Kubernetes, the Horizontal Pod Autoscaler (HPA) is the common replica-scaling mechanism. Kubernetes Event-driven Autoscaling (KEDA) is one way to bring external or event-driven signals into that loop.
-
-For LLM serving, a signal such as waiting requests can therefore increase the desired number of inference replicas.
-
-## Node scaling supplies machines for those Pods
-
-Creating a Pod does not create a graphics processing unit (GPU).
-
-If every suitable GPU node is full, the new Pod is unschedulable and remains Pending.
-
-A node autoscaler sees unschedulable Pods, evaluates their scheduling constraints, and provisions machines that can fit them. Karpenter is one Kubernetes example.
-
-So:
-
-`workload autoscaler → how many replicas?`
-
-`node autoscaler → how many machines?`
-
-HPA/KEDA and Karpenter are concrete implementations of those two different loops.
+For an illustrative two-graphics-processing-unit (GPU) replica, six desired replicas require twelve allocatable GPUs with the required placement. If the cluster can place only four replicas, the remaining two stay Pending. Their future capacity cannot satisfy the current queue, and newly provisioned replicas still need model startup.
 
 ## Why GPU utilization alone can mislead
 

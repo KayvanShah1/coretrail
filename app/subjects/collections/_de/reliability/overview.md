@@ -13,7 +13,7 @@ A pipeline can complete successfully and still publish a broken dataset. Investi
 ## In this chapter
 
 <ul class="topic-list">
-<li><a href="{{ '/data-engineering/reliability/quality-incidents-and-cicd/' | relative_url }}">Reconciliation, schema drift, incident recovery, and CI/CD</a><span>Restore trustworthy data and identify the layer responsible for production regressions.</span></li>
+<li><a href="{{ '/data-engineering/reliability/quality-incidents-and-cicd/' | relative_url }}">Data pipeline CI/CD and release validation</a><span>Test semantics, compatibility and candidate outputs before promotion.</span></li>
 <li><a href="{{ '/data-engineering/reliability/schema-evolution-and-contracts/' | relative_url }}">Schema evolution, data contracts, and safe migrations</a><span>Source schema changes, curated mappings, consumer contracts and migration plans.</span></li>
 <li><a href="{{ '/data-engineering/reliability/stream-delivery-replay/' | relative_url }}">Streaming acknowledgments, retries and replay safety</a><span>Pub/Sub deadlines, idempotent warehouse writes and backpressure.</span></li>
 <li><a href="{{ '/data-engineering/reliability/diagnosis-symptoms-evidence/' | relative_url }}">Diagnosing data failures from symptoms and evidence</a><span>Trace wrong values, freshness lag and resource problems to discriminating evidence.</span></li>

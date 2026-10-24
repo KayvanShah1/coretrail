@@ -59,6 +59,6 @@ A single batch prediction model using a curated BigQuery table may have no reaso
 
 Define behavior for stale or unavailable online features. Options include an approved cached value, fallback model, deferred decision or explicit failure. Silent default zeros can turn a provider outage into systematic model error.
 
-A **One Big Table** can supply a training dataset without providing historical feature-version management or online serving. See [One Big Table and training grain]({{ '/data-engineering/storage/one-big-table-feature-data/' | relative_url }}) for that distinction.
+A **One Big Table** can supply a training dataset without providing historical feature-version management or online serving. See [One Big Table and training grain]({{ '/data-engineering/modelling/one-big-table-feature-data/' | relative_url }}) for that distinction.
 
 Next: [MLOps and model monitoring]({{ '/ml/operations/overview/' | relative_url }}).

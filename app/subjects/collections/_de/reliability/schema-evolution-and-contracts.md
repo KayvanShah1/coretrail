@@ -128,7 +128,7 @@ For **incremental** dbt models, `on_schema_change` controls what happens when th
 
 BigQuery can add nullable or repeated fields and supports some column renames and type changes. A BigQuery load job can use `ALLOW_FIELD_ADDITION` when eligible. Those features alter table structure; they do not resolve whether an upstream `total_amount` is equivalent to the canonical `order_amount`. On BigQuery, dbt `sync_all_columns` type changes may scan the entire table, making the option especially costly or risky on large curated datasets.
 
-For incremental ingestion, see [CDC, checkpoints and MERGE]({{ '/data-engineering/incremental/cdc-checkpoints-and-merge/' | relative_url }}). For lakehouse table-level evolution, see [Storage formats and lakehouse tables]({{ '/data-engineering/storage/parquet-lakehouse-and-grain/' | relative_url }}).
+For incremental ingestion, see [CDC, checkpoints and MERGE]({{ '/data-engineering/incremental/cdc-checkpoints-and-merge/' | relative_url }}). For lakehouse table-level evolution, see [Delta, Iceberg and Hudi table operations]({{ '/data-engineering/storage/delta-iceberg-hudi-operations/' | relative_url }}).
 
 ## Published engineering approaches
 

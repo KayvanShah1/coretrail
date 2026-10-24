@@ -1,64 +1,57 @@
 ---
-title: "Parquet, Avro, row formats and lakehouse transactions"
-description: "Choose serialization and table formats based on access pattern, schema evolution, incremental updates and snapshot consistency."
+title: "Parquet, Avro, ORC and row-oriented file formats"
+description: "Choose file serialization, column projection, compression and schema handling from the records and access pattern."
 chapter: storage
-order: 3
-sequence: 303
-level: Intermediate
-mermaid: true
-keywords: [Parquet, Avro, ORC, JSON, Delta Lake, Iceberg, Hudi, row group, predicate pushdown, ACID]
-aliases: [storage file formats, Delta vs Iceberg, columnar vs row oriented]
-interview_queries: [why use Parquet rather than CSV, what do Delta and Iceberg add, what is ACID on an object store]
+order: 1
+sequence: 301
+level: Core
+last_verified: "2026-10-25"
+keywords: [Parquet, Avro, ORC, JSON, CSV, columnar, row group, compression, file format vs table format]
+aliases: [storage file formats, columnar vs row oriented]
+interview_queries: [why use Parquet rather than CSV, when should I use Avro instead of Parquet]
 references:
   - title: Apache Parquet format
     url: https://parquet.apache.org/docs/
-  - title: Apache Iceberg specification
-    url: https://iceberg.apache.org/spec/
-  - title: Delta Lake documentation
-    url: https://docs.delta.io/
+  - title: Apache Avro specification
+    url: https://avro.apache.org/docs/1.12.0/specification/
+  - title: Apache ORC specification
+    url: https://orc.apache.org/specification/ORCv1/
+  - title: DuckDB Parquet scan guidance
+    url: https://duckdb.org/docs/2.0/guides/performance/file_formats
 ---
-A storage format describes how records become bytes. A **table format** additionally coordinates which files form a consistent logical dataset at a particular snapshot. The distinction matters when ingestion writes new data while readers query historical intervals.
 
-## Row-oriented and column-oriented bytes
+A file format describes how records become bytes and how readers recover them. Choose it from the exchange contract and expected read pattern. A format that is convenient for delivering complete events may do unnecessary work for an analytical query reading three columns from millions of rows.
 
-A row-oriented file keeps attributes of an event close together, which suits serialization of complete records. Avro stores structured row-oriented records with schema metadata and supports controlled reader/writer evolution. JSON is easy to inspect and integrate but tends to be larger and less strictly typed unless schema validation is added.
+## Row records and columnar scans
 
-Columnar formats such as Parquet and ORC group values from a column together. Analytical queries often read a subset of columns across many rows, so column projection, compression and statistics allow them to avoid unnecessary I/O. Parquet row groups and column chunks carry statistics that can support row-group skipping.
-
-{% capture diagram_code %}
-flowchart LR
-A["Source records"] --> B{"Access pattern"}
-B -- "Exchange / streaming events" --> R["Avro / JSON row records"]
-B -- "Analytical scans" --> C["Parquet / ORC columnar files"]
-C --> T["Table metadata: snapshots + schema"]
-T --> Q["SQL engine / Spark / warehouse"]
-R --> P["Stream decoder / connector"]
-{% endcapture %}
-{% capture diagram_fallback %}
-Streaming exchange favors row-record serialization such as Avro or JSON, while analytical scans often favor Parquet or ORC. A lakehouse table format adds consistent metadata snapshots over the columnar files consumed by compute engines.
-{% endcapture %}
-{% include diagram.html title="File format and table semantics answer different questions" code=diagram_code fallback=diagram_fallback caption=true %}
-
-## Why a folder of Parquet files is insufficient
-
-Imagine a reader scanning a dataset while a writer deletes old files and uploads replacements. The reader may see some old files and some new ones without a transaction protocol, even if each individual Parquet file is valid. Re-running a failed job can leave duplicate records or orphan files.
-
-Delta Lake, Apache Iceberg and Apache Hudi each define metadata, commit and snapshot mechanisms around data files, with differing approaches to manifests/logs, indexing, updates and concurrency control. A reader selects a consistent table snapshot, while a writer commits its changes according to the table protocol. The object store itself does not magically provide multi-file transactions.
-
-| Concern | Data files alone | Managed lakehouse table format |
+| Format | Representation and useful workload | Cost or obligation |
 |---|---|---|
-| Consistent multi-file read | Requires custom publication scheme | Snapshot/transaction metadata |
-| Schema updates | Reader must interpret individual files | Table-level schema/compatibility policy |
-| Incremental upserts/deletes | Manual file rewrite and tracking | Format-supported update workflows |
-| Time travel | Keep and address manual snapshots | Historical table snapshots within retention |
-| Cleanup | Custom orphan-file process | Vacuum/expiration procedures with constraints |
+| CSV | Row-oriented text exchanged with widely available tools | Declare types, escaping, null representation and date conventions |
+| JSON or newline-delimited JSON | Nested records and source/API interchange | Repeated field names, parsing cost and explicit schema validation |
+| Avro | Schema-based binary row records and reader/writer schema resolution | Evolution must obey compatibility rules; it is not a column-pruning format |
+| Parquet | Typed columnar analytical files with nested-data support | Writer layout, statistics, codec and reader compatibility affect scans |
+| ORC | Typed columnar files with stripes, indexes and statistics | Select it when the engine ecosystem and measured workload fit |
 
-Metadata maintenance, small-file compaction and snapshot retention are ongoing costs. A long-lived reader may pin old files; aggressive cleanup can break it. Schema compatibility remains a data-contract question even when a table supports adding columns.
+A Parquet row group contains column chunks for a group of rows. Reading amount and event_date need not require decoding an unrelated description column. Statistics such as minimum and maximum values can also exclude ranges that cannot match a filter, if the reader supports that optimization.
 
-## Partitioning, clustering and file size
+ORC stripes likewise contain column streams and associated metadata. Both formats can reduce analytical I/O; the engine's implementation and the data determine the observed result.
 
-A path partition such as `date=2026-10-24/` can limit scan scope when queries filter that date. Overpartitioning by a high-cardinality key creates huge numbers of tiny files and metadata requests. Clustering sorts data within partitions to help row-group pruning. Optimal choices depend on query patterns, ingest rate and update frequency.
+For an event consumer that normally decodes the complete record, a row serialization can be appropriate. Kafka or Pub/Sub carries messages; Avro or JSON can encode a message's payload. The transport and payload format have separate contracts.
 
-BigQuery managed columnar storage and transactional PostgreSQL tables expose different storage abstractions. A team may retain Parquet in Cloud Storage or S3 for portable raw/curated data while placing serving facts in an analytical warehouse.
+## Schema and compression choices
 
-See [lakehouse grain and data layout]({{ '/data-engineering/storage/parquet-lakehouse-and-grain/' | relative_url }}) and [incremental change-data-capture (CDC)/MERGE]({{ '/data-engineering/incremental/cdc-checkpoints-and-merge/' | relative_url }}).
+A CSV value such as 00123 may be an identifier, not an integer. A JSON field can be absent, explicitly null or present with an unexpected type. Preserve these distinctions during raw ingestion and define their curated interpretation.
+
+Avro writer and reader schemas support controlled evolution; a newly accepted source field still needs a business mapping downstream. The [schema-contract reference]({{ '/data-engineering/reliability/schema-evolution-and-contracts/' | relative_url }}) works through those semantic migrations.
+
+Compression codecs trade bytes transferred against encoding/decoding CPU and compatibility. Test supported options such as Snappy or Zstandard on representative data. Compression ratio varies with repetition, types and ordering, so a fixed storage multiplier should be an explicit capacity assumption.
+
+A compressed file size is not its decoded memory footprint. File size and row-group size are separate controls; use [partitioning and file sizing]({{ '/data-engineering/storage/partitioning-file-sizing/' | relative_url }}) for that design.
+
+## File formats and table protocols
+
+A reader can decode every Parquet file correctly yet see an inconsistent collection during a multi-file replacement. A table protocol records which files belong to a committed version and how changes become visible.
+
+[Delta Lake, Iceberg and Hudi operations]({{ '/data-engineering/storage/delta-iceberg-hudi-operations/' | relative_url }}) covers snapshot commits, compatibility, update costs and retention. A supported Delta read follows that protocol; scanning every Parquet object under the table path can include superseded or uncommitted data.
+
+A managed warehouse can control its own internal storage while accepting these formats for loading or external queries. Select the exposed import/read contract rather than assuming its internal layout is a user-managed Parquet directory.

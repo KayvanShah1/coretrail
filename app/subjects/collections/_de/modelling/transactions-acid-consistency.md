@@ -18,14 +18,7 @@ An order service needs to reserve inventory, record a payment reference and publ
 
 **Online transaction processing (OLTP)** handles short record-oriented operations, such as placing an order. **Online analytical processing (OLAP)** scans and aggregates many records for reporting. **Hybrid transactional/analytical processing (HTAP)** combines both access patterns within a platform, with implementation-specific isolation of analytical work. These are workload categories; an analytical table can still have transactional commits.
 
-**Atomicity, consistency, isolation and durability (ACID)** describe transaction behavior:
-
-| Property | Concrete example | What must be configured or designed |
-|---|---|---|
-| Atomicity | Debit and credit commit together or neither remains | One transaction spanning both writes |
-| Consistency | Inventory never violates a declared constraint | Correct application rules and enforced constraints |
-| Isolation | Concurrent reservations preserve the intended invariant | Suitable isolation, locking or version checks |
-| Durability | Acknowledged commits survive the promised failures | Log persistence, replication and recovery settings |
+**Atomicity, consistency, isolation and durability (ACID)** describe guarantees within the transaction scope. The [SQL transaction reference]({{ '/sql/transactions/acid/' | relative_url }}) defines the four properties with commit and rollback examples. Here the design question is which effects can share that scope.
 
 ACID consistency concerns invariants. Distributed-replica consistency concerns what reads observe across copies. A system may enforce one scope while exposing stale reads in another. Document the guarantee and the failure condition.
 
@@ -39,7 +32,7 @@ The consistency, availability and partition-tolerance (CAP) trade-off concerns c
 
 ## Isolation and concurrent writers
 
-At PostgreSQL Read Committed, ordinary statements can see different committed snapshots. PostgreSQL Repeatable Read maintains a transaction snapshot, but can still permit serialization anomalies. Serializable prevents those outcomes among committed transactions by detecting conflicts and sometimes aborting work; callers need whole-transaction retry logic.
+PostgreSQL Serializable can reject a transaction when concurrent work cannot be safely ordered. Callers need a whole-transaction retry, including decisions based on reads. See [isolation levels and anomalies]({{ '/sql/transactions/isolation/' | relative_url }}) for the level-by-level behavior.
 
 Multi-version concurrency control (MVCC) lets readers use consistent record versions while writers create newer ones. Conflicting writes can still wait or fail. Long-running transactions can retain old versions and create maintenance pressure.
 

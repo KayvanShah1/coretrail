@@ -43,10 +43,8 @@ Suppose readings arrive every fifteen seconds but the consumer only refreshes ev
 
 The first questions are: how much arrives, how often, at what peak rate, and what can safely be late? For 100 million daily 1 KB events, raw payload is around 100 GB/day; peak rate and key distribution may matter more than the daily average.
 
-## Recovering from partial ingestion
+## Follow the execution and recovery decisions
 
-If extraction succeeds but warehouse loading fails, a cursor advanced after extraction can permanently skip records. Store batch/run identity and move the committed checkpoint only according to the destination's recovery protocol. Repeated attempts need idempotent writes.
+Persist extraction evidence before advancing its cursor, and track transformation completion separately. The [pipeline lifecycle]({{ '/data-engineering/foundations/pipeline-run-lifecycle/' | relative_url }}) explains those checkpoints and consumer publication.
 
-## When warehouse SQL is enough
-
-A warehouse-side SQL aggregation can be cheaper to maintain than a separate Spark application. Choose Spark or Beam when code, specialized processing, streaming semantics or distributed transformation requirements justify them. Avoid making a product choice before stating the workload and its operational constraints.
+Choose the [transformation engine]({{ '/data-engineering/orchestration/transformation-tool-selection/' | relative_url }}) from the computation and data location. Use [lake and warehouse design]({{ '/data-engineering/architecture/lake-warehouse-design/' | relative_url }}) when deciding which datasets need analytical serving.
