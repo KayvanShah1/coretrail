@@ -15,4 +15,5 @@ An agent's model may select actions, but the application owns state persistence,
 <li><a href="{{ '/ai-engineering/agents/typed-tools-execution-state/' | relative_url }}">Tool-using agents, state and guardrails</a><span>Validate arguments, persist steps and prevent unsafe duplicate effects.</span></li>
 <li><a href="{{ '/ai-engineering/agents/mcp-a2a-orchestration/' | relative_url }}">MCP, A2A and agent orchestration</a><span>Separate tool integration, delegation and durable workflow execution.</span></li>
 <li><a href="{{ '/ai-engineering/agents/shared-context-handoffs/' | relative_url }}">Shared agent context, handoffs and durable artifacts</a><span>Share versioned evidence and structured state without duplicating entire conversations.</span></li>
+<li><a href="{{ '/ai-engineering/agents/trust-policy-boundaries/' | relative_url }}">Prompt injection, tool authorization and agent recovery</a><span>Untrusted evidence, permissions and idempotent recovery.</span></li>
 </ul>
