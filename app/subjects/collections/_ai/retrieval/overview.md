@@ -18,6 +18,8 @@ Retrieval-augmented generation (RAG) depends on several independently versioned 
 <li><a href="{{ '/ai-engineering/retrieval/embedding-index-migrations/' | relative_url }}">Embedding versions, index migration and cache invalidation</a><span>Build and publish compatible embedding releases without mixing vector spaces.</span></li>
 <li><a href="{{ '/ai-engineering/retrieval/retriever-generator-selection/' | relative_url }}">Choosing embeddings, rerankers and generation models</a><span>Run controlled experiments and compare end-to-end quality, p95 latency and cost.</span></li>
 <li><a href="{{ '/ai-engineering/retrieval/vector-model-capacity/' | relative_url }}">Embedding dimensions, corpus size and retrieval cost</a><span>Estimate storage, index memory, vector count and generation-model resource costs.</span></li>
+<li><a href="{{ '/ai-engineering/retrieval/structured-multimodal-content/' | relative_url }}">Retrieving tables, images, code and structured evidence</a><span>Layout, source spans, AST chunks and multimodal evidence.</span></li>
+<li><a href="{{ '/ai-engineering/retrieval/query-planning-graphrag/' | relative_url }}">Query planning, multi-hop retrieval and GraphRAG</a><span>Decomposition, relationships and complete-evidence evaluation.</span></li>
 </ul>
 
 Continue into [AI evaluation]({{ '/ai-engineering/evaluation/overview/' | relative_url }}) to locate the point where required evidence disappears.
