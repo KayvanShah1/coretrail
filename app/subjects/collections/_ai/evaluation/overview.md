@@ -16,4 +16,5 @@ A successful answer can conceal unsafe tool activity, while a failed answer can 
 <li><a href="{{ '/ai-engineering/evaluation/golden-datasets-contamination/' | relative_url }}">Golden datasets, hard negatives and contamination</a><span>Create representative cases and preserve independent holdouts.</span></li>
 <li><a href="{{ '/ai-engineering/evaluation/metrics-release-gates/' | relative_url }}">Metrics and release gates</a><span>Measure retrieval, groundedness, tool completion, latency and cost at their failure stages.</span></li>
 <li><a href="{{ '/ai-engineering/evaluation/evidence-survival-oracle-tests/' | relative_url }}">Evidence survival, oracle tests and stage-level diagnostics</a><span>Find where required facts disappear and isolate retrieval from generation limitations.</span></li>
+<li><a href="{{ '/ai-engineering/evaluation/agent-trajectories-judges/' | relative_url }}">Agent trajectory evaluation, tool safety and LLM judges</a><span>Policy invariants, judgment calibration and regression datasets.</span></li>
 </ul>
