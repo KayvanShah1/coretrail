@@ -1,12 +1,17 @@
 // Opt-in math rendering. Expressions are repository-authored and never evaluated.
 // A readable text fallback remains if the remote renderer fails to load.
 const formulas = [...document.querySelectorAll('.math-expression')];
+
 if (formulas.length) {
   try {
-    const { default: katex } = await import('https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.mjs');
+    const { default: katex } = await import(
+      'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.mjs'
+    );
+
     for (const element of formulas) {
       const tex = element.querySelector('.math-source')?.content.textContent?.trim();
       if (!tex) continue;
+
       const rendered = document.createElement('span');
       try {
         katex.render(tex, rendered, {
