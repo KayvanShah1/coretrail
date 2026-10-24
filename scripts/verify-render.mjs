@@ -12,6 +12,24 @@ const cases = [
   { name: 'agent-protocols', route: '/coretrail/ai-engineering/agents/mcp-a2a-orchestration/', text: 'Model Context Protocol', mermaid: true },
   { name: 'evaluation', route: '/coretrail/ai-engineering/evaluation/golden-datasets-contamination/', text: 'Golden datasets', diagnostic: true },
   { name: 'kubernetes-gpu', route: '/coretrail/infrastructure/kubernetes/gpu-scheduling-debugging/', text: 'GPU scheduling' },
+  { name: 'ai-subject-map', route: '/coretrail/ai-engineering/', text: 'AI Engineering', mermaid: true },
+  { name: 'infra-subject-map', route: '/coretrail/infrastructure/', text: 'Infrastructure', mermaid: true },
+  { name: 'forecast-metrics', route: '/coretrail/ml/fundamentals/regression-forecasting-metrics/', text: 'time-series forecasting', math: true, mermaid: true },
+  { name: 'model-selection', route: '/coretrail/ml/fundamentals/model-selection-error-analysis/', text: 'Model selection', math: true },
+  { name: 'neural-training', route: '/coretrail/ml/fundamentals/deep-learning-training/', text: 'Neural-network', math: true },
+  { name: 'structured-rag', route: '/coretrail/ai-engineering/retrieval/structured-multimodal-content/', text: 'tables, images, code', mermaid: true },
+  { name: 'graphrag', route: '/coretrail/ai-engineering/retrieval/query-planning-graphrag/', text: 'GraphRAG', mermaid: true },
+  { name: 'agent-judges', route: '/coretrail/ai-engineering/evaluation/agent-trajectories-judges/', text: 'Agent trajectory', mermaid: true },
+  { name: 'agent-security', route: '/coretrail/ai-engineering/agents/trust-policy-boundaries/', text: 'Prompt injection', mermaid: true },
+  { name: 'spark-aqe', route: '/coretrail/data-engineering/processing/spark-partitions-aqe/', text: 'Spark SQL plans', mermaid: true },
+  { name: 'stream-retries', route: '/coretrail/data-engineering/reliability/stream-delivery-replay/', text: 'Streaming acknowledgments', mermaid: true },
+  { name: 'orchestration-flow', route: '/coretrail/data-engineering/orchestration/airflow-composer-dbt/', text: 'backfills', mermaid: true },
+  { name: 'cloud-network', route: '/coretrail/infrastructure/cloud/identity-network-data-path/', text: 'Cloud identity', mermaid: true },
+  { name: 'ranking-metrics', route: '/coretrail/ai-engineering/retrieval/vector-search-ranking/', text: 'retrieval metrics', math: true },
+  { name: 'embeddings-capacity', route: '/coretrail/ai-engineering/retrieval/vector-model-capacity/', text: 'Embedding dimensions', math: true },
+  { name: 'index-migration', route: '/coretrail/ai-engineering/retrieval/embedding-index-migrations/', text: 'Embedding versions', mermaid: true },
+  { name: 'agent-context', route: '/coretrail/ai-engineering/agents/shared-context-handoffs/', text: 'Shared agent context', mermaid: true },
+
 ];
 const types = { '.css': 'text/css', '.js': 'text/javascript', '.html': 'text/html', '.svg': 'image/svg+xml', '.json': 'application/json', '.png': 'image/png', '.woff2': 'font/woff2' };
 const server = createServer(async (request, response) => {
