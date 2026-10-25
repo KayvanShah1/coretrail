@@ -4,6 +4,7 @@ import { resolve, extname, sep } from 'node:path';
 import { chromium } from 'playwright';
 
 const root = resolve('_site');
+const figureRegistry = JSON.parse(await readFile('app/_data/figures.json', 'utf8'));
 const evidence = resolve('test-results/browser-qa');
 const cases = [
   {
@@ -494,7 +495,9 @@ try {
     for (const v of [
       { label: 'desktop', width: 1280, height: 850 },
       { label: 'mobile', width: 390, height: 844 },
+      { label: 'tablet', width: 820, height: 1000 },
     ]) {
+      if (v.label === 'tablet' && !test.figures) continue;
       const page = await browser.newPage({
         viewport: { width: v.width, height: v.height },
         deviceScaleFactor: 1,
@@ -627,7 +630,7 @@ try {
           loaded: image.complete && image.naturalWidth > 0,
           alt: image.alt,
           width: image.getBoundingClientRect().width,
-          region: image.parentElement.clientWidth,
+          region: image.closest('.reference-figure-image').clientWidth,
         }));
         if (!imageState.loaded || !imageState.alt) errors.push('Image missing pixels or alt text');
         if ((await figure.locator('figcaption').innerText()).trim().length < 40)
@@ -652,9 +655,26 @@ try {
         }
         await zoom.uncheck();
         const overviewFits = await img.evaluate(
-          (image) => image.getBoundingClientRect().width <= image.parentElement.clientWidth + 1,
+          (image) =>
+            image.getBoundingClientRect().width <=
+            image.closest('.reference-figure-image').clientWidth + 1,
         );
         if (!overviewFits) errors.push('Image overview is clipped before enlargement');
+        const figureId = await figure.getAttribute('data-figure-id');
+        const metadata = figureRegistry[figureId];
+        if (metadata?.mobile_path) {
+          const state = await img.evaluate((image) => ({
+            width: image.getBoundingClientRect().width,
+            source: new URL(image.currentSrc).pathname,
+          }));
+          const mobile = v.width <= 600 || (v.width >= 781 && v.width <= 900);
+          const expected = '/coretrail' + (mobile ? metadata.mobile_path : metadata.path);
+          if (state.source !== expected) errors.push('Wrong responsive artwork: ' + figureId);
+          const labelSize =
+            (state.width / (mobile ? metadata.mobile_width : metadata.width)) *
+            (mobile ? metadata.mobile_min_label_size : metadata.min_label_size);
+          if (labelSize < 14) errors.push('Figure labels below 14px at reading size: ' + figureId);
+        }
       }
       await page.evaluate(() => window.scrollTo(0, 0));
       const sizes = await page.evaluate(() => ({
@@ -699,6 +719,56 @@ try {
       await page.close();
     }
   }
+  for (const [id, figure] of Object.entries(figureRegistry).filter(
+    ([, item]) => item.mobile_path,
+  )) {
+    for (const source of [figure.path, figure.mobile_path]) {
+      const assetPage = await browser.newPage();
+      await assetPage.goto(origin + '/coretrail' + source);
+      const geometry = await assetPage.evaluate(() => {
+        const svg = document.querySelector('svg');
+        const frame = svg.getBoundingClientRect();
+        const labels = [...svg.querySelectorAll('text')].map((node) => {
+          const box = node.getBoundingClientRect();
+          return {
+            text: node.textContent,
+            x: box.x - frame.x,
+            y: box.y - frame.y,
+            width: box.width,
+            height: box.height,
+          };
+        });
+        const clipped = labels.filter(
+          (box) =>
+            box.x < -0.5 ||
+            box.y < -0.5 ||
+            box.x + box.width > frame.width + 0.5 ||
+            box.y + box.height > frame.height + 0.5,
+        );
+        const overlap = [];
+        for (let i = 0; i < labels.length; i++) {
+          for (let j = i + 1; j < labels.length; j++) {
+            const a = labels[i],
+              b = labels[j];
+            if (
+              Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x) > 2 &&
+              Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y) > 2
+            )
+              overlap.push([a.text, b.text]);
+          }
+        }
+        return { clipped, overlap };
+      });
+      outcomes.push({
+        name:
+          'vector-label-geometry-' + id + (source === figure.mobile_path ? '-mobile' : '-desktop'),
+        errors:
+          geometry.clipped.length || geometry.overlap.length ? [JSON.stringify(geometry)] : [],
+      });
+      await assetPage.close();
+    }
+  }
+
   const diagramPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await diagramPage.goto(origin + '/coretrail/ai-engineering/retrieval/rag-search-at-scale/');
   const scrollRegion = diagramPage.locator('.diagram-canvas[data-scrollable="true"]').first();

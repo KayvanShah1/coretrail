@@ -19,6 +19,12 @@ Do not turn comparisons that are clearer as tables into decorative flowcharts.
 
 ## Static figures
 
-Use `{% include figure.html id="sales-star" %}` for a nested architecture, physical layout, before/after data example or official execution-plan image. Use Mermaid ER diagrams for schemas so tables, keys and cardinalities remain clear. Its definition in `app/_data/figures.json` supplies the local asset, dimensions, caption, alt text and attribution. Store images under `app/assets/img/site/<subject>/<chapter>/<topic>/`. See [image sources and reuse](IMAGE_SOURCES.md) for the current inventory and license evidence.
+Use `{% include figure.html id="warehouse-methods" %}` for a nested architecture, physical layout, before/after data example or official execution-plan image. Use Mermaid ER diagrams for schemas so tables, keys and cardinalities remain clear. Its definition in `app/_data/figures.json` supplies the local asset, dimensions, caption, alt text and attribution. Store images under `app/assets/img/site/<subject>/<chapter>/<topic>/`. See [image sources and reuse](IMAGE_SOURCES.md) for the current inventory and license evidence.
 
-Static figures preserve their original colors. Their default view fits the column; an Enlarge image control enables keyboard scrolling, alongside a full-size link, and the explanation remains readable without JavaScript. They do not need `mermaid: true`. Retain that flag only when the page also contains a Mermaid process diagram.
+Static figures preserve their original colors. Their default view fits the column; an Enlarge image control enables keyboard scrolling at the full artwork width, alongside a full-size link, and the explanation remains readable without JavaScript. They do not need `mermaid: true`. Retain that flag only when the page also contains a Mermaid process diagram.
+
+## Image quality at reading size
+
+Use actual on-page dimensions to judge a figure. A large vector canvas can still produce unreadable text when reduced into the article column. Authored diagrams use large labels and a mobile composition selected through native picture/source markup. Preserve topology when rearranging a diagram: control lines stay distinct from data flow, and independent inputs stay independent.
+
+The source and mobile label size declarations are checked against the rendered image width. Browser checks also inspect every authored SVG for clipped or overlapping text. Source artwork must have a full opaque background, self-contained resources and consistent arrowhead sizing. Reference screenshots retain their original colors and can be enlarged to native width.

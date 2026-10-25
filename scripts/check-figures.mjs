@@ -52,10 +52,38 @@ for (const [id, figure] of Object.entries(figures)) {
         /markerUnits="userSpaceOnUse"/,
         'Original arrowheads must use a fixed size: ' + id,
       );
-      assert.match(
-        svg,
-        /<rect width="\d+" height="\d+" rx="0" fill="#141a17"/,
-        'Original figure needs an opaque background: ' + id,
+      assert.ok(
+        svg.includes('rx="0" fill="' + figure.background + '"'),
+        'Original figure needs its declared opaque background: ' + id,
+      );
+      const fontSizes = [...svg.matchAll(/font-size:\s*([\d.]+)px/g)].map((match) =>
+        Number(match[1]),
+      );
+      assert.ok(
+        fontSizes.length && Math.min(...fontSizes) >= figure.min_label_size,
+        'Figure labels below declared size: ' + id,
+      );
+      assert.ok(
+        figure.mobile_path && figure.mobile_width && figure.mobile_height,
+        'Responsive artwork missing: ' + id,
+      );
+      const mobile = await readFile(resolve(root, '.' + figure.mobile_path));
+      assert.equal(
+        createHash('sha256').update(mobile).digest('hex'),
+        figure.mobile_sha256,
+        'Changed mobile artwork: ' + id,
+      );
+      assert.ok(
+        mobile
+          .toString()
+          .includes('width="' + figure.mobile_width + '" height="' + figure.mobile_height + '"'),
+        'Mobile artwork dimensions: ' + id,
+      );
+      assert.ok(
+        !/<script\b|<(?:iframe|object|embed)\b|(?:href|src)=["'](?:https?:|\/\/)/i.test(
+          mobile.toString(),
+        ),
+        'Active mobile SVG resource: ' + id,
       );
     }
     assert.ok(
@@ -90,7 +118,7 @@ const assetFiles = await readdir(resolve(root, 'assets/img/site'), { recursive: 
 for (const file of assetFiles.filter((file) => /\.(svg|png|gif)$/.test(file))) {
   const asset = '/assets/img/site/' + file.replaceAll('\\', '/');
   assert.ok(
-    Object.values(figures).some((figure) => figure.path === asset),
+    Object.values(figures).some((figure) => figure.path === asset || figure.mobile_path === asset),
     'Unregistered asset: ' + asset,
   );
 }

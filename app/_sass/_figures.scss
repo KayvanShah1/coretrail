@@ -28,6 +28,9 @@
 .reference-figure .reference-figure-hint {
   display: inline;
 }
+.reference-figure-image picture {
+  display: block;
+}
 .reference-figure-zoom:checked ~ .reference-figure-image img {
   min-width: var(--figure-width);
 }
@@ -37,10 +40,7 @@
   overscroll-behavior-x: contain;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: #fff;
-}
-.reference-figure--original .reference-figure-image {
-  background: #141a17;
+  background: var(--figure-background, #fff);
 }
 
 .reference-figure-image:focus-visible {
@@ -68,5 +68,18 @@
   .reference-figure-zoom,
   .reference-figure-zoom-label {
     display: none;
+  }
+}
+
+@media (max-width: 780px) {
+  .reference-figure {
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+@media (max-width: 600px), (min-width: 781px) and (max-width: 900px) {
+  .reference-figure--original .reference-figure-image img {
+    max-width: 440px;
+    margin-inline: auto;
   }
 }

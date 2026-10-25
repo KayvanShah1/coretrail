@@ -1,6 +1,9 @@
 {% assign figure = site.data.figures[include.id] %}
 {% if figure %}
-  <figure class="reference-figure{% if figure.original %} reference-figure--original{% endif %}">
+  <figure
+    class="reference-figure{% if figure.original %} reference-figure--original{% endif %}"
+    data-figure-id="{{ include.id }}"
+  >
     {% unless figure.original %}
       <div class="reference-figure-heading">{{ figure.title | escape }}</div>
     {% endunless %}
@@ -29,16 +32,26 @@
       role="region"
       tabindex="0"
       aria-label="{{ figure.title | escape }}. Enlarge the image for horizontal scrolling."
-      style="--figure-width: {{ figure.display_width }}px"
+      style="--figure-width: {{ figure.display_width }}px; --figure-background: {{ figure.background | default: '#ffffff' }}"
     >
-      <img
-        src="{{ figure.path | relative_url }}"
-        alt="{{ figure.alt | escape }}"
-        width="{{ figure.width }}"
-        height="{{ figure.height }}"
-        loading="lazy"
-        decoding="async"
-      >
+      <picture>
+        {% if figure.mobile_path %}
+          <source
+            media="(max-width: 600px), (min-width: 781px) and (max-width: 900px)"
+            srcset="{{ figure.mobile_path | relative_url }}"
+            width="{{ figure.mobile_width }}"
+            height="{{ figure.mobile_height }}"
+          >
+        {% endif %}
+        <img
+          src="{{ figure.path | relative_url }}"
+          alt="{{ figure.alt | escape }}"
+          width="{{ figure.width }}"
+          height="{{ figure.height }}"
+          loading="lazy"
+          decoding="async"
+        >
+      </picture>
     </div>
     <figcaption>
       <p>{{ figure.description | escape }}</p>
