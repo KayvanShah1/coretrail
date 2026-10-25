@@ -28,15 +28,15 @@
           },
           {
             "id": "sales",
-            "title": "Sales mart",
-            "detail": "Sales facts at their declared grain",
+            "title": "Sales",
+            "detail": "Fact rows",
             "column": 1,
             "row": 3
           },
           {
             "id": "returns",
-            "title": "Returns mart",
-            "detail": "Return facts at their declared grain",
+            "title": "Returns",
+            "detail": "Fact rows",
             "column": 2,
             "row": 3
           }
@@ -81,15 +81,15 @@
           },
           {
             "id": "finance",
-            "title": "Finance mart",
-            "detail": "Reporting representation",
+            "title": "Finance",
+            "detail": "Mart",
             "column": 1,
             "row": 3
           },
           {
             "id": "operations",
-            "title": "Operations mart",
-            "detail": "Reporting representation",
+            "title": "Operations",
+            "detail": "Mart",
             "column": 2,
             "row": 3
           }
