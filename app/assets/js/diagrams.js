@@ -90,7 +90,8 @@ if (figures.length) {
               // The canvas scrolls within the page instead of shrinking the whole SVG.
               const minimumWidth = Math.ceil(graphic.viewBox.baseVal.width * 0.85);
               graphic.style.minWidth = minimumWidth + 'px';
-              graphic.style.maxWidth = 'none';
+              // A narrow vertical flow should not grow to the full article width.
+              graphic.style.maxWidth = Math.ceil(graphic.viewBox.baseVal.width) + 'px';
               const scrollable = item.canvas.scrollWidth > item.canvas.clientWidth + 2;
               item.canvas.dataset.scrollable = String(scrollable);
               item.canvas.setAttribute('role', 'region');
