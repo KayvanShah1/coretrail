@@ -6,7 +6,6 @@ order: 2
 sequence: 62
 level: Core
 math: true
-mermaid: true
 keywords:
   - point in time join
   - data leakage
