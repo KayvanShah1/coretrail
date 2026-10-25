@@ -3,6 +3,7 @@
     <figcaption>{{ include.title }}</figcaption>
   {% endif %}
   <template class="diagram-source">{{ include.code | escape }}</template>
+  <p class="diagram-scroll-hint" hidden>Swipe or scroll sideways to read the full diagram.</p>
   <div class="diagram-canvas" hidden></div>
   <div class="diagram-fallback">{{ include.fallback | markdownify }}</div>
 </figure>

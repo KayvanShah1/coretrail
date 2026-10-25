@@ -5,6 +5,7 @@ chapter: orchestration
 order: 1
 sequence: 601
 level: Core
+mermaid: true
 keywords:
   - Airflow, Composer, dbt, and repeatable backfills
 interview_queries:
@@ -27,11 +28,27 @@ An incremental model filters changed records and uses a supported insert or merg
 
 A shared dbt model can enforce a declared output contract, while an incremental model's `on_schema_change` setting only governs how its target columns change. Neither can infer whether an upstream rename preserves meaning. See [Schema evolution and model contracts]({{ '/data-engineering/reliability/schema-evolution-and-contracts/' | relative_url }}) for the complete change process.
 
-## A dependable dependency chain
+## Track submitted work across task attempts
 
-~~~text
-extract interval → archive raw data → validate staging
-         → merge target → reconcile & test → publish checkpoint
-~~~
+{% capture diagram_code %}
+flowchart TD
+I["Logical interval and run key"] --> S["Scheduler releases ready task"]
+S --> O["Operator resolves remote job ID"]
+O --> C{"Existing submitted job?"}
+C -- "Yes" --> P["Poll the same job"]
+C -- "No" --> J["Submit warehouse or processing job"]
+J --> P
+P --> D{"Remote job status"}
+D -- "Succeeded" --> N["Release dependent model tasks"]
+D -- "Running" --> P
+D -- "Failed" --> R["Retry failed work with stable output key"]
+R --> J
+{% endcapture %}
+{% capture diagram_fallback %}
+The scheduler releases a task for its logical interval. The operator submits or resumes a remote processing job, tracks that job's completion and releases dependents only on success. Retries retain the same logical output contract.
+{% endcapture %}
+{% include diagram.html title="The orchestrator tracks work performed by an execution engine" code=diagram_code fallback=diagram_fallback caption=true %}
+
+Remote-job identity must come from an operator or application mechanism that supports safe resumption; a task retry does not provide it automatically. A failed remote job can require a new submitted execution ID while retaining the same logical output key. Record both identities so resuming an in-progress execution and rerunning failed work remain distinguishable. The [publication lifecycle]({{ '/data-engineering/foundations/pipeline-run-lifecycle/' | relative_url }}) explains output checks and checkpoints.
 
 An Airflow task reporting success does not prove that every expected device contributed data. Treat readiness, freshness and business reconciliation as explicit checks. Monitor task retries, dependency queues, processing latency and downstream data age separately.

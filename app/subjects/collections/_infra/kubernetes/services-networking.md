@@ -39,15 +39,7 @@ A Service selects eligible backends and provides a stable name/address over that
 
 ## The flow
 
-```text
-client
-  ↓
-Service / Gateway / external load balancer
-  ↓
-EndpointSlice / backend selection
-  ↓
-ready Pod
-```
+A client can enter through an external load balancer or Gateway. For Service routing, the cluster uses backend information from EndpointSlices to select an eligible Pod. The exact forwarding mechanism depends on the cluster networking implementation.
 
 Readiness matters here. A Pod that exists but is not ready should not be treated like a healthy backend for ordinary Service traffic.
 

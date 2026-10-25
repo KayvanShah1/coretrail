@@ -1,0 +1,17 @@
+{% assign diagnostic = site.data.diagnostics[include.id] %}
+{% if diagnostic %}
+  <figure class="diagnostic-map" aria-label="{{ diagnostic.title | escape }}">
+    <figcaption>{{ diagnostic.title }}</figcaption>
+    <div class="diagnostic-steps">
+      {% for step in diagnostic.steps %}
+        <div class="diagnostic-step">
+          <strong>{{ step.heading | escape }}</strong>
+          <p>{{ step.detail | escape }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    {% if diagnostic.note %}
+      <p class="diagnostic-note">{{ diagnostic.note | escape }}</p>
+    {% endif %}
+  </figure>
+{% endif %}

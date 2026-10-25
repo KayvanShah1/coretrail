@@ -14,6 +14,7 @@ order: 0
 sequence: 700
 level: "Chapter overview"
 mermaid: true
+math: true
 ---
 
 ## Recognize a problem, then compose a solution
@@ -97,18 +98,13 @@ Examples: MoM revenue, rank stores by total visits, percentage of total, cumulat
 
 ### LAG → arithmetic
 
-```text
-current metric
-- previous metric
-= absolute change
-```
+For current value {% include math.html tex="x_t" %} and previous value {% include math.html tex="x_{t-1}" %}:
 
-```text
-(current - previous) / previous
-= percentage change
-```
+{% include math.html tex="\text{absolute change}=x_t-x_{t-1}" block=true %}
 
-Protect a zero previous value with `NULLIF`.
+{% include math.html tex="\text{change (\%)}=100\times\frac{x_t-x_{t-1}}{x_{t-1}}" block=true %}
+
+Percentage change is undefined when the previous value is zero. Protect that denominator in SQL with `NULLIF`.
 
 ### LAG → flag → cumulative SUM
 

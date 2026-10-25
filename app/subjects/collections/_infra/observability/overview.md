@@ -34,17 +34,14 @@ Metrics show how behavior changes over time, logs preserve event detail, and tra
 
 Operationally, the sequence is usually:
 
-```text
-alert / user symptom
-→ identify affected service and time window
-→ inspect metrics
-→ follow traces or request IDs
-→ read the relevant logs
-→ confirm the failing component or dependency
-```
+1. Identify the affected service and time window from the symptom.
+2. Inspect metrics for the scale and duration of the change.
+3. Follow traces or request IDs into the relevant logs.
+4. Confirm the failing component or dependency against that evidence.
 
 ## In this chapter
 
 <ul class="topic-list">
 <li><a href="{{ '/infrastructure/observability/metrics-logs-traces/' | relative_url }}">Metrics, logs, and traces</a><span>Use each signal for the questions it answers best and correlate them through request/context identifiers.</span></li>
+<li><a href="{{ '/infrastructure/observability/observability-explainability-traceability-auditability/' | relative_url }}">Observability, explainability, traceability and auditability</a><span>Compare the evidence required for pipelines, predictions and agent actions.</span></li>
 </ul>

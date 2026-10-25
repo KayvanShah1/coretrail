@@ -65,7 +65,7 @@ This is a scope map, not a claim of exhaustive SQL coverage. Each chapter has a 
 
 ## Database design
 
-- [Fact tables, dimensions & slowly changing history](../app/subjects/collections/_sql/design/dimensional-modeling.md)
+- [Resolving dimension versions in analytical SQL](../app/subjects/collections/_sql/design/dimensional-modeling.md)
 - [Normalization & functional dependencies](../app/subjects/collections/_sql/design/normalization.md)
 
 ## Schema & data changes
@@ -148,10 +148,23 @@ This is a scope map, not a claim of exhaustive SQL coverage. Each chapter has a 
 
 PostgreSQL query results are checked with deterministic fixtures. Native PostgreSQL CI checks the index and pruning labs. SQL Server and cloud warehouse guidance is source-backed but requires those platforms for execution. Multi-session replication, failover, and sharding behavior is explained through scenarios rather than simulated by single-session tests.
 
-## Planned subjects
+## Other published subjects
 
-- Data Engineering
-- Machine Learning
-- AI Engineering
-- System Design
-- DSA
+- [Data Engineering](../app/subjects/data-engineering/index.md): pipeline design, storage, incremental changes, GCP, orchestration, distributed processing and reliability.
+- [Machine Learning](../app/subjects/ml/index.md): model fundamentals, features, serving and operations.
+- [AI Engineering](../app/subjects/ai-engineering/index.md): inference, serving, deployment, retrieval, agents, evaluation and production operations.
+- [Infrastructure & DevOps](../app/subjects/infrastructure/index.md): containers, Kubernetes, scaling, cloud architecture and observability.
+- [System Design](../app/subjects/systems/index.md).
+- [DSA](../app/subjects/dsa/index.md).
+
+See the [October interview-content audit](INTERVIEW_CONTENT_AUDIT_2026_10.md) for the source-to-chapter mapping, substantive corrections and verification scope.
+
+## Data modelling and pipeline expansion
+
+Two dedicated chapters cover [data modelling and transactions](../app/subjects/collections/_de/modelling/overview.md) and [warehouse/processing architecture choices](../app/subjects/collections/_de/architecture/overview.md). New reference pages also cover capacity arithmetic, pipeline contracts, Delta/Iceberg/Hudi operations, failure diagnosis, resumable/replayable backfills and metadata tools. See the [official source verification ledger](DATA_MODELLING_PIPELINES_SOURCES.md) for primary references and scope.
+
+## Lake design, physical layout and content consolidation
+
+Five focused references now cover lake/warehouse design, partitioning and file sizing, query-plan evidence, transformation-tool selection and workload-based database selection. Kimball, Inmon and medallion have explicit diagrams alongside the existing Data Vault, Lambda, Kappa and hybrid diagrams.
+
+The [content ownership map](CONTENT_OWNERSHIP.md) records canonical explanations and applied-page scope. Overlapping introductions were consolidated, One Big Table moved to modelling, and the sitemap now includes Data Engineering alongside the other collections. Retired pages and their internal references were removed directly.

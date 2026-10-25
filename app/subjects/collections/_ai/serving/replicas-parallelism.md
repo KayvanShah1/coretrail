@@ -130,15 +130,7 @@ A 405-billion-parameter (405B) model at 16-bit precision needs about **810 GB de
 
 Google's published Llama 3.1 405B multi-host example uses two eight-GPU machines. One serving replica combines tensor parallelism across the GPUs within each machine with pipeline parallelism across the two machines:
 
-```text
-logical model replica
-        ↓
-2 machines
-        ↓
-8 GPUs per machine
-        ↓
-16 GPUs participate in one serving replica
-```
+Two machines with eight graphics processing units (GPUs) each provide **16 GPUs for one serving replica**.
 
 The example shows why replica count, Pod count, and GPU count have to be reasoned about independently:
 

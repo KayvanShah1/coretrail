@@ -74,15 +74,9 @@ Kubernetes readiness probes answer whether the Pod should receive traffic throug
 
 For LLM inference, “the HTTP process accepted a socket” can be too early. Readiness should remain false until the model is loaded and the server can serve the intended model.
 
-Startup probes fit applications with legitimately long initialization. Kubernetes delays normal liveness and readiness checks until startup succeeds, which prevents restarts while the model is still loading.
+Configure the probe sequence using the [Kubernetes health-probe reference]({{ '/infrastructure/kubernetes/probes-rollouts/' | relative_url }}). For this workload, the startup allowance must cover model loading and warmup; the readiness check must verify the intended model rather than only an open socket.
 
-## Liveness and readiness mean different things
-
-- **Startup:** Has this slow-starting application finished initialization?
-- **Readiness:** Should new traffic be sent here right now?
-- **Liveness:** Is the process stuck in a state where a restart is appropriate?
-
-A temporary overload should not automatically be treated as a dead process. Likewise, an initializing model should not be exposed merely because the container has not crashed.
+A live process can still have failed to load the requested checkpoint. A dependency outage can make the replica unready without requiring repeated model reloads. Diagnose which condition failed before choosing a restart.
 
 ## Warmup is part of the latency budget
 

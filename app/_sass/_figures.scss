@@ -1,0 +1,75 @@
+.reference-figure {
+  margin: 1.6rem 0 2rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg);
+  min-width: 0;
+}
+.reference-figure-heading {
+  color: var(--strong);
+  font-weight: 650;
+}
+.reference-figure .reference-figure-hint,
+.reference-figure .reference-figure-credit {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0.5rem 0;
+}
+.reference-figure-zoom {
+  margin: 0.75rem 0.35rem 0.75rem 0;
+  accent-color: var(--accent);
+}
+.reference-figure-zoom-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.reference-figure .reference-figure-hint {
+  display: inline;
+}
+.reference-figure-zoom:checked ~ .reference-figure-image img {
+  min-width: var(--figure-width);
+}
+
+.reference-figure-image {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.reference-figure-image:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.reference-figure-image img {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: auto;
+  margin: 0;
+}
+.reference-figure figcaption p {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin: 0.75rem 0 0;
+}
+@media print {
+  .reference-figure-zoom:checked ~ .reference-figure-image img {
+    min-width: 0;
+  }
+  .reference-figure-hint,
+  .reference-figure-zoom,
+  .reference-figure-zoom-label {
+    display: none;
+  }
+}
+
+@media (max-width: 780px) {
+  .reference-figure {
+    padding: 0.75rem 0.5rem;
+  }
+}

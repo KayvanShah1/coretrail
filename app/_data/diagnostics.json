@@ -1,0 +1,46 @@
+{
+  "point-in-time": {
+    "title": "A feature that existed in event time but was unavailable at prediction time",
+    "steps": [
+      {
+        "heading": "10:00 · event",
+        "detail": "Customer A's transaction count is 5; it arrives at 10:01."
+      },
+      {
+        "heading": "10:30 · event",
+        "detail": "The count changes to 8, but its update arrives at 10:45."
+      },
+      {
+        "heading": "10:35 · prediction",
+        "detail": "The available feature is still 5. Using 8 here leaks information."
+      },
+      {
+        "heading": "10:45 · arrival",
+        "detail": "The delayed update becomes usable for subsequent predictions."
+      }
+    ],
+    "note": "An event timestamp alone cannot establish feature availability. Record arrival or publication time as well."
+  },
+  "evaluation-path": {
+    "title": "Diagnose a bad answer where it was introduced",
+    "steps": [
+      {
+        "heading": "Source",
+        "detail": "Did the document contain the answer, and was its text parsed correctly?"
+      },
+      {
+        "heading": "Retrieval",
+        "detail": "Did the correct evidence reach the candidate set and reranked context?"
+      },
+      {
+        "heading": "Generation",
+        "detail": "Did the model use the provided evidence faithfully?"
+      },
+      {
+        "heading": "Action",
+        "detail": "Did the agent select safe tools and complete the requested operation?"
+      }
+    ],
+    "note": "Inspect each stage before attributing the failure to the model."
+  }
+}

@@ -1,42 +1,54 @@
 ---
-title: "Fact tables, dimensions & slowly changing history"
-description: "Choose an analytical grain before choosing keys or columns."
-chapter: "design"
+title: "Resolving dimension versions in analytical SQL"
+description: "Validate historical joins for one match per fact and preserve rows whose dimension version is missing."
+chapter: design
 order: 2
 sequence: 802
-level: "Intermediate"
-references: [{"title":"Microsoft dimensional modeling guidance","url":"https://learn.microsoft.com/en-us/power-bi/guidance/star-schema"}]
+level: Intermediate
+keywords: [dimensional SQL, fact grain, as-of join, dimension key, Type 2 join]
+interview_queries: [why does a historical dimension join multiply sales rows, how do I find missing dimension versions]
 ---
 
-## Declare the fact grain
+A fact needs the dimension version appropriate to its reporting time. The [dimensional modelling reference]({{ '/data-engineering/modelling/dimensional-facts-schemas/' | relative_url }}) explains fact patterns and schema choices; [slowly changing dimensions]({{ '/data-engineering/modelling/scd-temporal-history/' | relative_url }}) works through history and correction semantics. This page checks the SQL join.
 
-For sales, a useful grain is **one row per order line**. Measures can include quantity and line revenue; foreign keys identify date, customer, and product dimensions.
+## Resolve one historical version
 
-| Table | Example columns | Grain |
-|---|---|---|
-| `fact_sales` | order_id, line_number, customer_key, product_key, sale_date, revenue | One sold line |
-| `dim_customer` | customer_key, customer_id, city, valid_from, valid_to | One customer version |
-| `dim_product` | product_key, product_id, category | One product version or current product |
+Assume sales_staging has one row per order line, identified by (order_id, line_number). Dimension intervals are half-open: valid_from is included and valid_to is excluded. A null valid_to represents an open interval.
 
-Mixing daily totals and individual orders in the same fact table without a clear type can double-count revenue. A balance snapshot is also different from a transaction flow: summing balances over dates often has no useful interpretation.
-
-## Type 1 versus Type 2
-
-Type 1 overwrites an attribute, such as correcting a misspelled name. Type 2 adds a new dimension version to retain historical attributes, such as the customer's region at purchase time.
-
-```sql
-SELECT s.order_id, d.city
+~~~sql
+SELECT s.order_id, s.line_number, d.customer_key, d.city
 FROM sales_staging s
-JOIN dim_customer d
+LEFT JOIN dim_customer d
   ON d.customer_id = s.customer_id
  AND s.sale_ts >= d.valid_from
  AND (s.sale_ts < d.valid_to OR d.valid_to IS NULL);
-```
+~~~
 
-Assume version intervals are non-overlapping and half-open. Overlaps create multiple matches and inflate facts. Gaps leave facts without a version. Validate both conditions.
+LEFT JOIN preserves a sale whose dimension is missing so that it can be diagnosed. An inner join silently removes it. A record at exactly the change timestamp matches the new version.
 
-## Explain the trade-off
+| Customer version | Interval | Sale timestamp | Match |
+|---|---|---|---|
+| key 101 | June 1 through July 1, end excluded | June 30 at noon | 101 |
+| key 205 | July 1 onward | July 1 at midnight | 205 |
 
-A surrogate key identifies a dimension version; the business key identifies the real-world customer. Keeping them separate lets facts refer to the version that was valid at the event time.
+This example assumes source timestamps and interval endpoints use the same timezone and comparable types. Business-effective time and platform load time can answer different questions.
 
-For a current-state report, joining only the current dimension version may be deliberate. For a historical report, it can rewrite the apparent past. Ask which meaning the stakeholder needs.
+## Count matches before publishing facts
+
+~~~sql
+SELECT s.order_id, s.line_number,
+       COUNT(d.customer_key) AS dimension_matches
+FROM sales_staging s
+LEFT JOIN dim_customer d
+  ON d.customer_id = s.customer_id
+ AND s.sale_ts >= d.valid_from
+ AND (s.sale_ts < d.valid_to OR d.valid_to IS NULL)
+GROUP BY s.order_id, s.line_number
+HAVING COUNT(d.customer_key) <> 1;
+~~~
+
+The dimension key is assumed non-null on real dimension rows. Counting that key produces zero for an unmatched outer row; COUNT(*) would count the preserved row and conceal the missing match.
+
+A zero count calls for an explicit missing-dimension policy. A count above one indicates overlapping versions or duplicated dimension rows. DISTINCT over the final report can hide the symptom while leaving measures wrong.
+
+Validate input fact uniqueness independently, then compare fact counts and business totals before and after version resolution. Once the correct surrogate version key is stored on a fact, ordinary star queries can join on that key without repeating the time-range resolution.

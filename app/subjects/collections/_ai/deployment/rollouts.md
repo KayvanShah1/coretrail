@@ -36,15 +36,10 @@ That makes rollout capacity a first-class concern.
 
 For one replica:
 
-```text
-new version requested
-→ new Pod scheduled
-→ image/model become available
-→ model loads and warms
-→ readiness succeeds
-→ traffic shifts
-→ old replica drains and stops
-```
+1. Schedule the new Pod and make its image and model available.
+2. Load and warm the model, then verify readiness.
+3. Shift traffic to the ready replacement.
+4. Drain the old replica before stopping it.
 
 The old serving capacity should not disappear before enough new capacity is actually ready.
 

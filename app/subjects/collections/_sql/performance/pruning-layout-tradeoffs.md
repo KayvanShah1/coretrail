@@ -40,6 +40,18 @@ BigQuery clustering organizes storage blocks in the order of declared clustering
 
 High cardinality is one input to the decision. If every report reads all regions, organizing blocks by region may provide little benefit. Small partitions can also leave little room for clustering to help.
 
+## Define a BigQuery date-based layout
+
+~~~sql
+CREATE TABLE analytics.orders (
+  customer_id STRING, order_ts TIMESTAMP, amount NUMERIC
+)
+PARTITION BY DATE(order_ts)
+CLUSTER BY customer_id;
+~~~
+
+This layout makes the order's date the partitioning expression and customer_id the clustering column. Test date ranges, customer-history queries and broad reports against their actual scan work. A table definition expresses intent; it does not establish a performance improvement.
+
 ## When more partitions make things worse
 
 Partitioning adds metadata and layout constraints. Extremely fine granularity can create many tiny partitions. Small partitions increase metadata and management overhead, and may interact poorly with frequent inserts or compaction.

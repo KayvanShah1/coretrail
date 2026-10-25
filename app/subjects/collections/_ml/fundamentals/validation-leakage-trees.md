@@ -19,7 +19,7 @@ If tomorrow's power demand is being forecast, a feature computed from tomorrow's
 
 ## Classification measures
 
-Precision = TP / (TP + FP), recall = TP / (TP + FN), and F1 is their harmonic mean. Accuracy can mislead when failures are rare. Precision-recall curves, false-positive costs, calibration and performance by subgroup help choose a usable decision threshold.
+Precision measures how often positive predictions are correct; recall measures how many actual positives are detected. F1 is their harmonic mean. The [classification metrics reference]({{ '/ml/fundamentals/classification-metrics-thresholds/' | relative_url }}) gives the formulas and threshold trade-offs. Accuracy can mislead when failures are rare. Precision-recall curves, false-positive costs, calibration and performance by subgroup help choose a usable decision threshold.
 
 ## Trees and ensembles
 

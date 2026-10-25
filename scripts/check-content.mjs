@@ -84,6 +84,13 @@ for (const collection of publishedCollections) {
 
     for (const key of ['title', 'description', 'chapter', 'order', 'sequence'])
       assert.notEqual(data[key], undefined, key + ' ' + file);
+    assert.equal(
+      data.mermaid === true,
+      match[2].includes('include diagram.html'),
+      'Mermaid flag does not match diagram content ' + file,
+    );
+    if (match[2].includes('include math.html'))
+      assert.equal(data.math, true, 'math renderer disabled ' + file);
     assert.ok(validChapters.has(data.chapter), 'unknown chapter ' + data.chapter + ' ' + file);
     assert.ok(!collectionSequences.has(data.sequence), 'duplicate sequence ' + file);
     collectionSequences.add(data.sequence);

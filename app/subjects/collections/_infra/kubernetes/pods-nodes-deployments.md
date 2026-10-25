@@ -46,6 +46,8 @@ Deployment wants 3 replicas → Pods A/B/C → scheduler places Pods across Node
 {% endcapture %}
 {% include diagram.html title="Deployment controls Pods; Pods run on nodes" code=diagram_code fallback=diagram_fallback caption=true %}
 
+{% include figure.html id="kubernetes-components" %}
+
 ## Node: the resource pool
 
 A node contributes central processing unit (CPU) capacity, memory, local storage, networking, and possibly GPUs or other devices.
@@ -90,11 +92,6 @@ The kubelet on that node works with the container runtime to start and supervise
 
 That separation becomes important during autoscaling:
 
-```text
-autoscaler increases desired replicas
-→ controller creates Pods
-→ scheduler tries to place them
-→ node autoscaler may need to create machines
-```
+The workload autoscaler changes desired replicas; a controller creates the missing Pods and the scheduler tries to place them. If suitable capacity is unavailable, they stay Pending while node autoscaling can add machines.
 
 Next: [Services and networking]({{ '/infrastructure/kubernetes/services-networking/' | relative_url }}).

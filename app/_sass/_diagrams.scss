@@ -40,3 +40,22 @@
     padding: 16px 10px;
   }
 }
+
+.diagram-scroll-hint {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.diagram-canvas:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+// ER relationship labels otherwise inherit Mermaid's muted border color.
+.diagram-canvas .edgeLabel text,
+.diagram-canvas .edgeLabel tspan {
+  fill: var(--text) !important;
+}
+.diagram-canvas .edgeLabel rect {
+  fill: var(--bg) !important;
+}

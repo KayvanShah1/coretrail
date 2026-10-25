@@ -83,9 +83,19 @@
       "description": "Validation, leakage, tree ensembles, metrics, and deployment drift."
     },
     {
+      "id": "features",
+      "title": "Feature engineering & stores",
+      "description": "Build point-in-time-correct training features and low-latency online values."
+    },
+    {
       "id": "serving",
       "title": "Model serving",
-      "description": "Compare prediction APIs with autoregressive LLM serving and their operating constraints."
+      "description": "Deploy prediction pipelines, load artifacts, group models and compare ML with LLM serving."
+    },
+    {
+      "id": "operations",
+      "title": "MLOps & model monitoring",
+      "description": "Track experiments and releases, diagnose drift and gate retraining and rollback."
     }
   ],
   "ai-engineering": [
@@ -107,7 +117,7 @@
     {
       "id": "production",
       "title": "Production LLM systems",
-      "description": "Design routing, backpressure, autoscaling, capacity, and failure handling."
+      "description": "Traffic, capacity, prompt/context releases, caching, streaming voice and recovery."
     },
     {
       "id": "observability",
@@ -149,14 +159,29 @@
     {
       "id": "observability",
       "title": "Operations & observability",
-      "description": "Connect metrics, logs, traces, health, and deployment state during incidents."
+      "description": "Runtime telemetry, explanations, provenance and reviewable action records."
+    },
+    {
+      "id": "cloud",
+      "title": "Cloud architecture, IAM & cost",
+      "description": "Assign compute, storage, networking, identities and cost controls to the right service."
     }
   ],
   "data-engineering": [
     {
       "id": "foundations",
       "title": "Pipeline architecture",
-      "description": "ETL, ELT, batch, streaming, and choosing where transformations run."
+      "description": "Contracts, ETL/ELT, batch, streaming and capacity estimates."
+    },
+    {
+      "id": "modelling",
+      "title": "Data modelling & transactions",
+      "description": "Entities, relationships, dimensional grain, SCD history and transaction scope."
+    },
+    {
+      "id": "architecture",
+      "title": "Warehouse & processing architectures",
+      "description": "Kimball, Inmon, Data Vault, Lambda, Kappa, medallion and hybrid choices."
     },
     {
       "id": "incremental",
@@ -165,8 +190,8 @@
     },
     {
       "id": "storage",
-      "title": "Storage & modeling",
-      "description": "File formats, lakehouse tables, facts, dimensions, and history."
+      "title": "Storage & lakehouse tables",
+      "description": "File formats, table protocols, layout, file sizing and database choices."
     },
     {
       "id": "gcp",
@@ -181,7 +206,7 @@
     {
       "id": "orchestration",
       "title": "Orchestration & transformations",
-      "description": "Airflow, Cloud Composer, dbt, retries, and backfills."
+      "description": "Choose execution engines, coordinate dependencies and reproduce intervals."
     },
     {
       "id": "reliability",

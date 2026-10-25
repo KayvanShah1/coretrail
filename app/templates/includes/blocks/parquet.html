@@ -1,0 +1,37 @@
+<p class="block-query">
+  <code>SELECT event_date, kwh FROM meter_readings WHERE event_date &gt;= DATE '2026-07-01'</code>
+</p>
+<div class="parquet-file">
+  <div class="parquet-file-heading"><code>PAR1</code><span>File header</span></div>
+  {% for group in block.row_groups %}
+    <section
+      class="parquet-row-group{% if group.skipped %} parquet-row-group--skipped{% endif %}"
+      aria-label="{{ group.title | escape }}"
+    >
+      <div class="parquet-group-heading">
+        <strong>{{ group.title | escape }}</strong><span>{{ group.decision | escape }}</span>
+      </div>
+      <div class="parquet-columns">
+        {% for column in group.columns %}
+          <div class="parquet-column{% if column.read %} parquet-column--read{% endif %}">
+            <strong>{{ column.name | escape }}</strong>
+            <span class="parquet-chunk-label">Column chunk</span>
+            {% for page in column.pages %}
+              <div class="parquet-page">{{ page | escape }}</div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+      <p class="parquet-statistic">{{ group.statistics | escape }}</p>
+    </section>
+  {% endfor %}
+  <div class="parquet-footer">
+    <strong>Footer metadata</strong><span>Schema · row-group locations · column statistics</span>
+  </div>
+  <div class="parquet-file-heading"><span>Footer length + end marker</span><code>PAR1</code></div>
+</div>
+<p class="parquet-key">
+  <strong>Read:</strong> the two highlighted column chunks in row group 2.
+  <strong>Skip:</strong> row group 1 by date statistics, and device_id by projection. Values and
+  pages are illustrative.
+</p>

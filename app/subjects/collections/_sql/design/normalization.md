@@ -42,3 +42,5 @@ The joins reassemble a report without duplicating descriptive facts in every sou
 A reporting table may intentionally duplicate attributes to simplify analytical reads. That introduces maintenance responsibilities: refresh logic, consistency, and history rules. “More normalized is always faster” and “joins are always bad” are both unreliable claims.
 
 An interview answer should connect the design to read/write patterns and update anomalies. Start with the entities and dependencies, then discuss measured reasons to denormalize.
+
+[Data models, keys and relationship cardinality]({{ '/data-engineering/modelling/models-keys-relationships/' | relative_url }}) adds entity diagrams, many-to-many relationships and document/graph/wide-column trade-offs.

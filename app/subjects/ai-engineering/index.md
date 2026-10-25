@@ -22,17 +22,25 @@ The Artificial Intelligence (AI) Engineering trail covers large language model (
 The serving chapters start with one model request, then add deployment, production traffic, and observability. The next chapters follow retrieved evidence and tool calls through a user-facing application.
 
 {% capture diagram_code %}
-flowchart LR
-A["Prompt"] --> B["Inference"]
-B --> C["Serving"]
-C --> D["Deployment"]
-D --> E["Production traffic"]
-E --> F["Observability"]
+flowchart TB
+U["User request"] --> A["API / agent controller"]
+A <--> S[("Durable workflow state")]
+A --> R["Retrieval index"]
+A --> T["Authorized tools"]
+A --> M["Model endpoint"]
+D["Source documents"] --> I["Parsing + embedding pipeline"]
+I --> R
+M --> E["Inference engine + scheduler"]
+E --> G["GPU replica(s)"]
+K["Deployment and autoscaling"] -.-> E
+O["Tracing, evaluation and costs"] -.-> A
+O -.-> M
+
 {% endcapture %}
 {% capture diagram_fallback %}
-Prompt → Inference → Serving → Deployment → Production traffic → Observability
+User request → API/agent controller, which reads state, retrieval and tools and invokes the model endpoint; serving schedules inference on GPU replicas. Source documents feed the retrieval index. Deployment/autoscaling and observability act on the serving system.
 {% endcapture %}
-{% include diagram.html title="From a model call to a production service" code=diagram_code fallback=diagram_fallback caption=true %}
+{% include diagram.html title="Request, knowledge and infrastructure control paths" code=diagram_code fallback=diagram_fallback caption=true %}
 
 Each component should answer a concrete question: where the request goes, where it can wait, how inference runs, how capacity changes, and which signals explain a slowdown.
 
@@ -42,8 +50,8 @@ Each component should answer a concrete question: where the request goes, where 
 <li><a href="{{ '/ai-engineering/inference/overview/' | relative_url }}">LLM inference</a><span>Prefill, decode, key-value (KV) cache, batching, and graphics processing unit (GPU) work behind token generation.</span></li>
 <li><a href="{{ '/ai-engineering/serving/overview/' | relative_url }}">LLM serving</a><span>Inference engines, replicas, parallelism, routing, and concurrent users.</span></li>
 <li><a href="{{ '/ai-engineering/deployment/overview/' | relative_url }}">Deploying LLMs</a><span>Artifacts, containers, model weights, GPU startup, readiness, and rollouts.</span></li>
-<li><a href="{{ '/ai-engineering/production/overview/' | relative_url }}">Production LLM systems</a><span>Gateways, queues, backpressure, autoscaling, cold starts, capacity, and failures.</span></li>
-<li><a href="{{ '/ai-engineering/observability/overview/' | relative_url }}">LLM observability</a><span>Time to first token (TTFT), time per output token (TPOT), queue pressure, KV-cache utilization, GPU signals, and cost.</span></li>
+<li><a href="{{ '/ai-engineering/production/overview/' | relative_url }}">Production LLM systems</a><span>Traffic control, capacity, prompt/context releases, caching, streaming voice and recovery.</span></li>
+<li><a href="{{ '/ai-engineering/observability/overview/' | relative_url }}">LLM observability</a><span>Latency, queue/cache pressure, GPU state and cost, with links to decision evidence and provenance.</span></li>
 <li><a href="{{ '/ai-engineering/retrieval/overview/' | relative_url }}">RAG & retrieval</a><span>Parsing, embeddings, hybrid search, reranking, context selection, and scale.</span></li>
 <li><a href="{{ '/ai-engineering/agents/overview/' | relative_url }}">Agents & tools</a><span>Typed tool contracts, execution state, authorization and retries.</span></li>
 <li><a href="{{ '/ai-engineering/evaluation/overview/' | relative_url }}">AI evaluation</a><span>Retrieval diagnostics, groundedness, trajectories, latency and cost.</span></li>

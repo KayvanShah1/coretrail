@@ -1,0 +1,50 @@
+{% assign figure = site.data.figures[include.id] %}
+{% if figure %}
+  <figure class="reference-figure" data-figure-id="{{ include.id }}">
+    <div class="reference-figure-heading">{{ figure.title | escape }}</div>
+    <input
+      class="reference-figure-zoom"
+      type="checkbox"
+      id="figure-zoom-{{ include.id }}"
+      aria-controls="figure-image-{{ include.id }}"
+    >
+    <label class="reference-figure-zoom-label" for="figure-zoom-{{ include.id }}"
+      >Enlarge image</label
+    >
+    <p class="reference-figure-hint">
+      ·
+      <a
+        href="{{ figure.path | relative_url }}"
+        target="_blank"
+        rel="noopener"
+        aria-label="Open full-size image: {{ figure.title | escape }}"
+        >Open full size</a
+      >
+    </p>
+    <div
+      class="reference-figure-image"
+      id="figure-image-{{ include.id }}"
+      role="region"
+      tabindex="0"
+      aria-label="{{ figure.title | escape }}. Enlarge the image for horizontal scrolling."
+      style="--figure-width: {{ figure.display_width }}px"
+    >
+      <img
+        src="{{ figure.path | relative_url }}"
+        alt="{{ figure.alt | escape }}"
+        width="{{ figure.width }}"
+        height="{{ figure.height }}"
+        loading="lazy"
+        decoding="async"
+      >
+    </div>
+    <figcaption>
+      <p>{{ figure.description | escape }}</p>
+      <p class="reference-figure-credit">
+        Source: <a href="{{ figure.source_url | escape }}">{{ figure.author | escape }}</a> ·
+        <a href="{{ figure.license_url | escape }}">{{ figure.license | escape }}</a> · Reproduced
+        unchanged.
+      </p>
+    </figcaption>
+  </figure>
+{% endif %}

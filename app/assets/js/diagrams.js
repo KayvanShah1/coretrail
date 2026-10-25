@@ -4,6 +4,7 @@ const figures = [...document.querySelectorAll('.diagram')].map((figure) => ({
   source: figure.querySelector('.diagram-source').content.textContent.trim(),
   canvas: figure.querySelector('.diagram-canvas'),
   fallback: figure.querySelector('.diagram-fallback'),
+  hint: figure.querySelector('.diagram-scroll-hint'),
   state: '',
 }));
 
@@ -85,6 +86,21 @@ if (figures.length) {
               bindFunctions?.(item.canvas);
               item.canvas.hidden = false;
               item.fallback.hidden = true;
+              // Preserve readable labels when a branched graph cannot fit the column.
+              // The canvas scrolls within the page instead of shrinking the whole SVG.
+              const minimumWidth = Math.ceil(graphic.viewBox.baseVal.width * 0.85);
+              graphic.style.minWidth = minimumWidth + 'px';
+              graphic.style.maxWidth = 'none';
+              const scrollable = item.canvas.scrollWidth > item.canvas.clientWidth + 2;
+              item.canvas.dataset.scrollable = String(scrollable);
+              item.canvas.setAttribute('role', 'region');
+              item.canvas.setAttribute(
+                'aria-label',
+                item.figure.getAttribute('aria-label') +
+                  (scrollable ? '. Scroll horizontally to view the complete diagram.' : ''),
+              );
+              item.canvas.tabIndex = scrollable ? 0 : -1;
+              item.hint.hidden = !scrollable;
               item.figure.dataset.direction = direction;
               item.state = state;
             } catch {

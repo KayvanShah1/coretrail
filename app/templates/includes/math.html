@@ -1,0 +1,28 @@
+{%- comment -%}
+  Render a repository-authored LaTeX expression. A readable escaped fallback remains
+  visible if the remote rendering library cannot load. Compact the output so a
+  mid-sentence include stays inline in Kramdown. For multi-line TeX, use capture:
+  {% capture equation %}...{% endcapture %}{% include math.html tex=equation block=true %}
+{%- endcomment -%}
+{%- capture expression_markup -%}
+{% if include.block %}
+  <div
+    class="math-expression math-block"
+    role="math"
+    aria-label="{{ include.tex | normalize_whitespace | escape }}"
+  >
+    <template class="math-source">{{ include.tex | escape }}</template>
+    <code class="math-fallback">{{ include.tex | escape }}</code>
+  </div>
+{% else %}
+  <span
+    class="math-expression math-inline"
+    role="math"
+    aria-label="{{ include.tex | normalize_whitespace | escape }}"
+  >
+    <template class="math-source">{{ include.tex | escape }}</template>
+    <code class="math-fallback">{{ include.tex | escape }}</code>
+  </span>
+{% endif %}
+{%- endcapture -%}
+{{- expression_markup | normalize_whitespace | strip -}}

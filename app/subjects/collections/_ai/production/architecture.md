@@ -31,7 +31,7 @@ references:
     url: https://docs.aws.amazon.com/eks/latest/userguide/ml-inference-autoscaling.html
 ---
 
-A large language model (LLM) serving path is easier to reason about when every component owns a specific decision. If two boxes cannot be distinguished by responsibility, the diagram is not helping.
+A large language model (LLM) serving path is easier to reason about when every component owns a specific decision. The request path assigns traffic and execution, while the control path creates and maintains serving capacity.
 
 {% capture diagram_code %}
 flowchart TD
