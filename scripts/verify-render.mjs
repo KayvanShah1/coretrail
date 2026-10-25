@@ -608,6 +608,8 @@ try {
         } catch {
           errors.push('Image failed to decode: ' + (await img.getAttribute('src')));
         }
+        const zoom = figure.getByRole('checkbox', { name: 'Enlarge image' });
+        await zoom.check();
         const imageState = await img.evaluate((image) => ({
           loaded: image.complete && image.naturalWidth > 0,
           alt: image.alt,
@@ -635,7 +637,13 @@ try {
             errors.push('Image cannot be scrolled with the keyboard');
           }
         }
+        await zoom.uncheck();
+        const overviewFits = await img.evaluate(
+          (image) => image.getBoundingClientRect().width <= image.parentElement.clientWidth + 1,
+        );
+        if (!overviewFits) errors.push('Image overview is clipped before enlargement');
       }
+      await page.evaluate(() => window.scrollTo(0, 0));
       const sizes = await page.evaluate(() => ({
         scroll: document.documentElement.scrollWidth,
         viewport: document.documentElement.clientWidth,
@@ -668,6 +676,7 @@ try {
             }),
           );
         if (filteredImages) errors.push('Theme changed source image colors or lost pixels');
+        await page.evaluate(() => window.scrollTo(0, 0));
         await page.screenshot({
           path: resolve(evidence, test.name + '-' + v.label + '-' + nextTheme + '.png'),
           fullPage: true,

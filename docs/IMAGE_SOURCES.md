@@ -49,4 +49,4 @@ License evidence:
 
 ## Maintaining figures
 
-Use a descriptive asset path and a stable figure ID. Include the figure only in the topic that owns the explanation. The static checker validates paths, dimensions, registry references, file signatures, SVG safety and checksums. Browser checks verify successful image loading, captions, full-size links, keyboard scrolling and page overflow at desktop and mobile widths.
+Use a descriptive asset path and a stable figure ID. Include the figure only in the topic that owns the explanation. The static checker validates paths, dimensions, registry references, file signatures, SVG safety and checksums. Browser checks verify successful image loading, complete overview visibility, enlargement, captions, full-size links, keyboard scrolling and page overflow at desktop and mobile widths.

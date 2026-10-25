@@ -21,4 +21,4 @@ Do not turn comparisons that are clearer as tables into decorative flowcharts.
 
 Use `{% include figure.html id="sales-star" %}` for a detailed schema, nested architecture, physical layout or official execution-plan image. Its definition in `app/_data/figures.json` supplies the local asset, dimensions, caption, alt text and attribution. Store images under `app/assets/img/site/<subject>/<chapter>/<topic>/`. See [image sources and reuse](IMAGE_SOURCES.md) for the current inventory and license evidence.
 
-Static figures preserve their original colors. Their image region supports keyboard scrolling and a full-size link, and the explanation remains readable without JavaScript. They do not need `mermaid: true`. Retain that flag only when the page also contains a Mermaid process diagram.
+Static figures preserve their original colors. Their default view fits the column; an Enlarge image control enables keyboard scrolling, alongside a full-size link, and the explanation remains readable without JavaScript. They do not need `mermaid: true`. Retain that flag only when the page also contains a Mermaid process diagram.

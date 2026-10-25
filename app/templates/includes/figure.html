@@ -2,21 +2,31 @@
 {% if figure %}
   <figure class="reference-figure">
     <div class="reference-figure-heading">{{ figure.title | escape }}</div>
+    <input
+      class="reference-figure-zoom"
+      type="checkbox"
+      id="figure-zoom-{{ include.id }}"
+      aria-controls="figure-image-{{ include.id }}"
+    >
+    <label class="reference-figure-zoom-label" for="figure-zoom-{{ include.id }}"
+      >Enlarge image</label
+    >
     <p class="reference-figure-hint">
-      Scroll within the image to inspect details, or
+      ·
       <a
         href="{{ figure.path | relative_url }}"
         target="_blank"
         rel="noopener"
         aria-label="Open full-size image: {{ figure.title | escape }}"
-        >open full size</a
-      >.
+        >Open full size</a
+      >
     </p>
     <div
       class="reference-figure-image"
+      id="figure-image-{{ include.id }}"
       role="region"
       tabindex="0"
-      aria-label="{{ figure.title | escape }}. Scroll horizontally to inspect the complete image."
+      aria-label="{{ figure.title | escape }}. Enlarge the image for horizontal scrolling."
       style="--figure-width: {{ figure.display_width }}px"
     >
       <img
