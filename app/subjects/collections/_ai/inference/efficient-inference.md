@@ -1,4 +1,5 @@
 ---
+block_diagrams: true
 title: "Making LLM inference faster and cheaper"
 nav_title: "Efficient inference"
 description: "Match quantization, PagedAttention, prefix caching, speculative decoding, and model routing to the bottleneck they address."
@@ -94,7 +95,7 @@ The trade-off moves into scheduling. Chunk size and scheduling policy can improv
 
 A more structural design runs prefill and decode on different serving instances:
 
-{% include figure.html id="prefill-decode-pools" %}
+{% include block-diagram.html id="prefill-decode-pools" %}
 
 This matters because prefill and decode stress hardware differently. Separate pools can use different parallelism or capacity settings and let operators tune **time to first token (TTFT)** and **inter-token latency** more independently.
 

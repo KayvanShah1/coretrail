@@ -1,4 +1,5 @@
 ---
+block_diagrams: true
 title: "Kimball, Inmon, Data Vault and hybrid warehouse design"
 description: "Choose integration and presentation patterns from shared definitions, source volatility, audit history and delivery cost."
 chapter: "architecture"
@@ -28,7 +29,7 @@ A Kimball approach can deliver one business process at a time while planning sha
 An Inmon-style integration store can preserve a common enterprise representation before presentation models are built. That common layer adds work, so prioritize its contracts and consumer delivery together. A normalized integration model and dimensional reporting marts can coexist.
 
 
-{% include figure.html id="warehouse-methods" %}
+{% include block-diagram.html id="warehouse-methods" %}
 
 ## Kimball bus architecture
 

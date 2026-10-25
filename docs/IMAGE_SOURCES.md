@@ -1,42 +1,45 @@
-# Image sources and visual quality
+# Figures, native diagrams and source references
 
-Verified October 25, 2026. The handbook includes **six unchanged official figures** and **ten original, source-backed CoreTrail vector diagrams**. All ten authored diagrams have separate desktop and mobile compositions. Assets use app/assets/img/site/<subject>/<chapter>/<topic>/; app/_data/figures.json records their dimensions, captions, sources, licenses and checksums.
+Verified October 25, 2026. CoreTrail uses ten source-backed HTML diagrams and four unchanged official images. Schemas remain Mermaid ER diagrams. Slowly changing dimension examples use native tables with a shared customer change and explicit reporting results.
 
-## Representation and readability
+## Match the handbook
 
-- Schema diagrams remain Mermaid ER diagrams, including star, snowflake, bridge, conformed-dimension and Data Vault schemas.
-- Architecture, execution and physical-storage diagrams use self-contained SVG artwork. The desktop artwork uses a 760-pixel canvas, and mobile artwork uses a 440-pixel canvas with rearranged panels and connectors. Labels use at least 22 source pixels and must render at 14 CSS pixels or more at the checked reading sizes.
-- Mobile compositions preserve branch, control and data-flow meaning. Parallel scans or agents must not become a sequential chain merely because panels stack vertically.
-- Full opaque paper backgrounds, rounded panels, consistent iconography, aligned spacing and fixed-size arrowheads replace transparent corners, dense prose inside boxes and short or zero-length connectors. The image viewport clips the opaque artwork to its rounded border, so corner pixels match the frame without white wedges.
-- Dense official reference figures retain their source colors and bytes. Their enlargement uses the full source width rather than a capped 1000-pixel view. Fine print in an official UI screenshot may require enlargement; the surrounding prose states the interpretation.
+Native diagrams use the handbook’s DM Sans typography, theme variables, green accents and rounded panels. Their text remains selectable and wraps at the reading size. Responsive grids preserve independent inputs and branches. Connectors attach to the actual rendered boxes and redraw when panels resize. Control and recovery routes use dashed lines.
 
-## Sources and licenses
+Use `block-diagram.html` with `app/_data/block_diagrams.json`; set `block_diagrams: true` on the lesson. A figure’s caption explains its reading order and the decision it supports. The Parquet diagram uses nested HTML regions for row groups, column chunks and pages, with a concrete projection/pruning example.
 
-Original illustrations are authored for CoreTrail using the linked technical references. They embed [Lucide 0.468.0 icons](https://github.com/lucide-icons/lucide/tree/0.468.0), licensed under ISC. The full copyright and permission notice is included at app/assets/img/site/licenses/lucide-LICENSE.txt and the SVG sources identify that notice.
+SCD examples use accessible tables so the customer identity, change date, version keys and historical/current reporting agree throughout the example.
 
-The six unchanged official figures retain copyright with Microsoft, Google, Kubernetes or the Apache Software Foundation. CC BY 4.0, Apache 2.0 and notice files are stored under app/assets/img/site/licenses/. Their original URLs and SHA-256 checksums remain in the registry.
+## Native diagram references
 
-| Figure                   | Asset                                                                                              | Reference                                                                                                                                                                                   | Representation                  |
-| ------------------------ | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| rag-architecture         | /assets/img/site/ai-engineering/retrieval/rag-search-at-scale/rag-architecture.svg                 | [Microsoft](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-solution-design-and-evaluation-guide)                                                                  | CoreTrail SVG; desktop + mobile |
-| kubernetes-components    | /assets/img/site/infrastructure/kubernetes/pods-nodes-deployments/kubernetes-components.svg        | [The Kubernetes Authors](https://kubernetes.io/docs/concepts/overview/components/)                                                                                                          | CC-BY-4.0; unchanged            |
-| parquet-layout           | /assets/img/site/data-engineering/storage/partitioning-file-sizing/parquet-file-layout.svg         | [Apache Software Foundation](https://parquet.apache.org/docs/file-format/)                                                                                                                  | CoreTrail SVG; desktop + mobile |
-| scd-type-1               | /assets/img/site/data-engineering/modelling/scd-temporal-history/scd-type-1.svg                    | [Microsoft](https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-dimension-tables)                                                                                  | CC-BY-4.0; unchanged            |
-| kappa                    | /assets/img/site/data-engineering/architecture/lambda-kappa-medallion/kappa.svg                    | [Microsoft](https://learn.microsoft.com/en-us/azure/architecture/databases/guide/big-data-architectures)                                                                                    | CoreTrail SVG; desktop + mobile |
-| iceberg-metadata         | /assets/img/site/data-engineering/storage/delta-iceberg-hudi-operations/iceberg-metadata.png       | [Apache Software Foundation](https://iceberg.apache.org/spec/)                                                                                                                              | Apache-2.0; unchanged           |
-| scd-type-2               | /assets/img/site/data-engineering/modelling/scd-temporal-history/scd-type-2.svg                    | [Microsoft](https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-dimension-tables)                                                                                  | CC-BY-4.0; unchanged            |
-| lambda                   | /assets/img/site/data-engineering/architecture/lambda-kappa-medallion/lambda.svg                   | [Microsoft](https://learn.microsoft.com/en-us/azure/architecture/databases/guide/big-data-architectures)                                                                                    | CoreTrail SVG; desktop + mobile |
-| query-stages             | /assets/img/site/data-engineering/processing/query-plans-pruning/bigquery-query-stages.png         | [Google](https://docs.cloud.google.com/bigquery/docs/query-plan-explanation?hl=en)                                                                                                          | CC-BY-4.0; unchanged            |
-| partition-cluster        | /assets/img/site/data-engineering/storage/partitioning-file-sizing/partitioning-and-clustering.png | [Google](https://docs.cloud.google.com/bigquery/docs/clustered-tables)                                                                                                                      | CC-BY-4.0; unchanged            |
-| shared-agent-context     | /assets/img/site/ai-engineering/agents/shared-context-handoffs/shared-context-architecture.svg     | [LangGraph persistence](https://docs.langchain.com/oss/python/langgraph/persistence)                                                                                                        | CoreTrail SVG; desktop + mobile |
-| warehouse-methods        | /assets/img/site/data-engineering/architecture/warehouse-integration-patterns/kimball-inmon.svg    | [Kimball Group](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/enterprise-data-warehouse-bus-architecture/) | CoreTrail SVG; desktop + mobile |
-| medallion-models         | /assets/img/site/data-engineering/architecture/lambda-kappa-medallion/medallion-models.svg         | [Databricks data warehousing architecture](https://docs.databricks.com/gcp/en/sql/get-started/data-warehousing-concepts)                                                                    | CoreTrail SVG; desktop + mobile |
-| delta-platform           | /assets/img/site/data-engineering/architecture/lake-warehouse-design/delta-lake-platform.svg       | [Delta Lake concurrency control](https://docs.delta.io/concurrency-control/)                                                                                                                | CoreTrail SVG; desktop + mobile |
-| distributed-query-stages | /assets/img/site/data-engineering/gcp/slots-shuffle-concurrency/distributed-query-stages.svg       | [Google Cloud BigQuery query plan explanation](https://docs.cloud.google.com/bigquery/docs/query-plan-explanation)                                                                          | CoreTrail SVG; desktop + mobile |
-| prefill-decode-pools     | /assets/img/site/ai-engineering/inference/efficient-inference/disaggregated-prefill-decode.svg     | [vLLM disaggregated prefill documentation](https://docs.vllm.ai/en/latest/features/disagg_prefill.html)                                                                                     | CoreTrail SVG; desktop + mobile |
+| Diagram                  | Technical reference                                                                                                                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| warehouse-methods        | [Kimball Group](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/enterprise-data-warehouse-bus-architecture/) |
+| shared-agent-context     | [LangGraph persistence](https://docs.langchain.com/oss/python/langgraph/persistence)                                                                                                        |
+| medallion-models         | [Databricks data warehousing architecture](https://docs.databricks.com/gcp/en/sql/get-started/data-warehousing-concepts)                                                                    |
+| delta-platform           | [Delta Lake concurrency control](https://docs.delta.io/concurrency-control/)                                                                                                                |
+| distributed-query-stages | [Google Cloud BigQuery query plan explanation](https://docs.cloud.google.com/bigquery/docs/query-plan-explanation)                                                                          |
+| prefill-decode-pools     | [vLLM disaggregated prefill documentation](https://docs.vllm.ai/en/latest/features/disagg_prefill.html)                                                                                     |
+| lambda                   | [Microsoft](https://learn.microsoft.com/en-us/azure/architecture/databases/guide/big-data-architectures)                                                                                    |
+| kappa                    | [Microsoft](https://learn.microsoft.com/en-us/azure/architecture/databases/guide/big-data-architectures)                                                                                    |
+| rag-architecture         | [Microsoft](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-solution-design-and-evaluation-guide)                                                                  |
+| parquet-layout           | [Apache Software Foundation](https://parquet.apache.org/docs/file-format/)                                                                                                                  |
+
+Original HTML diagrams and examples are repository-authored explanatory material. They do not reproduce the linked source artwork.
+
+## Unchanged official images
+
+Images retain their source colors and bytes in both site themes. Keep them under `app/assets/img/site/<subject>/<chapter>/<topic>/`; `app/_data/figures.json` records dimensions, captions, alt text, source URLs, reuse terms and SHA-256 checksums. Readers can enlarge to native width or open the original.
+
+| Figure                | Source                                                                             | License                                                   |
+| --------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| kubernetes-components | [The Kubernetes Authors](https://kubernetes.io/docs/concepts/overview/components/) | [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) |
+| iceberg-metadata      | [Apache Software Foundation](https://iceberg.apache.org/spec/)                     | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) |
+| query-stages          | [Google](https://docs.cloud.google.com/bigquery/docs/query-plan-explanation?hl=en) | [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) |
+| partition-cluster     | [Google](https://docs.cloud.google.com/bigquery/docs/clustered-tables)             | [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) |
+
+Source copyright, license and notice files remain under `app/assets/img/site/licenses/`.
 
 ## Verification
 
-Static checks validate registry references, asset paths, source and mobile checksums, dimensions, declared label sizes, opaque backgrounds, source credits and SVG safety. Browser checks validate responsive source selection, readable label scale, clipping, overlapping text, overview fit, enlargement, keyboard scrolling, full-size links and unchanged colors after theme switching.
-
-The image-quality review captured the warehouse comparison in its original desktop state, its revised desktop state and its mobile composition. A separate mobile lakehouse review checked the distinction between catalog control and source-data flow. These are bounded visual and interaction checks, not a claim of full accessibility conformance.
+Static checks validate image integrity, diagram references, unique layout cells and valid connector endpoints. Browser checks cover desktop, phone and narrow tablet layouts, node clipping, connector crossings, theme changes, image loading and enlargement. SCD checks verify the worked version rows and fact-key assignments. Screenshots support the visual review; these checks do not establish full accessibility conformance.

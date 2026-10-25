@@ -1,4 +1,5 @@
 ---
+block_diagrams: true
 title: "Data lake and Delta Lake design: when a warehouse is needed"
 description: "Assign raw retention, table commits, analytical serving and operational reads to the right components."
 chapter: architecture
@@ -41,7 +42,7 @@ A warehouse does not create correct identities, measures or history automaticall
 
 Consider device telemetry used for operational monitoring and settled monthly reporting. The following example uses micro-batches; a continuous processor could occupy the same transformation role.
 
-{% include figure.html id="delta-platform" %}
+{% include block-diagram.html id="delta-platform" %}
 
 | Component | Design decision |
 |---|---|

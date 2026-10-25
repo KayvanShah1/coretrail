@@ -1,4 +1,5 @@
 ---
+block_diagrams: true
 title: "BigQuery slots, shuffle, and concurrency"
 description: "Explain how stages share capacity and why skew, spill, or competing queries can increase latency."
 chapter: "gcp"
@@ -42,7 +43,7 @@ BigQuery plans a query as an execution graph containing stages and steps. Worker
 
 A stage may read columns and filter rows while another stage aggregates results from earlier work. Stages can overlap in time. When a grouping or join requires rows with matching keys to meet on the same workers, stages exchange intermediate data through distributed shuffle.
 
-{% include figure.html id="distributed-query-stages" %}
+{% include block-diagram.html id="distributed-query-stages" %}
 
 A join with a small dimension might use a broadcast strategy and avoid shuffling the large side. A large-to-large join often requires redistribution. Which physical strategy the planner chooses depends on estimates and the available execution mechanisms.
 

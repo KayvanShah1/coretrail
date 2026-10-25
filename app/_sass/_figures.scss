@@ -28,9 +28,6 @@
 .reference-figure .reference-figure-hint {
   display: inline;
 }
-.reference-figure-image picture {
-  display: block;
-}
 .reference-figure-zoom:checked ~ .reference-figure-image img {
   min-width: var(--figure-width);
 }
@@ -40,7 +37,7 @@
   overscroll-behavior-x: contain;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: var(--figure-background, #fff);
+  background: #fff;
 }
 
 .reference-figure-image:focus-visible {
@@ -74,12 +71,5 @@
 @media (max-width: 780px) {
   .reference-figure {
     padding: 0.75rem 0.5rem;
-  }
-}
-
-@media (max-width: 600px), (min-width: 781px) and (max-width: 900px) {
-  .reference-figure--original .reference-figure-image img {
-    max-width: 440px;
-    margin-inline: auto;
   }
 }

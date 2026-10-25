@@ -1,4 +1,5 @@
 ---
+block_diagrams: true
 title: "From source documents to grounded answers"
 description: "Trace parsing, indexing, hybrid retrieval, reranking and context assembly across a large corpus."
 chapter: retrieval
@@ -14,7 +15,7 @@ interview_queries:
 
 Retrieval-augmented generation (RAG) gives a language model selected information from external sources at request time. The required fact must survive source ingestion, parsing, chunking, indexing, candidate retrieval, ranking and context construction before generation can use it.
 
-{% include figure.html id="rag-architecture" %}
+{% include block-diagram.html id="rag-architecture" %}
 
 {% capture rag_architecture %}
 flowchart TD

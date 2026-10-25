@@ -5,7 +5,6 @@ import { chromium } from 'playwright';
 import YAML from 'yaml';
 
 const root = resolve('_site');
-const figureRegistry = JSON.parse(await readFile('app/_data/figures.json', 'utf8'));
 const evidence = resolve('test-results/browser-qa');
 const cases = [
   {
@@ -45,19 +44,19 @@ const cases = [
     text: 'GPU scheduling',
   },
   {
-    name: 'distributed-query-image',
+    name: 'distributed-query-diagram',
     route: '/coretrail/data-engineering/gcp/slots-shuffle-concurrency/',
     text: 'BigQuery slots',
     figures: 1,
   },
   {
-    name: 'prefill-decode-image',
+    name: 'prefill-decode-diagram',
     route: '/coretrail/ai-engineering/inference/efficient-inference/',
     text: 'prefill',
     figures: 1,
   },
   {
-    name: 'rag-image',
+    name: 'rag-diagram',
     route: '/coretrail/ai-engineering/retrieval/rag-search-at-scale/',
     text: 'From source documents',
     figures: 1,
@@ -281,6 +280,7 @@ cases.push(
   },
   {
     name: 'de-modelling-scd-temporal-history',
+    scd: true,
     figures: 2,
     route: '/coretrail/data-engineering/modelling/scd-temporal-history/',
     text: 'Slowly changing dimensions and temporal history',
@@ -466,8 +466,11 @@ for (const [id, collection] of Object.entries(config.collections)) {
     const metadata = YAML.parse(front[1]);
     const body = front[2].replace(/^([`~]{3,})[^\n]*\n[\s\S]*?^\1[ \t]*$/gm, '');
     const expressions = [...body.matchAll(/{%\s*include math\.html\b([\s\S]*?)%}/g)];
-    if (!expressions.length) continue;
-    if (metadata.math !== true) throw new Error('Missing math: true in ' + file);
+    const blockExpressions = [...body.matchAll(/{%\s*include block-diagram\.html\b/g)];
+    const figureExpressions = [...body.matchAll(/{%\s*include figure\.html\b/g)];
+    if (!expressions.length && !blockExpressions.length && !figureExpressions.length) continue;
+    if (expressions.length && metadata.math !== true)
+      throw new Error('Missing math: true in ' + file);
     const lessonPath = relative(directory, resolve(directory, file))
       .replaceAll('\\', '/')
       .replace(/\.md$/, '');
@@ -482,14 +485,19 @@ for (const [id, collection] of Object.entries(config.collections)) {
       };
       cases.push(test);
     }
+    if (metadata.mermaid && test.mermaid === undefined) test.mermaid = true;
     Object.assign(test, {
-      math: true,
+      math: expressions.length > 0,
+      blocks: blockExpressions.length,
+      figures: figureExpressions.length,
       formulaCount: expressions.length,
       inlineFormulaCount: expressions.filter((match) => !/\bblock\s*=\s*true\b/.test(match[1]))
         .length,
     });
   }
 }
+
+for (const test of cases) if (test.scd) test.figures = 0;
 
 const types = {
   '.css': 'text/css',
@@ -537,7 +545,7 @@ try {
       { label: 'mobile', width: 390, height: 844 },
       { label: 'tablet', width: 820, height: 1000 },
     ]) {
-      if (v.label === 'tablet' && !test.figures) continue;
+      if (v.label === 'tablet' && !test.figures && !test.blocks && !test.scd) continue;
       const page = await browser.newPage({
         viewport: { width: v.width, height: v.height },
         deviceScaleFactor: 1,
@@ -667,6 +675,106 @@ try {
           );
         }
       }
+      if (test.blocks) {
+        await page.waitForFunction(() =>
+          [...document.querySelectorAll('.block-graph')].every(
+            (graph) => graph.dataset.connected === 'true',
+          ),
+        );
+        const blockCount = await page.locator('.block-diagram').count();
+        if (blockCount !== test.blocks) errors.push('Wrong number of native diagrams');
+        const blockIssues = await page.locator('.block-graph').evaluateAll((graphs) => {
+          const issues = [];
+          for (const graph of graphs) {
+            for (const label of graph.querySelectorAll('.block-edge-label'))
+              if (getComputedStyle(label).stroke !== 'none')
+                issues.push('Icon stroke leaked into connector label');
+            const frame = graph.getBoundingClientRect();
+            const nodes = [...graph.querySelectorAll('[data-block-node]')];
+            const boxes = nodes.map((node) => {
+              const r = node.getBoundingClientRect();
+              if (
+                node.scrollWidth > node.clientWidth + 1 ||
+                parseFloat(getComputedStyle(node).fontSize) < 14
+              )
+                issues.push('Clipped or small node: ' + node.dataset.blockNode);
+              return {
+                id: node.dataset.blockNode,
+                left: r.left - frame.left + 3,
+                right: r.right - frame.left - 3,
+                top: r.top - frame.top + 3,
+                bottom: r.bottom - frame.top - 3,
+              };
+            });
+            const paths = [...graph.querySelectorAll('.block-edge')];
+            if (paths.length !== JSON.parse(graph.querySelector('.block-links').textContent).length)
+              issues.push('Missing connectors');
+            for (const path of paths) {
+              const points = JSON.parse(path.dataset.points);
+              let length = 0;
+              for (let i = 1; i < points.length; i++) {
+                const a = points[i - 1],
+                  b = points[i];
+                length += Math.hypot(a[0] - b[0], a[1] - b[1]);
+                for (const box of boxes.filter(
+                  (box) => box.id !== path.dataset.from && box.id !== path.dataset.to,
+                )) {
+                  const horizontal =
+                    Math.abs(a[1] - b[1]) < 0.1 &&
+                    a[1] > box.top &&
+                    a[1] < box.bottom &&
+                    Math.max(a[0], b[0]) > box.left &&
+                    Math.min(a[0], b[0]) < box.right;
+                  const vertical =
+                    Math.abs(a[0] - b[0]) < 0.1 &&
+                    a[0] > box.left &&
+                    a[0] < box.right &&
+                    Math.max(a[1], b[1]) > box.top &&
+                    Math.min(a[1], b[1]) < box.bottom;
+                  if (horizontal || vertical)
+                    issues.push(
+                      'Connector crosses ' +
+                        box.id +
+                        ': ' +
+                        path.dataset.from +
+                        ' to ' +
+                        path.dataset.to,
+                    );
+                }
+              }
+              if (length < 12) issues.push('Connector too short');
+              if (
+                points.some(
+                  (p) => p[0] < 0 || p[0] > frame.width || p[1] < 0 || p[1] > frame.height,
+                )
+              )
+                issues.push('Connector leaves diagram');
+            }
+          }
+          return issues;
+        });
+        errors.push(...blockIssues);
+      }
+      if (test.scd) {
+        const rows = await page
+          .locator('article.prose tr')
+          .evaluateAll((rows) =>
+            rows.map((row) =>
+              [...row.querySelectorAll('td')].map((cell) => cell.textContent.trim()).join('|'),
+            ),
+          );
+        for (const expected of [
+          '101|C42|Asha Rao|South',
+          '101|West|1 Jan 2026|1 July 2026|Closed',
+          '205|South|1 July 2026|NULL|Current',
+          'S01|15 June 2026|100|101|West',
+          'S02|10 July 2026|150|205|South',
+          '101|C42|20',
+          'S01|101|9001|100',
+        ]) {
+          if (!rows.includes(expected)) errors.push('SCD worked example missing: ' + expected);
+        }
+      }
       const imageFigures = page.locator('.reference-figure');
       if (test.figures && (await imageFigures.count()) !== test.figures) {
         errors.push(
@@ -717,21 +825,6 @@ try {
             image.closest('.reference-figure-image').clientWidth + 1,
         );
         if (!overviewFits) errors.push('Image overview is clipped before enlargement');
-        const figureId = await figure.getAttribute('data-figure-id');
-        const metadata = figureRegistry[figureId];
-        if (metadata?.mobile_path) {
-          const state = await img.evaluate((image) => ({
-            width: image.getBoundingClientRect().width,
-            source: new URL(image.currentSrc).pathname,
-          }));
-          const mobile = v.width <= 600 || (v.width >= 781 && v.width <= 900);
-          const expected = '/coretrail' + (mobile ? metadata.mobile_path : metadata.path);
-          if (state.source !== expected) errors.push('Wrong responsive artwork: ' + figureId);
-          const labelSize =
-            (state.width / (mobile ? metadata.mobile_width : metadata.width)) *
-            (mobile ? metadata.mobile_min_label_size : metadata.min_label_size);
-          if (labelSize < 14) errors.push('Figure labels below 14px at reading size: ' + figureId);
-        }
       }
       await page.evaluate(() => window.scrollTo(0, 0));
       const sizes = await page.evaluate(() => ({
@@ -745,7 +838,10 @@ try {
         path: resolve(evidence, test.name + '-' + v.label + '.png'),
         fullPage: true,
       });
-      if (test.figures) {
+      if (test.figures || test.blocks || test.scd) {
+        const nativeBefore = await page
+          .locator('.block-node, .parquet-file, .scd-change, .scd-change-value')
+          .evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).backgroundColor));
         const currentTheme = await page.getAttribute('html', 'data-theme');
         await page
           .getByRole('button', {
@@ -766,6 +862,11 @@ try {
             }),
           );
         if (filteredImages) errors.push('Theme changed source image colors or lost pixels');
+        const nativeAfter = await page
+          .locator('.block-node, .parquet-file, .scd-change, .scd-change-value')
+          .evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).backgroundColor));
+        if (nativeBefore.length && nativeAfter.some((color, i) => color === nativeBefore[i]))
+          errors.push('Native diagram or SCD surface did not follow the theme');
         await page.evaluate(() => window.scrollTo(0, 0));
         await page.screenshot({
           path: resolve(evidence, test.name + '-' + v.label + '-' + nextTheme + '.png'),
@@ -776,56 +877,6 @@ try {
       await page.close();
     }
   }
-  for (const [id, figure] of Object.entries(figureRegistry).filter(
-    ([, item]) => item.mobile_path,
-  )) {
-    for (const source of [figure.path, figure.mobile_path]) {
-      const assetPage = await browser.newPage();
-      await assetPage.goto(origin + '/coretrail' + source);
-      const geometry = await assetPage.evaluate(() => {
-        const svg = document.querySelector('svg');
-        const frame = svg.getBoundingClientRect();
-        const labels = [...svg.querySelectorAll('text')].map((node) => {
-          const box = node.getBoundingClientRect();
-          return {
-            text: node.textContent,
-            x: box.x - frame.x,
-            y: box.y - frame.y,
-            width: box.width,
-            height: box.height,
-          };
-        });
-        const clipped = labels.filter(
-          (box) =>
-            box.x < -0.5 ||
-            box.y < -0.5 ||
-            box.x + box.width > frame.width + 0.5 ||
-            box.y + box.height > frame.height + 0.5,
-        );
-        const overlap = [];
-        for (let i = 0; i < labels.length; i++) {
-          for (let j = i + 1; j < labels.length; j++) {
-            const a = labels[i],
-              b = labels[j];
-            if (
-              Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x) > 2 &&
-              Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y) > 2
-            )
-              overlap.push([a.text, b.text]);
-          }
-        }
-        return { clipped, overlap };
-      });
-      outcomes.push({
-        name:
-          'vector-label-geometry-' + id + (source === figure.mobile_path ? '-mobile' : '-desktop'),
-        errors:
-          geometry.clipped.length || geometry.overlap.length ? [JSON.stringify(geometry)] : [],
-      });
-      await assetPage.close();
-    }
-  }
-
   const diagramPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await diagramPage.goto(origin + '/coretrail/ai-engineering/retrieval/rag-search-at-scale/');
   const scrollRegion = diagramPage.locator('.diagram-canvas[data-scrollable="true"]').first();

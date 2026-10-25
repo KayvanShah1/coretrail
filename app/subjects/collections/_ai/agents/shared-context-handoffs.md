@@ -1,4 +1,5 @@
 ---
+block_diagrams: true
 title: "Shared agent context, handoffs and durable artifacts"
 description: "Organize conversation history, workflow checkpoints and evidence artifacts for concurrent agents without leaking permissions or losing revisions."
 chapter: agents
@@ -26,7 +27,7 @@ A task that passes through a research agent, analysis agent and report agent nee
 
 A model context window is reconstructed from these stores when a model call occurs. The authoritative record remains outside the model. A summary preserves conversational continuity. Verified amounts, permissions, operation status and citations remain in typed records with their own versions, so summarization cannot change the authoritative values.
 
-{% include figure.html id="shared-agent-context" %}
+{% include block-diagram.html id="shared-agent-context" %}
 
 ## Passing a task contract
 

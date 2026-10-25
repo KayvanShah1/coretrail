@@ -46,46 +46,6 @@ for (const [id, figure] of Object.entries(figures)) {
   if (figure.path.endsWith('.svg')) {
     const svg = bytes.toString();
     assert.match(svg, /<svg\b/);
-    if (figure.original) {
-      assert.match(
-        svg,
-        /markerUnits="userSpaceOnUse"/,
-        'Original arrowheads must use a fixed size: ' + id,
-      );
-      assert.ok(
-        svg.includes('rx="0" fill="' + figure.background + '"'),
-        'Original figure needs its declared opaque background: ' + id,
-      );
-      const fontSizes = [...svg.matchAll(/font-size:\s*([\d.]+)px/g)].map((match) =>
-        Number(match[1]),
-      );
-      assert.ok(
-        fontSizes.length && Math.min(...fontSizes) >= figure.min_label_size,
-        'Figure labels below declared size: ' + id,
-      );
-      assert.ok(
-        figure.mobile_path && figure.mobile_width && figure.mobile_height,
-        'Responsive artwork missing: ' + id,
-      );
-      const mobile = await readFile(resolve(root, '.' + figure.mobile_path));
-      assert.equal(
-        createHash('sha256').update(mobile).digest('hex'),
-        figure.mobile_sha256,
-        'Changed mobile artwork: ' + id,
-      );
-      assert.ok(
-        mobile
-          .toString()
-          .includes('width="' + figure.mobile_width + '" height="' + figure.mobile_height + '"'),
-        'Mobile artwork dimensions: ' + id,
-      );
-      assert.ok(
-        !/<script\b|<(?:iframe|object|embed)\b|(?:href|src)=["'](?:https?:|\/\/)/i.test(
-          mobile.toString(),
-        ),
-        'Active mobile SVG resource: ' + id,
-      );
-    }
     assert.ok(
       !/<script\b|<(?:iframe|object|embed|video|audio|input)\b|\bon[a-z]+=|<image\b[^>]*(?:href|src)=["'](?:https?:|\/\/)/i.test(
         svg,
@@ -109,16 +69,14 @@ for (const [id, figure] of Object.entries(figures)) {
     assert.equal(bytes.readUInt16LE(6), figure.width);
     assert.equal(bytes.readUInt16LE(8), figure.height);
   }
-  if (!figure.original) {
-    assert.equal(figure.modified, false);
-    assert.equal(new URL(figure.original_url).protocol, 'https:');
-  }
+  assert.equal(figure.modified, false);
+  assert.equal(new URL(figure.original_url).protocol, 'https:');
 }
 const assetFiles = await readdir(resolve(root, 'assets/img/site'), { recursive: true });
 for (const file of assetFiles.filter((file) => /\.(svg|png|gif)$/.test(file))) {
   const asset = '/assets/img/site/' + file.replaceAll('\\', '/');
   assert.ok(
-    Object.values(figures).some((figure) => figure.path === asset || figure.mobile_path === asset),
+    Object.values(figures).some((figure) => figure.path === asset),
     'Unregistered asset: ' + asset,
   );
 }

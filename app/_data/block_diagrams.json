@@ -1,0 +1,941 @@
+{
+  "warehouse-methods": {
+    "title": "Kimball and Inmon: where integration happens",
+    "description": "Both approaches reconcile identities and definitions. Kimball coordinates dimensional marts through a bus of conformed dimensions; an Inmon-style design first builds an integrated enterprise model, then publishes marts.",
+    "author": "Kimball Group",
+    "source_url": "https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/enterprise-data-warehouse-bus-architecture/",
+    "panels": [
+      {
+        "columns": 2,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "source",
+            "title": "Source systems",
+            "detail": "Sales, returns and customer records",
+            "column": 1,
+            "row": 1,
+            "span": 2
+          },
+          {
+            "id": "bus",
+            "title": "Dimensional bus",
+            "detail": "Conformed customer, product and date definitions",
+            "column": 1,
+            "row": 2,
+            "span": 2,
+            "emphasis": true
+          },
+          {
+            "id": "sales",
+            "title": "Sales mart",
+            "detail": "Sales facts at their declared grain",
+            "column": 1,
+            "row": 3
+          },
+          {
+            "id": "returns",
+            "title": "Returns mart",
+            "detail": "Return facts at their declared grain",
+            "column": 2,
+            "row": 3
+          }
+        ],
+        "edges": [
+          {
+            "from": "source",
+            "to": "bus"
+          },
+          {
+            "from": "bus",
+            "to": "sales"
+          },
+          {
+            "from": "bus",
+            "to": "returns"
+          }
+        ],
+        "title": "Kimball",
+        "detail": "Integrate business processes through shared dimensions."
+      },
+      {
+        "columns": 2,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "source",
+            "title": "Source systems",
+            "detail": "Finance, operations and customer records",
+            "column": 1,
+            "row": 1,
+            "span": 2
+          },
+          {
+            "id": "enterprise",
+            "title": "Enterprise model",
+            "detail": "Integrated, normalized entities and history",
+            "column": 1,
+            "row": 2,
+            "span": 2,
+            "emphasis": true
+          },
+          {
+            "id": "finance",
+            "title": "Finance mart",
+            "detail": "Reporting representation",
+            "column": 1,
+            "row": 3
+          },
+          {
+            "id": "operations",
+            "title": "Operations mart",
+            "detail": "Reporting representation",
+            "column": 2,
+            "row": 3
+          }
+        ],
+        "edges": [
+          {
+            "from": "source",
+            "to": "enterprise"
+          },
+          {
+            "from": "enterprise",
+            "to": "finance"
+          },
+          {
+            "from": "enterprise",
+            "to": "operations"
+          }
+        ],
+        "title": "Inmon",
+        "detail": "Integrate enterprise history before publishing marts."
+      }
+    ]
+  },
+  "shared-agent-context": {
+    "title": "Shared agent context: control, work and durable state",
+    "description": "The supervisor routes work and authorizes tool calls. Specialists and tool results update durable state. A resumed run restores its checkpoint; stored memory alone does not authorize an action.",
+    "author": "LangGraph persistence",
+    "source_url": "https://docs.langchain.com/oss/python/langgraph/persistence",
+    "panels": [
+      {
+        "columns": 2,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "request",
+            "title": "Request and permissions",
+            "detail": "Identity, allowed actions and task scope",
+            "column": 1,
+            "row": 1,
+            "span": 2
+          },
+          {
+            "id": "supervisor",
+            "title": "Supervisor",
+            "detail": "Choose the next task and enforce policy",
+            "column": 1,
+            "row": 2,
+            "span": 2,
+            "emphasis": true
+          },
+          {
+            "id": "agents",
+            "title": "Specialist work",
+            "detail": "Independent workers share explicit inputs and outputs",
+            "column": 1,
+            "row": 3,
+            "items": [
+              {
+                "title": "Research"
+              },
+              {
+                "title": "Analyze"
+              },
+              {
+                "title": "Report"
+              }
+            ]
+          },
+          {
+            "id": "tools",
+            "title": "Authorized tools",
+            "detail": "Validated database, API and search calls",
+            "column": 2,
+            "row": 3
+          },
+          {
+            "id": "state",
+            "title": "Durable shared state",
+            "detail": "Persist accepted transitions and their evidence",
+            "column": 1,
+            "row": 4,
+            "span": 2,
+            "emphasis": true,
+            "items_columns": 2,
+            "items": [
+              {
+                "title": "Checkpoint",
+                "detail": "Resume position"
+              },
+              {
+                "title": "Task state",
+                "detail": "Status and results"
+              },
+              {
+                "title": "Artifacts",
+                "detail": "Versioned outputs"
+              },
+              {
+                "title": "Memory",
+                "detail": "Relevant retained context"
+              }
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "from": "request",
+            "to": "supervisor"
+          },
+          {
+            "from": "supervisor",
+            "to": "agents"
+          },
+          {
+            "from": "supervisor",
+            "to": "tools",
+            "control": true
+          },
+          {
+            "from": "agents",
+            "to": "state"
+          },
+          {
+            "from": "tools",
+            "to": "state"
+          },
+          {
+            "from": "state",
+            "to": "supervisor",
+            "via": "left",
+            "control": true
+          }
+        ]
+      }
+    ]
+  },
+  "medallion-models": {
+    "title": "Medallion: what each representation is responsible for",
+    "description": "Bronze preserves replayable source records. Silver establishes typed entities, keys and history. Gold publishes consumer facts and metrics. Rejected records retain enough context to be repaired and checked again.",
+    "author": "Databricks data warehousing architecture",
+    "source_url": "https://docs.databricks.com/gcp/en/sql/get-started/data-warehousing-concepts",
+    "panels": [
+      {
+        "columns": 3,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "bronze",
+            "title": "Bronze",
+            "detail": "Source records and retained bytes",
+            "column": 1,
+            "row": 1,
+            "compact_column": 1,
+            "compact_row": 1,
+            "compact_span": 2
+          },
+          {
+            "id": "silver",
+            "title": "Silver",
+            "detail": "Types, identity and history",
+            "column": 2,
+            "row": 1,
+            "emphasis": true,
+            "compact_column": 1,
+            "compact_row": 2,
+            "compact_span": 2
+          },
+          {
+            "id": "gold",
+            "title": "Gold",
+            "detail": "Consumer facts and shared metrics",
+            "column": 3,
+            "row": 1,
+            "compact_column": 1,
+            "compact_row": 3
+          },
+          {
+            "id": "quarantine",
+            "title": "Quarantine",
+            "detail": "Rejected records, reason and repair status",
+            "column": 2,
+            "row": 2,
+            "compact_column": 2,
+            "compact_row": 3
+          }
+        ],
+        "edges": [
+          {
+            "from": "bronze",
+            "to": "silver"
+          },
+          {
+            "from": "silver",
+            "to": "gold"
+          },
+          {
+            "from": "silver",
+            "to": "quarantine",
+            "control": true
+          },
+          {
+            "from": "quarantine",
+            "to": "silver",
+            "via": "left",
+            "control": true,
+            "compact": {
+              "via": "right"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "delta-platform": {
+    "title": "Delta platform: storage, commits and serving",
+    "description": "The table contains data files and a transaction log. Readers resolve a committed snapshot. Catalog permissions and the supported writer coordinate access and commits. A serving copy has its own freshness and correction policy.",
+    "author": "Delta Lake concurrency control",
+    "source_url": "https://docs.delta.io/concurrency-control/",
+    "panels": [
+      {
+        "columns": 2,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "source",
+            "title": "Retained source",
+            "detail": "Objects, source revision and input manifest",
+            "column": 1,
+            "row": 1
+          },
+          {
+            "id": "catalog",
+            "title": "Catalog and access",
+            "detail": "Names, schema and permissions",
+            "column": 2,
+            "row": 1
+          },
+          {
+            "id": "writer",
+            "title": "Delta-aware writer",
+            "detail": "Validate input, stage files and commit",
+            "column": 1,
+            "row": 2,
+            "span": 2
+          },
+          {
+            "id": "table",
+            "title": "Committed Delta table",
+            "detail": "The log identifies the files in a table version",
+            "column": 1,
+            "row": 3,
+            "span": 2,
+            "emphasis": true,
+            "items_columns": 2,
+            "items": [
+              {
+                "title": "Data files",
+                "detail": "Parquet columnar values"
+              },
+              {
+                "title": "Transaction log",
+                "detail": "Versions and file actions"
+              }
+            ]
+          },
+          {
+            "id": "sql",
+            "title": "Lakehouse SQL",
+            "detail": "Read a compatible table snapshot",
+            "column": 1,
+            "row": 4
+          },
+          {
+            "id": "serving",
+            "title": "Serving copy",
+            "detail": "Optional warehouse or operational projection",
+            "column": 2,
+            "row": 4
+          }
+        ],
+        "edges": [
+          {
+            "from": "source",
+            "to": "writer"
+          },
+          {
+            "from": "catalog",
+            "to": "writer",
+            "control": true
+          },
+          {
+            "from": "writer",
+            "to": "table"
+          },
+          {
+            "from": "table",
+            "to": "sql"
+          },
+          {
+            "from": "table",
+            "to": "serving",
+            "control": true
+          }
+        ]
+      }
+    ]
+  },
+  "distributed-query-stages": {
+    "title": "Follow the work through a distributed query",
+    "description": "Two independent inputs feed the join. Workers first combine rows locally; exchange then groups partial results by region. Final aggregation merges the partials for each region. This is an illustrative physical plan; actual stages depend on the engine and query.",
+    "author": "Google Cloud BigQuery query plan explanation",
+    "source_url": "https://docs.cloud.google.com/bigquery/docs/query-plan-explanation",
+    "panels": [
+      {
+        "columns": 2,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "orders",
+            "title": "Orders scan",
+            "detail": "Prune dates and read required columns",
+            "column": 1,
+            "row": 1
+          },
+          {
+            "id": "merchants",
+            "title": "Merchant scan",
+            "detail": "Filter the dimension and verify key uniqueness",
+            "column": 2,
+            "row": 1
+          },
+          {
+            "id": "join",
+            "title": "Join on merchant",
+            "detail": "Inspect input, output and unmatched row counts",
+            "column": 1,
+            "row": 2,
+            "span": 2
+          },
+          {
+            "id": "partial",
+            "title": "Local partial sums",
+            "detail": "Each worker reduces its own rows",
+            "column": 1,
+            "row": 3,
+            "span": 2,
+            "items_columns": 3,
+            "items": [
+              {
+                "title": "Worker A",
+                "detail": "North 10 · South 4"
+              },
+              {
+                "title": "Worker B",
+                "detail": "North 5 · East 8"
+              },
+              {
+                "title": "Worker C",
+                "detail": "South 6 · East 2"
+              }
+            ]
+          },
+          {
+            "id": "exchange",
+            "title": "Exchange by region",
+            "detail": "Move partials to the worker responsible for each key",
+            "column": 1,
+            "row": 4,
+            "span": 2,
+            "emphasis": true,
+            "items_columns": 3,
+            "items": [
+              {
+                "title": "North",
+                "detail": "10 + 5"
+              },
+              {
+                "title": "South",
+                "detail": "4 + 6"
+              },
+              {
+                "title": "East",
+                "detail": "8 + 2"
+              }
+            ]
+          },
+          {
+            "id": "final",
+            "title": "Final aggregation",
+            "detail": "North 15 · South 10 · East 10",
+            "column": 1,
+            "row": 5,
+            "span": 2
+          }
+        ],
+        "edges": [
+          {
+            "from": "orders",
+            "to": "join"
+          },
+          {
+            "from": "merchants",
+            "to": "join"
+          },
+          {
+            "from": "join",
+            "to": "partial"
+          },
+          {
+            "from": "partial",
+            "to": "exchange"
+          },
+          {
+            "from": "exchange",
+            "to": "final"
+          }
+        ]
+      }
+    ]
+  },
+  "prefill-decode-pools": {
+    "title": "Separate prefill and decode pools",
+    "description": "Prefill processes the prompt and creates key/value (KV) state. Decode reuses that state while producing tokens sequentially. Moving KV state has a transfer cost; separate pools help only when the workload and hardware justify it.",
+    "author": "vLLM disaggregated prefill documentation",
+    "source_url": "https://docs.vllm.ai/en/latest/features/disagg_prefill.html",
+    "panels": [
+      {
+        "columns": 2,
+        "compact_columns": 1,
+        "nodes": [
+          {
+            "id": "prompt",
+            "title": "Prompt tokens",
+            "detail": "Input positions are available together",
+            "column": 1,
+            "row": 1,
+            "span": 2,
+            "compact_span": 1
+          },
+          {
+            "id": "prefill",
+            "title": "Prefill pool",
+            "detail": "Process the prompt and build KV state",
+            "column": 1,
+            "row": 2,
+            "emphasis": true
+          },
+          {
+            "id": "decode",
+            "title": "Decode pool",
+            "detail": "Reuse KV state; generate the next token",
+            "column": 2,
+            "row": 2,
+            "emphasis": true,
+            "compact_column": 1,
+            "compact_row": 3
+          },
+          {
+            "id": "output",
+            "title": "Generated tokens",
+            "detail": "One new token per decoding step",
+            "column": 1,
+            "row": 3,
+            "span": 2,
+            "compact_column": 1,
+            "compact_row": 4,
+            "compact_span": 1
+          }
+        ],
+        "edges": [
+          {
+            "from": "prompt",
+            "to": "prefill"
+          },
+          {
+            "from": "prefill",
+            "to": "decode",
+            "label": "KV state",
+            "compact": {
+              "from_side": "bottom",
+              "to_side": "top"
+            }
+          },
+          {
+            "from": "decode",
+            "to": "output"
+          }
+        ],
+        "column_gap": "5.5rem"
+      }
+    ]
+  },
+  "lambda": {
+    "title": "Lambda: reconcile historical and recent coverage",
+    "description": "Both paths consume the retained source. The serving query combines disjoint coverage, such as settled history before 12:00 and recent events from 12:00. A changed cutoff needs coordinated publication to avoid duplicates or missing events.",
+    "author": "Microsoft",
+    "source_url": "https://learn.microsoft.com/en-us/azure/architecture/databases/guide/big-data-architectures",
+    "panels": [
+      {
+        "columns": 2,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "log",
+            "title": "Retained event log",
+            "detail": "Source of replayable events",
+            "column": 1,
+            "row": 1,
+            "span": 2
+          },
+          {
+            "id": "batch",
+            "title": "Batch processing",
+            "detail": "Recompute settled history",
+            "column": 1,
+            "row": 2
+          },
+          {
+            "id": "speed",
+            "title": "Stream processing",
+            "detail": "Update recent events quickly",
+            "column": 2,
+            "row": 2
+          },
+          {
+            "id": "history",
+            "title": "Batch view",
+            "detail": "History before the published cutoff",
+            "column": 1,
+            "row": 3
+          },
+          {
+            "id": "recent",
+            "title": "Recent view",
+            "detail": "Events from the published cutoff",
+            "column": 2,
+            "row": 3
+          },
+          {
+            "id": "serve",
+            "title": "Serving query",
+            "detail": "Reconcile event identity and coverage",
+            "column": 1,
+            "row": 4,
+            "span": 2,
+            "emphasis": true,
+            "items_columns": 2,
+            "items": [
+              {
+                "title": "History",
+                "detail": "Event time < 12:00"
+              },
+              {
+                "title": "Recent",
+                "detail": "Event time ≥ 12:00"
+              }
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "from": "log",
+            "to": "batch"
+          },
+          {
+            "from": "log",
+            "to": "speed"
+          },
+          {
+            "from": "batch",
+            "to": "history"
+          },
+          {
+            "from": "speed",
+            "to": "recent"
+          },
+          {
+            "from": "history",
+            "to": "serve"
+          },
+          {
+            "from": "recent",
+            "to": "serve"
+          }
+        ]
+      }
+    ]
+  },
+  "kappa": {
+    "title": "Kappa: rebuild by replay while the active view serves",
+    "description": "The current processor continues serving while a new version replays retained events. The candidate catches up and is reconciled with the active result. A controlled reader switch publishes the accepted candidate.",
+    "author": "Microsoft",
+    "source_url": "https://learn.microsoft.com/en-us/azure/architecture/databases/guide/big-data-architectures",
+    "panels": [
+      {
+        "columns": 2,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "log",
+            "title": "Retained event log",
+            "detail": "Replay enough history to rebuild the result",
+            "column": 1,
+            "row": 1,
+            "span": 2
+          },
+          {
+            "id": "current",
+            "title": "Current processor",
+            "detail": "Continues processing live events",
+            "column": 1,
+            "row": 2
+          },
+          {
+            "id": "replay",
+            "title": "Replay processor",
+            "detail": "Runs the new processing logic",
+            "column": 2,
+            "row": 2
+          },
+          {
+            "id": "active",
+            "title": "Active view",
+            "detail": "Readers continue using this result",
+            "column": 1,
+            "row": 3
+          },
+          {
+            "id": "candidate",
+            "title": "Candidate view",
+            "detail": "Isolated rebuild; readers have not switched",
+            "column": 2,
+            "row": 3
+          },
+          {
+            "id": "validate",
+            "title": "Catch up and reconcile",
+            "detail": "Check progress, counts and business aggregates",
+            "column": 1,
+            "row": 4,
+            "span": 2,
+            "emphasis": true
+          },
+          {
+            "id": "publish",
+            "title": "Switch the reader pointer",
+            "detail": "Publish the candidate and retain a rollback path",
+            "column": 1,
+            "row": 5,
+            "span": 2
+          }
+        ],
+        "edges": [
+          {
+            "from": "log",
+            "to": "current"
+          },
+          {
+            "from": "log",
+            "to": "replay"
+          },
+          {
+            "from": "current",
+            "to": "active"
+          },
+          {
+            "from": "replay",
+            "to": "candidate"
+          },
+          {
+            "from": "active",
+            "to": "validate",
+            "control": true
+          },
+          {
+            "from": "candidate",
+            "to": "validate"
+          },
+          {
+            "from": "validate",
+            "to": "publish"
+          }
+        ]
+      }
+    ]
+  },
+  "rag-architecture": {
+    "title": "RAG: index revisions, then retrieve evidence for a question",
+    "description": "The indexing path publishes searchable document versions. The answering path searches that index, selects evidence and gives the question plus evidence to the model. A cited answer must be supported by the retrieved source versions.",
+    "author": "Microsoft",
+    "source_url": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-solution-design-and-evaluation-guide",
+    "panels": [
+      {
+        "columns": 2,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "documents",
+            "title": "Document revisions",
+            "detail": "Text, metadata and access rules",
+            "column": 1,
+            "row": 1,
+            "label": "Indexing"
+          },
+          {
+            "id": "question",
+            "title": "User question",
+            "detail": "Identity and request context",
+            "column": 2,
+            "row": 1,
+            "label": "Answering"
+          },
+          {
+            "id": "parse",
+            "title": "Parse and chunk",
+            "detail": "Preserve source IDs and revision links",
+            "column": 1,
+            "row": 2
+          },
+          {
+            "id": "retrieve",
+            "title": "Retrieve candidates",
+            "detail": "Search permitted records in the index",
+            "column": 2,
+            "row": 2
+          },
+          {
+            "id": "index",
+            "title": "Search index",
+            "detail": "Embeddings, lexical fields and metadata",
+            "column": 1,
+            "row": 3,
+            "emphasis": true
+          },
+          {
+            "id": "evidence",
+            "title": "Select evidence",
+            "detail": "Rerank and pack relevant source passages",
+            "column": 2,
+            "row": 3
+          },
+          {
+            "id": "model",
+            "title": "Generate",
+            "detail": "Question plus selected evidence",
+            "column": 2,
+            "row": 4
+          },
+          {
+            "id": "answer",
+            "title": "Cited answer",
+            "detail": "Return claims with supporting source references",
+            "column": 2,
+            "row": 5,
+            "emphasis": true
+          }
+        ],
+        "edges": [
+          {
+            "from": "documents",
+            "to": "parse"
+          },
+          {
+            "from": "parse",
+            "to": "index"
+          },
+          {
+            "from": "question",
+            "to": "retrieve"
+          },
+          {
+            "from": "index",
+            "to": "retrieve",
+            "from_side": "right",
+            "to_side": "left"
+          },
+          {
+            "from": "retrieve",
+            "to": "evidence"
+          },
+          {
+            "from": "evidence",
+            "to": "model"
+          },
+          {
+            "from": "question",
+            "to": "model",
+            "via": "right",
+            "control": true
+          },
+          {
+            "from": "model",
+            "to": "answer"
+          }
+        ]
+      }
+    ]
+  },
+  "parquet-layout": {
+    "title": "Inside a Parquet file: prune row groups, project columns",
+    "kind": "parquet",
+    "description": "A file contains row groups; each row group contains one chunk per column, and each column chunk contains pages. Footer statistics can rule out a row group, while column projection avoids reading unused chunks. A file, row group and page are different sizing units.",
+    "author": "Apache Software Foundation",
+    "source_url": "https://parquet.apache.org/docs/file-format/",
+    "row_groups": [
+      {
+        "title": "Row group 1 · June 30",
+        "decision": "Skip this group",
+        "skipped": true,
+        "statistics": "event_date min = max = 2026-06-30: no row can satisfy the filter.",
+        "columns": [
+          {
+            "name": "event_date",
+            "pages": ["Page 1: Jun 30", "Page 2: Jun 30"]
+          },
+          {
+            "name": "device_id",
+            "pages": ["Page 1: 41, 57", "Page 2: 63, 88"]
+          },
+          {
+            "name": "kwh",
+            "pages": ["Page 1: 2.1, 3.4", "Page 2: 1.8, 4.0"]
+          }
+        ]
+      },
+      {
+        "title": "Row group 2 · July 1",
+        "decision": "Read two column chunks",
+        "statistics": "event_date min = max = 2026-07-01: read the projected columns; evaluate the predicate as required.",
+        "columns": [
+          {
+            "name": "event_date",
+            "read": true,
+            "pages": ["Page 1: Jul 1", "Page 2: Jul 1"]
+          },
+          {
+            "name": "device_id",
+            "pages": ["Page 1: 41, 57", "Page 2: 63, 88"]
+          },
+          {
+            "name": "kwh",
+            "read": true,
+            "pages": ["Page 1: 2.6, 3.1", "Page 2: 2.0, 4.3"]
+          }
+        ]
+      }
+    ]
+  }
+}

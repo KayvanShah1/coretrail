@@ -47,6 +47,6 @@ Retired pages are deleted. Internal references, search inputs and navigation use
 
 The audit preserves short contextual definitions and distinct worked examples. It does not claim that all repeated terminology should disappear; a direct-search landing page still needs enough context to interpret its example.
 
-## Static figures
+## Diagrams and static figures
 
-`app/_data/figures.json` owns image descriptions, provenance and asset paths. `docs/IMAGE_SOURCES.md` records licensing and placement. The canonical topic includes its figure; related topics link to that explanation. Use Mermaid for flow and branching where it remains the clearest form.
+`app/_data/block_diagrams.json` owns authored diagram content and connections. `app/_data/figures.json` owns official image descriptions, provenance and asset paths. `docs/IMAGE_SOURCES.md` records licensing and placement. The canonical topic includes its figure; related topics link to that explanation. Use Mermaid for flow and branching where it remains the clearest form.

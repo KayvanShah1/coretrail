@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --check app/assets/js/main.js && node --test tests/*.test.mjs && node scripts/check-content.mjs && node scripts/check-figures.mjs && node scripts/test-sql.mjs",
+    "test": "node --check app/assets/js/main.js && node --check app/assets/js/blocks.js && node --test tests/*.test.mjs && node scripts/check-content.mjs && node scripts/check-figures.mjs && node scripts/check-block-diagrams.mjs && node scripts/test-sql.mjs",
     "test:plans": "node scripts/test-performance.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

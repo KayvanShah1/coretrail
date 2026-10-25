@@ -1,4 +1,5 @@
 ---
+block_diagrams: true
 title: "Lambda, Kappa, medallion and hybrid processing"
 description: "Compare live and historical computation, correction paths and quality layers without treating them as interchangeable architecture labels."
 chapter: "architecture"
@@ -18,7 +19,7 @@ A dashboard needs updates within seconds, while finance needs corrected daily to
 Lambda commonly maintains a batch path over retained history and a low-latency speed path for recent data. Serving combines their results under a defined cutoff.
 
 
-{% include figure.html id="lambda" %}
+{% include block-diagram.html id="lambda" %}
 
 
 The difficult part is reconciliation. When a batch view advances, its coverage replaces the corresponding speed result. Independent implementations can disagree about rounding, deduplication or late events. Shared transformation definitions and explicit version/cutoff metadata reduce that risk.
@@ -30,7 +31,7 @@ Choose separate paths when low-latency and large historical computation genuinel
 Kappa emphasizes a retained log and a stream-processing computation that can process new data or replay old data. A replacement processor can rebuild a separate output, catch up, validate and switch consumers.
 
 
-{% include figure.html id="kappa" %}
+{% include block-diagram.html id="kappa" %}
 
 
 Replay requires enough retained history and compatible schemas, reference data and processing logic. Resetting a consumer offset without resetting or isolating state can double-count old events. If history has expired, recovery may need an object-store archive or a new source snapshot.
@@ -46,7 +47,7 @@ A silver contract can remain stable while versioned adapters handle upstream sch
 A lakehouse using medallion layers can contain a Data Vault integration model and Kimball stars in its presentation layer. Lambda/Kappa concerns how results are computed and rebuilt; these choices describe different parts of that system.
 
 
-{% include figure.html id="medallion-models" %}
+{% include block-diagram.html id="medallion-models" %}
 
 The [schema-contract reference]({{ '/data-engineering/reliability/schema-evolution-and-contracts/' | relative_url }}) explains stable Silver mappings and consumer migrations. The [lake design reference]({{ '/data-engineering/architecture/lake-warehouse-design/' | relative_url }}) places catalogs, table commits and serving engines around these datasets.
 

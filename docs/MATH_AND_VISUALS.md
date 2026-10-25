@@ -19,14 +19,16 @@ Use `{% include diagram.html ... %}` for process flows. Always provide a textual
 
 Do not turn comparisons that are clearer as tables into decorative flowcharts.
 
-## Static figures
+## Native diagrams
 
-Use `{% include figure.html id="warehouse-methods" %}` for a nested architecture, physical layout, before/after data example or official execution-plan image. Use Mermaid ER diagrams for schemas so tables, keys and cardinalities remain clear. Its definition in `app/_data/figures.json` supplies the local asset, dimensions, caption, alt text and attribution. Store images under `app/assets/img/site/<subject>/<chapter>/<topic>/`. See [image sources and reuse](IMAGE_SOURCES.md) for the current inventory and license evidence.
+Use `{% include block-diagram.html id="warehouse-methods" %}` for authored responsibility, execution or physical-layout diagrams. Define the content in `app/_data/block_diagrams.json` and set `block_diagrams: true` in the lesson. Use the existing theme colors, typeface and rounded panels. Text stays at reading size; resize the layout rather than scaling text into an image.
 
-Static figures preserve their original colors. Their default view fits the column; an Enlarge image control enables keyboard scrolling at the full artwork width, alongside a full-size link, and the explanation remains readable without JavaScript. They do not need `mermaid: true`. Retain that flag only when the page also contains a Mermaid process diagram.
+Declare both desktop and compact grid positions, preserving branch meaning. Every connector names a source and destination. The renderer measures the HTML panels after layout and anchors its arrows to their edges. A return route uses an outside rail, and a control route is dashed. Inspect both themes, narrow columns and all arrow endpoints.
 
-## Image quality at reading size
+The Parquet example uses nested HTML regions for file, row group, column chunk and page. Before/after data examples use native tables with one coherent scenario, meaningful keys, change dates, changed values and the resulting query or report. Source records and output rows must agree.
 
-Use actual on-page dimensions to judge a figure. A large vector canvas can still produce unreadable text when reduced into the article column. Authored diagrams use large labels and a mobile composition selected through native picture/source markup. Preserve topology when rearranging a diagram: control lines stay distinct from data flow, and independent inputs stay independent.
+## Static reference figures
 
-The source and mobile label size declarations are checked against the rendered image width. Browser checks also inspect every authored SVG for clipped or overlapping text. Source artwork must have a full opaque background, self-contained resources and consistent arrowhead sizing. Reference screenshots retain their original colors and can be enlarged to native width.
+Use `{% include figure.html id="query-stages" %}` for an official image whose details support the explanation and whose reuse terms allow redistribution. Keep source bytes unchanged under `app/assets/img/site/<subject>/<chapter>/<topic>/`. Its registry entry supplies dimensions, caption, alt text, source and license.
+
+Images fit the column by default and retain a full-size link plus keyboard-accessible enlargement. Preserve official source colors across themes. Use Mermaid ER diagrams for schemas and Mermaid workflows where branching or event order is the relationship to inspect. See [image sources and reuse](IMAGE_SOURCES.md) for the current inventory.

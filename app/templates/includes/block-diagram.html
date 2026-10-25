@@ -1,0 +1,84 @@
+{% assign block = site.data.block_diagrams[include.id] %}
+{% if block %}
+  <figure
+    class="block-diagram"
+    data-block-diagram="{{ include.id }}"
+    aria-labelledby="block-title-{{ include.id }}"
+  >
+    <figcaption id="block-title-{{ include.id }}">{{ block.title | escape }}</figcaption>
+    {% if block.kind == 'parquet' %}
+      {% include blocks/parquet.html %}
+    {% else %}
+      <div class="block-panels{% if block.panels.size > 1 %} block-panels--comparison{% endif %}">
+        {% for panel in block.panels %}
+          <section
+            class="block-panel"
+            aria-label="{{ panel.title | default: block.title | escape }}"
+          >
+            {% if panel.title %}
+              <p class="block-panel-title">{{ panel.title | escape }}</p>
+            {% endif %}
+            {% if panel.detail %}
+              <p class="block-panel-detail">{{ panel.detail | escape }}</p>
+            {% endif %}
+            <div
+              class="block-graph"
+              style="--columns: {{ panel.columns }}; --compact-columns: {{ panel.compact_columns }}; --column-gap: {{ panel.column_gap | default: '1.75rem' }}"
+            >
+              <svg class="block-edges" aria-hidden="true"></svg>
+              <div class="block-layout">
+                {% for node in panel.nodes %}
+                  <div
+                    class="block-node{% if node.emphasis %} block-node--emphasis{% endif %}"
+                    data-block-node="{{ node.id }}"
+                    style="--column: {{ node.column }}; --row: {{ node.row }}; --span: {{ node.span | default: 1 }}; --compact-column: {{ node.compact_column | default: node.column }}; --compact-row: {{ node.compact_row | default: node.row }}; --compact-span: {{ node.compact_span | default: node.span | default: 1 }}"
+                  >
+                    {% if node.label -%}
+                      <span class="block-node-label">{{ node.label | escape }}</span>
+                    {%- endif %}
+                    <strong>{{ node.title | escape }}</strong>
+                    {% if node.detail %}
+                      <p>{{ node.detail | escape }}</p>
+                    {% endif %}
+                    {% if node.items %}
+                      <ul
+                        class="block-items"
+                        style="--item-columns: {{ node.items_columns | default: 1 }}"
+                      >
+                        {% for item in node.items %}
+                          <li>
+                            <b>{{ item.title | escape }}</b>
+                            {%- if item.detail -%}
+                              <span>{{ item.detail | escape }}</span>
+                            {%- endif %}
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+              <script type="application/json" class="block-links">
+                {{ panel.edges | jsonify }}
+              </script>
+            </div>
+            <ul class="block-route-list">
+              {% for edge in panel.edges %}
+                {% assign origin = panel.nodes | where: 'id', edge.from | first %}
+                {% assign destination = panel.nodes | where: 'id', edge.to | first %}
+                <li>
+                  {{ origin.title | escape }} to {{ destination.title | escape -}}
+                  {%- if edge.label %}: {{ edge.label | escape }}{% endif %}.
+                </li>
+              {% endfor %}
+            </ul>
+          </section>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <p class="block-caption">{{ block.description | escape }}</p>
+    <p class="block-reference">
+      Reference: <a href="{{ block.source_url | escape }}">{{ block.author | escape }}</a>.
+    </p>
+  </figure>
+{% endif %}

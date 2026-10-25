@@ -1,12 +1,7 @@
 {% assign figure = site.data.figures[include.id] %}
 {% if figure %}
-  <figure
-    class="reference-figure{% if figure.original %} reference-figure--original{% endif %}"
-    data-figure-id="{{ include.id }}"
-  >
-    {% unless figure.original %}
-      <div class="reference-figure-heading">{{ figure.title | escape }}</div>
-    {% endunless %}
+  <figure class="reference-figure" data-figure-id="{{ include.id }}">
+    <div class="reference-figure-heading">{{ figure.title | escape }}</div>
     <input
       class="reference-figure-zoom"
       type="checkbox"
@@ -32,37 +27,23 @@
       role="region"
       tabindex="0"
       aria-label="{{ figure.title | escape }}. Enlarge the image for horizontal scrolling."
-      style="--figure-width: {{ figure.display_width }}px; --figure-background: {{ figure.background | default: '#ffffff' }}"
+      style="--figure-width: {{ figure.display_width }}px"
     >
-      <picture>
-        {% if figure.mobile_path %}
-          <source
-            media="(max-width: 600px), (min-width: 781px) and (max-width: 900px)"
-            srcset="{{ figure.mobile_path | relative_url }}"
-            width="{{ figure.mobile_width }}"
-            height="{{ figure.mobile_height }}"
-          >
-        {% endif %}
-        <img
-          src="{{ figure.path | relative_url }}"
-          alt="{{ figure.alt | escape }}"
-          width="{{ figure.width }}"
-          height="{{ figure.height }}"
-          loading="lazy"
-          decoding="async"
-        >
-      </picture>
+      <img
+        src="{{ figure.path | relative_url }}"
+        alt="{{ figure.alt | escape }}"
+        width="{{ figure.width }}"
+        height="{{ figure.height }}"
+        loading="lazy"
+        decoding="async"
+      >
     </div>
     <figcaption>
       <p>{{ figure.description | escape }}</p>
       <p class="reference-figure-credit">
-        {% if figure.original %}CoreTrail illustration. Reference: {% else %}Source: {% endif -%}
-        <a href="{{ figure.source_url | escape }}">{{ figure.author | escape }}</a>
-        {%- unless figure.original %}
-          · <a href="{{ figure.license_url | escape }}">{{ figure.license | escape }}</a> ·
-          Reproduced unchanged
-        {%- endunless -%}
-        .
+        Source: <a href="{{ figure.source_url | escape }}">{{ figure.author | escape }}</a> ·
+        <a href="{{ figure.license_url | escape }}">{{ figure.license | escape }}</a> · Reproduced
+        unchanged.
       </p>
     </figcaption>
   </figure>

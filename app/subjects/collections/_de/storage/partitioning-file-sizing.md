@@ -1,4 +1,5 @@
 ---
+block_diagrams: true
 title: "Lake partitioning, clustering and Parquet file sizing"
 description: "Choose layout from filters, data distribution and update cost, then verify what the engine actually skips."
 chapter: storage
@@ -37,7 +38,7 @@ Clustering or sorting places related values near one another so file or block st
 
 **Compaction** combines small files into fewer larger files. **Reclustering** rewrites layout to improve locality. Both consume resources; fewer files alone does not guarantee more selective reads.
 
-{% include figure.html id="parquet-layout" %}
+{% include block-diagram.html id="parquet-layout" %}
 
 ## Choose a partition key and granularity
 
