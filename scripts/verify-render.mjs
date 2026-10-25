@@ -226,8 +226,7 @@ cases.push(
   {
     name: 'model-lifecycle',
     route: '/coretrail/ml/operations/model-lifecycle-monitoring/',
-    text: 'Model release uses data and evaluation gates',
-    math: true,
+    text: 'Experiment tracking, model registries and release provenance',
     mermaid: true,
   },
   {
@@ -464,12 +463,6 @@ cases.push(
     text: 'Multi-model serving, grouping and memory capacity',
   },
   {
-    name: 'ml-lifecycle-records',
-    route: '/coretrail/ml/operations/model-lifecycle-monitoring/',
-    text: 'Experiment tracking, model registries and release provenance',
-    mermaid: true,
-  },
-  {
     name: 'ml-drift-types',
     route: '/coretrail/ml/operations/drift-detection/',
     text: 'Data drift, concept drift and training-serving skew',
@@ -517,7 +510,6 @@ for (const [id, collection] of Object.entries(config.collections)) {
     const expressions = [...body.matchAll(/{%\s*include math\.html\b([\s\S]*?)%}/g)];
     const blockExpressions = [...body.matchAll(/{%\s*include block-diagram\.html\b/g)];
     const figureExpressions = [...body.matchAll(/{%\s*include figure\.html\b/g)];
-    if (!expressions.length && !blockExpressions.length && !figureExpressions.length) continue;
     if (expressions.length && metadata.math !== true)
       throw new Error('Missing math: true in ' + file);
     const lessonPath = relative(directory, resolve(directory, file))
@@ -526,6 +518,8 @@ for (const [id, collection] of Object.entries(config.collections)) {
     const route =
       config.baseurl + (metadata.permalink || collection.permalink.replace(':path', lessonPath));
     let test = cases.find((item) => item.route === route);
+    if (!expressions.length && !blockExpressions.length && !figureExpressions.length && !test)
+      continue;
     if (!test) {
       test = {
         name: 'math-' + id + '-' + lessonPath.replaceAll('/', '-'),
@@ -534,7 +528,7 @@ for (const [id, collection] of Object.entries(config.collections)) {
       };
       cases.push(test);
     }
-    if (metadata.mermaid && test.mermaid === undefined) test.mermaid = true;
+    test.mermaid = metadata.mermaid === true;
     Object.assign(test, {
       math: expressions.length > 0,
       blocks: blockExpressions.length,
