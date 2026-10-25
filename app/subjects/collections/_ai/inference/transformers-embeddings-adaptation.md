@@ -59,7 +59,7 @@ Full fine-tuning updates pretrained parameters and requires substantial gradient
 
 {% include math.html tex="W'=W+BA,\quad B\in\mathbb{R}^{d\times r},\; A\in\mathbb{R}^{r\times k}" block=true %}
 
-For a `d × k` matrix, LoRA trains roughly `r(d+k)` parameters instead of `dk` when the rank `r` is much smaller than both dimensions. Quantized LoRA (QLoRA) stores the frozen base model in a reduced-precision representation to lower training memory further.
+For a {% include math.html tex="d\times k" %} matrix, LoRA trains roughly {% include math.html tex="r(d+k)" %} parameters instead of {% include math.html tex="dk" %} when the rank {% include math.html tex="r" %} is much smaller than both dimensions. Quantized LoRA (QLoRA) stores the frozen base model in a reduced-precision representation to lower training memory further.
 
 Supervised fine-tuning (SFT) trains against demonstrations. Direct Preference Optimization (DPO) uses preference pairs to shift behavior relative to a reference policy. Distillation trains a smaller student using a teacher's outputs or probability distributions.
 

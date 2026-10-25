@@ -7,7 +7,7 @@ Verified October 25, 2026. The handbook includes **six unchanged official figure
 - Schema diagrams remain Mermaid ER diagrams, including star, snowflake, bridge, conformed-dimension and Data Vault schemas.
 - Architecture, execution and physical-storage diagrams use self-contained SVG artwork. The desktop artwork uses a 760-pixel canvas, and mobile artwork uses a 440-pixel canvas with rearranged panels and connectors. Labels use at least 22 source pixels and must render at 14 CSS pixels or more at the checked reading sizes.
 - Mobile compositions preserve branch, control and data-flow meaning. Parallel scans or agents must not become a sequential chain merely because panels stack vertically.
-- Full opaque paper backgrounds, consistent iconography, aligned panels and fixed-size arrowheads replace transparent corners, dense prose inside boxes and short or zero-length connectors.
+- Full opaque paper backgrounds, rounded panels, consistent iconography, aligned spacing and fixed-size arrowheads replace transparent corners, dense prose inside boxes and short or zero-length connectors. The image viewport clips the opaque artwork to its rounded border, so corner pixels match the frame without white wedges.
 - Dense official reference figures retain their source colors and bytes. Their enlargement uses the full source width rather than a capped 1000-pixel view. Fine print in an official UI screenshot may require enlargement; the surrounding prose states the interpretation.
 
 ## Sources and licenses

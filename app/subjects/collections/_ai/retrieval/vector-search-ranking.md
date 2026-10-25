@@ -22,7 +22,7 @@ Retrieval has two distinct jobs: finding a broad enough set of relevant candidat
 
 ## From exact comparison to approximate search
 
-For `N` vectors with `d` components, a brute-force dot-product scan performs work proportional to `N × d`. Approximate nearest-neighbor (ANN) structures avoid searching every point, usually at the cost of occasional missed exact neighbors.
+For `N` vectors with `d` components, a brute-force dot-product scan performs work proportional to {% include math.html tex="N\times d" %}. Approximate nearest-neighbor (ANN) structures avoid searching every point, usually at the cost of occasional missed exact neighbors.
 
 **Hierarchical Navigable Small World (HNSW)** builds a navigable graph with sparse upper layers and a dense base layer. Search descends through the hierarchy toward closer candidates. `M` influences connectivity and memory, `efConstruction` affects index quality and build cost, and `efSearch` controls query-time exploration. Increasing `efSearch` often improves recall with additional latency; it does not require re-embedding.
 

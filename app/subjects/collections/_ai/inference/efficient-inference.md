@@ -3,6 +3,7 @@ title: "Making LLM inference faster and cheaper"
 nav_title: "Efficient inference"
 description: "Match quantization, PagedAttention, prefix caching, speculative decoding, and model routing to the bottleneck they address."
 chapter: inference
+math: true
 order: 4
 sequence: 104
 level: "Core + deep dive"
@@ -39,11 +40,11 @@ Large language model (LLM) inference can be expensive for different reasons: mod
 
 Lower-precision weight formats reduce the memory footprint of the model and can improve execution efficiency on supported hardware.
 
-A 70-billion-parameter (70B) model needs roughly:
+A 70-billion-parameter (70B) model with 16-bit weights needs roughly 140 decimal GB for the weights:
 
-`70B parameters × 2 bytes ≈ 140 GB`
+{% include math.html tex="70\times10^9\times2\,\text{bytes}=140\,\text{GB}" block=true %}
 
-for 16-bit weights before other memory.
+KV cache, activations and runtime allocations add to that budget.
 
 Moving to a lower-bit representation can cut that substantially, but the real outcome depends on the quantization method, hardware, kernels, and acceptable quality change.
 

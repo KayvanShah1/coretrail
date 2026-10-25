@@ -3,15 +3,17 @@
 CoreTrail uses Jekyll/Kramdown. LaTeX is rendered by the opt-in KaTeX client script. On a lesson containing equations, set `math: true` in the front matter, then insert repository-authored equations through the Liquid include:
 
 ```liquid
-Inline: {% include math.html tex="P(y=1\\mid x)=\\sigma(w^\\top x)" %}
+Inline: {% include math.html tex="P(y=1\mid x)=\sigma(w^\top x)" %}
 
 {% capture equation %}
-\\operatorname{Recall@k}=\\frac{\\text{relevant in top }k}{\\text{all relevant}}
+\operatorname{Recall@k}=\frac{\text{relevant in top }k}{\text{all relevant}}
 {% endcapture %}
 {% include math.html tex=equation block=true %}
 ```
 
-The include escapes its input and preserves a readable LaTeX fallback if KaTeX cannot load. Display equations scroll horizontally when necessary. No mathematical rendering is applied to ordinary code fences. Use the include instead of automatic `$` delimiter detection; SQL and prose frequently contain literal dollar signs. Rendering is limited to repository-authored expressions with `trust: false`.
+The include escapes its input and preserves a readable LaTeX fallback if KaTeX cannot load. It uses Jekyll’s [normalize_whitespace filter](https://jekyllrb.com/docs/liquid/filters/) to keep the generated HTML on one line so that an inline expression remains inside its surrounding Markdown paragraph; template indentation and blank lines must not become code blocks. Preserve TeX row breaks as `\\` inside captured expressions. Display equations scroll horizontally when necessary. Use equation includes for mathematical definitions and worked arithmetic. Keep executable SQL and language expressions in code formatting. No mathematical rendering is applied to ordinary code fences. Use the include instead of automatic `$` delimiter detection; SQL and prose frequently contain literal dollar signs. Rendering is limited to repository-authored expressions with `trust: false`.
+
+Browser verification discovers equation pages across all published collections. It matches every source include to a rendered equation, verifies inline placement and requires KaTeX plus MathML for every expression on desktop and mobile. Rendering only some of a page's formulas is a failure.
 
 Use `{% include diagram.html ... %}` for process flows. Always provide a textual fallback and readable title. Prefer a diagram when direction, branching, or feedback changes the explanation. A diagnostic layout can be reused by defining an entry in `app/_data/diagnostics.json` and including `{% include diagnostic-map.html id="point-in-time" %}`. Its content remains accessible without JavaScript.
 

@@ -1,7 +1,8 @@
 import { createServer } from 'node:http';
-import { readFile, mkdir, writeFile } from 'node:fs/promises';
-import { resolve, extname, sep } from 'node:path';
+import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
+import { resolve, extname, relative, sep } from 'node:path';
 import { chromium } from 'playwright';
+import YAML from 'yaml';
 
 const root = resolve('_site');
 const figureRegistry = JSON.parse(await readFile('app/_data/figures.json', 'utf8'));
@@ -451,6 +452,45 @@ cases.push(
     text: 'BigQuery slots',
   },
 );
+// Match every authored expression to its rendered DOM node. A page can render its
+// display equations while Markdown silently corrupts inline include output.
+const config = YAML.parse(await readFile('_config.yml', 'utf8'));
+for (const [id, collection] of Object.entries(config.collections)) {
+  if (!collection.output) continue;
+  const directory = resolve(config.source, config.collections_dir, '_' + id);
+  const files = await readdir(directory, { recursive: true });
+  for (const file of files.filter((name) => name.endsWith('.md'))) {
+    const source = (await readFile(resolve(directory, file), 'utf8')).replaceAll('\r\n', '\n');
+    const front = source.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+    if (!front) continue;
+    const metadata = YAML.parse(front[1]);
+    const body = front[2].replace(/^([`~]{3,})[^\n]*\n[\s\S]*?^\1[ \t]*$/gm, '');
+    const expressions = [...body.matchAll(/{%\s*include math\.html\b([\s\S]*?)%}/g)];
+    if (!expressions.length) continue;
+    if (metadata.math !== true) throw new Error('Missing math: true in ' + file);
+    const lessonPath = relative(directory, resolve(directory, file))
+      .replaceAll('\\', '/')
+      .replace(/\.md$/, '');
+    const route =
+      config.baseurl + (metadata.permalink || collection.permalink.replace(':path', lessonPath));
+    let test = cases.find((item) => item.route === route);
+    if (!test) {
+      test = {
+        name: 'math-' + id + '-' + lessonPath.replaceAll('/', '-'),
+        route,
+        text: metadata.title,
+      };
+      cases.push(test);
+    }
+    Object.assign(test, {
+      math: true,
+      formulaCount: expressions.length,
+      inlineFormulaCount: expressions.filter((match) => !/\bblock\s*=\s*true\b/.test(match[1]))
+        .length,
+    });
+  }
+}
+
 const types = {
   '.css': 'text/css',
   '.js': 'text/javascript',
@@ -518,19 +558,36 @@ try {
         errors.push('Text missing: ' + test.text);
       }
       if (test.math) {
-        try {
-          await page.waitForFunction(
-            () =>
-              [...document.querySelectorAll('.math-expression')].length > 0 &&
-              [...document.querySelectorAll('.math-expression')].every((e) =>
-                e.querySelector('.katex'),
-              ),
-            null,
-            { timeout: 20000 },
-          );
-        } catch {
-          errors.push('KaTeX did not render');
+        const count = await page.locator('.math-expression').count();
+        if (count !== test.formulaCount) {
+          errors.push('Expected ' + test.formulaCount + ' equations, found ' + count);
+        } else {
+          try {
+            await page.waitForFunction(
+              () =>
+                [...document.querySelectorAll('.math-expression')].every(
+                  (element) =>
+                    element.querySelector('.katex math') &&
+                    !element.querySelector('.math-fallback, .katex-error'),
+                ),
+              null,
+              { timeout: 20000 },
+            );
+          } catch {
+            errors.push('KaTeX did not render every equation');
+          }
         }
+        const inline = await page.locator('.math-inline').evaluateAll((elements) => ({
+          count: elements.length,
+          broken: elements.some(
+            (element) =>
+              element.tagName !== 'SPAN' || !element.closest('p, li, td, th, h1, h2, h3'),
+          ),
+        }));
+        if (inline.count !== test.inlineFormulaCount || inline.broken)
+          errors.push('Inline equation escaped its text context');
+        if (/math-expression|math-source|math-fallback/.test(content))
+          errors.push('Math HTML escaped into visible prose');
       }
       if (test.diagnostic && (await page.locator('.diagnostic-step').count()) < 3) {
         errors.push('Diagnostic steps missing');

@@ -30,7 +30,7 @@ With an illustrative 256 MB target file size, 2.16 TB/day corresponds to about 8
 
 {% include math.html tex="u=\frac{\lambda}{\mu},\qquad T_{catchup}=\frac{B}{\mu-\lambda}\quad (\mu>\lambda)" block=true %}
 
-Here `λ` is arrival rate, `μ` sustainable processing rate and `B` accumulated backlog. Service capacity must exceed arrivals to drain a queue while new data continues arriving.
+Here {% include math.html tex="\lambda" %} is arrival rate, {% include math.html tex="\mu" %} sustainable processing rate and {% include math.html tex="B" %} accumulated backlog. Service capacity must exceed arrivals to drain a queue while new data continues arriving.
 
 A ten-minute outage at 100,000 events/second creates 60 million events of backlog. If workers sustain 160,000/second after recovery, the net drain is 60,000/second: catch-up takes 1,000 seconds, about 16.7 minutes. That assumes no new bottleneck from the sink, compaction or replay.
 

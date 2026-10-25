@@ -2,6 +2,7 @@
 title: "Prefill, decode, and KV cache"
 description: "Connect prompt processing and autoregressive decode to GPU memory, context length, and concurrency."
 chapter: inference
+math: true
 order: 2
 sequence: 102
 level: Core
@@ -59,7 +60,13 @@ The cache does not contain the original prose. It contains intermediate key/valu
 
 Graphics processing unit (GPU) memory is roughly:
 
-`GPU memory ≈ model weights + KV cache + execution/runtime memory`
+{% capture memory_budget %}
+\begin{aligned}
+M_{\mathrm{GPU}} &\approx M_{\mathrm{weights}}+M_{\mathrm{KV}}\\
+&\quad+M_{\mathrm{runtime}}
+\end{aligned}
+{% endcapture %}
+{% include math.html tex=memory_budget block=true %}
 
 The exact breakdown changes by model, precision, inference engine, kernels, and configuration, but the consequence is stable: whatever memory the model weights consume is no longer available to hold active request state.
 

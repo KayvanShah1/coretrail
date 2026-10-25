@@ -25,7 +25,7 @@ Here `N` is the number of stored vectors, `d` the number of components per vecto
 | 1,536 | 6.14 GB | 61.44 GB |
 | 3,072 | 12.29 GB | 122.88 GB |
 
-A flat exact similarity scan performs work proportional to `N × d`. Hierarchical Navigable Small World (HNSW) adds graph memory and changes the candidate-search cost. Inverted File (IVF) and product quantization (PQ) offer different memory/recall/latency trade-offs. Search-time configuration and dataset distribution affect actual performance.
+A flat exact similarity scan performs work proportional to {% include math.html tex="N\times d" %}. Hierarchical Navigable Small World (HNSW) adds graph memory and changes the candidate-search cost. Inverted File (IVF) and product quantization (PQ) offer different memory/recall/latency trade-offs. Search-time configuration and dataset distribution affect actual performance.
 
 ## Chunking can dominate the footprint
 
