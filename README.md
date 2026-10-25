@@ -181,6 +181,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) to add a lesson, [CONTENT_COVERAGE.md](do
 
 GitHub Actions builds pull requests and pushes to main or site/**. Only successful main-branch builds deploy. Feature builds upload a site-preview artifact for review. Push and pull-request triggers skip changes limited to `docs/**`, `README.md`, `CONTRIBUTING.md`, and `LICENSE`. Lesson Markdown still triggers checks and builds; manual workflow runs remain available.
 
+### Container image
+
+The separate [container workflow](.github/workflows/build-publish-container.yml) builds `Dockerfile.prod` for pull requests and `site/**` branches. A push to `main`, or a manual run on `main`, also publishes `ghcr.io/kayvanshah1/coretrail:latest` using the workflow's `GITHUB_TOKEN`. GitHub Pages remains the primary site deployment.
+
+After the first publish, GitHub makes the package private by default. Set its visibility to public in the package settings if you want anyone to pull it. Then run:
+
+```sh
+docker run --rm -p 8080:80 ghcr.io/kayvanshah1/coretrail:latest
+```
+
+Open [localhost:8080/coretrail/](http://localhost:8080/coretrail/). For a local build from source, use `docker compose up --build production` as described above.
+
 ## Direction
 
 I do not want CoreTrail to become a dump of everything I have ever learned.

@@ -19,6 +19,8 @@ RUN bundle exec jekyll build --trace
 
 FROM nginx:stable-alpine
 
+LABEL org.opencontainers.image.source="https://github.com/KayvanShah1/coretrail"
+
 COPY --from=build /site/_site/ /usr/share/nginx/html/coretrail/
 
 EXPOSE 80
