@@ -53,15 +53,7 @@ Kubernetes uses three related objects for persistent storage:
 
 A Pod normally mounts the claim, not a cloud disk directly:
 
-```text
-Pod
- ↓ mounts
-PVC
- ↓ binds to
-PV
- ↓ backed by
-disk / network filesystem / cloud storage
-```
+The Pod specification references a PersistentVolumeClaim (PVC). The claim binds to a PersistentVolume (PV), which represents storage such as a disk or network filesystem.
 
 The exact provisioning path depends on the storage driver, but the Pod consumes a claim while the storage resource can have a different lifecycle.
 
@@ -81,13 +73,7 @@ prepare shared volume
 
 For a large language model (LLM) deployment:
 
-```text
-init container
-   ↓ downloads / verifies checkpoint
-shared volume
-   ↓
-vLLM application container
-```
+An init container downloads and verifies the model checkpoint into a shared volume. The vLLM application container then mounts that volume to load the prepared files.
 
 The serving process does not need to own every model-distribution concern.
 

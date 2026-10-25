@@ -51,7 +51,42 @@ The common integration model can reduce repeated reconciliation in marts. It als
 A hub captures a business-key identity. A link captures a relationship between identities. A satellite holds descriptive context and its history/provenance. Operational implementations need explicit record grain, load timestamps and source identity. In the simplified schema below, the suffixes BK and HK mean business key and hash key.
 
 
-{% include figure.html id="data-vault-schema" %}
+{% capture diagram_1 %}
+erDiagram
+HUB_CUSTOMER ||--o{ LINK_CUSTOMER_ORDER : participates
+HUB_ORDER ||--o{ LINK_CUSTOMER_ORDER : participates
+HUB_CUSTOMER ||--o{ SAT_CUSTOMER : describes
+HUB_ORDER ||--o{ SAT_ORDER : describes
+HUB_CUSTOMER {
+  string customer_hk PK
+  string customer_bk
+  timestamp loaded_at
+}
+HUB_ORDER {
+  string order_hk PK
+  string order_bk
+}
+LINK_CUSTOMER_ORDER {
+  string link_hk PK
+  string customer_hk FK
+  string order_hk FK
+}
+SAT_CUSTOMER {
+  string customer_hk FK
+  timestamp loaded_at
+  string region
+  string record_source
+}
+SAT_ORDER {
+  string order_hk FK
+  timestamp loaded_at
+  string status
+}
+{% endcapture %}
+{% capture fallback_1 %}
+Customer and order hubs retain identities, the link captures their association, and satellites retain descriptive versions. Keys and timestamps shown are simplified; the full uniqueness rules depend on satellite grain.
+{% endcapture %}
+{% include diagram.html title="Customer-order integration using hubs, a link and satellites" code=diagram_1 fallback=fallback_1 caption=true %}
 
 
 Consumers can receive a star built from this integration model. Hash keys need canonical input and collision handling; identity matching still decides whether different source identifiers name the same customer.

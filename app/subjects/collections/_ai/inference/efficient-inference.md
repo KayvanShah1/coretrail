@@ -93,15 +93,7 @@ The trade-off moves into scheduling. Chunk size and scheduling policy can improv
 
 A more structural design runs prefill and decode on different serving instances:
 
-```text
-prompt
-  ↓
-prefill pool
-  ↓  KV state transfer
-decode pool
-  ↓
-generated tokens
-```
+{% include figure.html id="prefill-decode-pools" %}
 
 This matters because prefill and decode stress hardware differently. Separate pools can use different parallelism or capacity settings and let operators tune **time to first token (TTFT)** and **inter-token latency** more independently.
 

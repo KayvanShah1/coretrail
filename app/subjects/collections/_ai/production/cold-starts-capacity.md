@@ -35,17 +35,10 @@ Large language model (LLM) autoscaling reacts to demand, but the requested graph
 
 A scale-out path can include:
 
-```text
-provision GPU virtual machine (VM)
-→ join Kubernetes cluster
-→ pull container image
-→ obtain model weights
-→ read and load tensors
-→ initialize distributed runtime
-→ compile / capture execution artifacts
-→ warm up
-→ readiness
-```
+1. Provision the GPU virtual machine (VM) and join the cluster.
+2. Pull the container image and obtain model weights.
+3. Load tensors and initialize the distributed runtime.
+4. Compile or capture execution artifacts, warm up, then pass readiness checks.
 
 Any one of those can dominate.
 

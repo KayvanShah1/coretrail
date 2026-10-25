@@ -34,19 +34,10 @@ A **registry** distributes images between build systems and machines that need t
 
 ## The lifecycle
 
-```text
-Dockerfile / build context
-        ↓
-      image
-        ↓
-   push to registry
-        ↓
-   pull to a host
-        ↓
-  container runtime
-        ↓
- running container
-```
+1. Build an image from a Dockerfile and build context.
+2. Push the versioned image to a registry.
+3. Pull that image onto the execution host.
+4. Let the container runtime create and run an instance from it.
 
 If ten replicas use the same image, you do not have ten different source artifacts. You have ten running instances derived from a versioned image.
 

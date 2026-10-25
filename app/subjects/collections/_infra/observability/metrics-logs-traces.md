@@ -77,15 +77,7 @@ A wall of unstructured strings without stable fields becomes difficult to correl
 
 ## Traces connect work across service boundaries
 
-A distributed trace follows one logical request through spans such as:
-
-```text
-gateway
-→ application programming interface (API)
-→ retrieval service
-→ model endpoint
-→ database
-```
+A distributed trace follows one logical request. It can contain spans in the gateway, application programming interface (API), retrieval service, model endpoint and database. Parent-child relationships and timestamps show how their work contributed to the request.
 
 It is useful when the end-to-end latency is bad but individual service averages look normal.
 

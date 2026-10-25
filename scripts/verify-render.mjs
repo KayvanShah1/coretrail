@@ -43,6 +43,18 @@ const cases = [
     text: 'GPU scheduling',
   },
   {
+    name: 'distributed-query-image',
+    route: '/coretrail/data-engineering/gcp/slots-shuffle-concurrency/',
+    text: 'BigQuery slots',
+    figures: 1,
+  },
+  {
+    name: 'prefill-decode-image',
+    route: '/coretrail/ai-engineering/inference/efficient-inference/',
+    text: 'prefill',
+    figures: 1,
+  },
+  {
     name: 'rag-image',
     route: '/coretrail/ai-engineering/retrieval/rag-search-at-scale/',
     text: 'From source documents',
@@ -259,10 +271,10 @@ cases.push(
   },
   {
     name: 'de-modelling-dimensional-facts-schemas',
-    figures: 4,
+    relationshipLabels: true,
     route: '/coretrail/data-engineering/modelling/dimensional-facts-schemas/',
     text: 'Dimensional modelling, star schemas and fact grain',
-    mermaid: false,
+    mermaid: true,
     math: false,
   },
   {
@@ -282,7 +294,8 @@ cases.push(
   },
   {
     name: 'de-architecture-warehouse-integration-patterns',
-    figures: 2,
+    relationshipLabels: true,
+    figures: 1,
     route: '/coretrail/data-engineering/architecture/warehouse-integration-patterns/',
     text: 'Kimball, Inmon, Data Vault and hybrid warehouse design',
     mermaid: true,

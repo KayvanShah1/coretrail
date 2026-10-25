@@ -1,7 +1,9 @@
 {% assign figure = site.data.figures[include.id] %}
 {% if figure %}
-  <figure class="reference-figure">
-    <div class="reference-figure-heading">{{ figure.title | escape }}</div>
+  <figure class="reference-figure{% if figure.original %} reference-figure--original{% endif %}">
+    {% unless figure.original %}
+      <div class="reference-figure-heading">{{ figure.title | escape }}</div>
+    {% endunless %}
     <input
       class="reference-figure-zoom"
       type="checkbox"

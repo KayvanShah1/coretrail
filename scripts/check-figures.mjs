@@ -8,6 +8,9 @@ const files = await readdir(resolve(root, 'subjects/collections'), { recursive: 
 const used = new Map();
 for (const file of files.filter((file) => file.endsWith('.md'))) {
   const text = await readFile(resolve(root, 'subjects/collections', file), 'utf8');
+  for (const block of text.matchAll(/^([\x60~]{3,})(?:text|plaintext)\s*\n([\s\S]*?)^\1\s*$/gm)) {
+    assert.ok(!/(?:^|\n)\s*(?:→|↓)|\+-{3,}.*JOIN/.test(block[2]), 'Text-only diagram in ' + file);
+  }
   for (const match of text.matchAll(/{%\s*include figure\.html id=["']([^"']+)["']\s*%}/g)) {
     assert.ok(figures[match[1]], 'Unknown figure ' + match[1] + ' in ' + file);
     used.set(match[1], (used.get(match[1]) || 0) + 1);
@@ -43,6 +46,18 @@ for (const [id, figure] of Object.entries(figures)) {
   if (figure.path.endsWith('.svg')) {
     const svg = bytes.toString();
     assert.match(svg, /<svg\b/);
+    if (figure.original) {
+      assert.match(
+        svg,
+        /markerUnits="userSpaceOnUse"/,
+        'Original arrowheads must use a fixed size: ' + id,
+      );
+      assert.match(
+        svg,
+        /<rect width="\d+" height="\d+" rx="0" fill="#141a17"/,
+        'Original figure needs an opaque background: ' + id,
+      );
+    }
     assert.ok(
       !/<script\b|<(?:iframe|object|embed|video|audio|input)\b|\bon[a-z]+=|<image\b[^>]*(?:href|src)=["'](?:https?:|\/\/)/i.test(
         svg,

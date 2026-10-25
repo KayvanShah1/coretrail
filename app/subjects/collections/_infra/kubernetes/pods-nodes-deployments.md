@@ -92,11 +92,6 @@ The kubelet on that node works with the container runtime to start and supervise
 
 That separation becomes important during autoscaling:
 
-```text
-autoscaler increases desired replicas
-→ controller creates Pods
-→ scheduler tries to place them
-→ node autoscaler may need to create machines
-```
+The workload autoscaler changes desired replicas; a controller creates the missing Pods and the scheduler tries to place them. If suitable capacity is unavailable, they stay Pending while node autoscaling can add machines.
 
 Next: [Services and networking]({{ '/infrastructure/kubernetes/services-networking/' | relative_url }}).

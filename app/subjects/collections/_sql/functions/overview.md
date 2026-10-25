@@ -56,23 +56,13 @@ GROUP BY 1;
 
 **Month-over-month / week-over-week / year-over-year**
 
-```text
-DATE_TRUNC to desired grain
-→ aggregate
-→ LAG(metric) OVER (ORDER BY period)
-→ difference or percentage change
-```
+Use `DATE_TRUNC` to establish the reporting grain, aggregate each period, then apply `LAG(metric) OVER (ORDER BY period)` before calculating the change.
 
 For YoY monthly comparisons, a 12-row `LAG` is only correct when every month exists exactly once. Otherwise join periods by the actual previous-year date/month key.
 
 **Missing periods**
 
-```text
-GENERATE_SERIES
-→ calendar spine
-→ LEFT JOIN observed aggregate
-→ COALESCE to zero only when absence truly means zero
-```
+Build a calendar spine with `GENERATE_SERIES`, left join the observed aggregates, and use `COALESCE` only when an absent observation means zero.
 
 **Half-open timestamp range**
 

@@ -39,6 +39,10 @@
   border-radius: 4px;
   background: #fff;
 }
+.reference-figure--original .reference-figure-image {
+  background: #141a17;
+}
+
 .reference-figure-image:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;

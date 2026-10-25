@@ -290,7 +290,7 @@ A good CoreTrail diagram answers something like:
 - how does grain change?
 - which state survives a restart?
 
-Choose the visual form from what the reader needs to inspect. Mermaid works well for branching flows, state transitions and dependency graphs. Detailed schemas, nested architecture views, storage layouts, timelines and annotated execution plans often need an SVG illustration or an image from official documentation.
+Choose the visual form from what the reader needs to inspect. Use Mermaid ER diagrams for schemas: tables, columns, keys and relationship cardinalities. Mermaid also works well for branching flows, state transitions and dependency graphs. Nested architecture views, storage layouts, timelines, before/after data examples and annotated execution plans can use SVG illustrations or images from official documentation.
 
 Use an official image directly when its details support the explanation and its reuse terms permit redistribution. Preserve the source artwork, credit its author and license, and keep a local copy under `app/assets/img/site/<subject>/<chapter>/<topic>/<descriptive-name>.<ext>`. Original CoreTrail illustrations use the same hierarchy and identify the primary references behind their mechanics.
 

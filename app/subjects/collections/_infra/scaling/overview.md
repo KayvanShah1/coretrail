@@ -30,13 +30,10 @@ references:
 
 Kubernetes autoscaling has two control loops that can move at different times.
 
-```text
-workload scaling
-→ change how many replicas should exist
-
-node scaling
-→ change how much machine capacity exists
-```
+| Control loop | Changes |
+| --- | --- |
+| Workload scaling | Desired replica count |
+| Node scaling | Machine capacity available to place those replicas |
 
 The workload loop can ask for more Pods even when the cluster has nowhere to place them. Those Pods remain Pending until suitable machine capacity appears.
 

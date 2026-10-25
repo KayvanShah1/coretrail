@@ -98,25 +98,14 @@ RETURNING *;
 
 ## High-value PostgreSQL combinations
 
-```text
-GENERATE_SERIES + LEFT JOIN
-    missing-date/calendar reports
-
-UNNEST + WITH ORDINALITY
-    expand while keeping original array order
-
-LEFT JOIN LATERAL + ORDER BY + LIMIT
-    latest/top-N related rows while preserving parents
-
-FILTER + aggregate
-    concise conditional metrics
-
-DISTINCT ON + ORDER BY
-    PostgreSQL-specific latest/earliest record
-
-JSONB expansion + LATERAL
-    nested repeated data → relational rows
-```
+| Combination | Purpose |
+| --- | --- |
+| `GENERATE_SERIES` + `LEFT JOIN` | Complete missing-date and calendar reports |
+| `UNNEST` + `WITH ORDINALITY` | Expand an array while retaining element order |
+| `LEFT JOIN LATERAL` + `ORDER BY` + `LIMIT` | Retrieve related top-N rows while preserving parents |
+| `FILTER` + aggregate | Calculate conditional metrics |
+| `DISTINCT ON` + `ORDER BY` | Select the PostgreSQL-specific first row per group |
+| JSONB expansion + `LATERAL` | Turn repeated nested values into related rows |
 
 ## Common traps
 

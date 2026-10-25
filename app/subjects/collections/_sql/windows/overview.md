@@ -125,21 +125,11 @@ Use `ROW_NUMBER` for exactly N rows; use `DENSE_RANK` for N distinct value level
 
 **Period-over-period**
 
-```text
-aggregate to period
-→ LAG(period_value)
-→ absolute / percentage change
-```
+Aggregate to one row per period, use `LAG(period_value)` to retrieve the previous value, then calculate the absolute or percentage change.
 
 **Sessions / state runs**
 
-```text
-LAG
-→ detect boundary
-→ CASE flag
-→ cumulative SUM
-→ group/session id
-```
+Use `LAG` to compare adjacent records, mark each new session with `CASE`, then cumulatively sum the flags to produce a session ID.
 
 **Percentage of total**
 
