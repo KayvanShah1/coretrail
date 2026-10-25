@@ -5,7 +5,6 @@ chapter: "architecture"
 order: 2
 sequence: 177
 level: "Core"
-mermaid: true
 keywords: ["Lambda architecture","Kappa architecture","medallion","bronze silver gold","batch streaming hybrid","reprocessing","event sourcing","CQRS"]
 interview_queries: ["Lambda vs Kappa architecture","can medallion architecture be streaming"]
 last_verified: "2026-10-25"
@@ -19,20 +18,7 @@ A dashboard needs updates within seconds, while finance needs corrected daily to
 Lambda commonly maintains a batch path over retained history and a low-latency speed path for recent data. Serving combines their results under a defined cutoff.
 
 
-{% capture diagram_3 %}
-flowchart TD
-E["Incoming events"] --> H["Retained source history"]
-E --> S["Low-latency speed computation"]
-H --> B["Batch recomputation"]
-B --> V["Batch view through committed cutoff"]
-S --> R["Recent view after that cutoff"]
-V --> Q["Serving query combines disjoint coverage"]
-R --> Q
-{% endcapture %}
-{% capture fallback_3 %}
-The batch view covers data through a published cutoff. The recent view covers the remaining interval. Serving combines disjoint ranges so the same event is not counted twice.
-{% endcapture %}
-{% include diagram.html title="Lambda needs a rule for where batch coverage ends" code=diagram_3 fallback=fallback_3 caption=true %}
+{% include figure.html id="lambda" %}
 
 
 The difficult part is reconciliation. When a batch view advances, its coverage replaces the corresponding speed result. Independent implementations can disagree about rounding, deduplication or late events. Shared transformation definitions and explicit version/cutoff metadata reduce that risk.
@@ -44,21 +30,7 @@ Choose separate paths when low-latency and large historical computation genuinel
 Kappa emphasizes a retained log and a stream-processing computation that can process new data or replay old data. A replacement processor can rebuild a separate output, catch up, validate and switch consumers.
 
 
-{% capture diagram_4 %}
-flowchart TD
-L["Retained ordered input"] --> A["Current processor and state"]
-L --> B["Replay processor with versioned logic"]
-A --> X["Active serving view"]
-B --> Y["Candidate serving view"]
-Y --> C{"Caught up and reconciled?"}
-C -- "No" --> B
-C -- "Yes" --> P["Switch consumers to candidate"]
-X --> P
-{% endcapture %}
-{% capture fallback_4 %}
-The current processor remains live while a versioned replay builds a candidate view. Promote only after catch-up and reconciliation.
-{% endcapture %}
-{% include diagram.html title="Replay into a separate output before replacing the live view" code=diagram_4 fallback=fallback_4 caption=true %}
+{% include figure.html id="kappa" %}
 
 
 Replay requires enough retained history and compatible schemas, reference data and processing logic. Resetting a consumer offset without resetting or isolating state can double-count old events. If history has expired, recovery may need an object-store archive or a new source snapshot.
@@ -74,21 +46,7 @@ A silver contract can remain stable while versioned adapters handle upstream sch
 A lakehouse using medallion layers can contain a Data Vault integration model and Kimball stars in its presentation layer. Lambda/Kappa concerns how results are computed and rebuilt; these choices describe different parts of that system.
 
 
-{% capture medallion_diagram %}
-flowchart TD
-S["Source payloads"] --> B["Bronze: retained source records"]
-B --> V{"Silver contract checks"}
-V -- "Invalid or unknown" --> Q["Quarantine with reason and source reference"]
-Q -- "Approved mapping or source repair" --> V
-V -- "Accepted" --> C["Silver: typed, deduplicated, conformed records"]
-C --> G["Gold: published facts and aggregates"]
-C --> M["Versioned training input"]
-G --> R["Reports with declared coverage"]
-{% endcapture %}
-{% capture medallion_fallback %}
-Bronze preserves source evidence. Silver validates and conforms it, retaining rejected records for repair. Gold publishes consumer models; training can use an appropriate validated version without requiring an extra reporting copy.
-{% endcapture %}
-{% include diagram.html title="Quality responsibilities include rejection and repair paths" code=medallion_diagram fallback=medallion_fallback caption=true %}
+{% include figure.html id="medallion-models" %}
 
 The [schema-contract reference]({{ '/data-engineering/reliability/schema-evolution-and-contracts/' | relative_url }}) explains stable Silver mappings and consumer migrations. The [lake design reference]({{ '/data-engineering/architecture/lake-warehouse-design/' | relative_url }}) places catalogs, table commits and serving engines around these datasets.
 

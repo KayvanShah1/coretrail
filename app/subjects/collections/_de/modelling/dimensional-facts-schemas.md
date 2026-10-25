@@ -5,7 +5,6 @@ chapter: "modelling"
 order: 2
 sequence: 152
 level: "Core"
-mermaid: true
 keywords: ["star schema","snowflake schema","transaction fact","periodic snapshot","accumulating snapshot","factless fact","conformed dimension","bridge table"]
 interview_queries: ["star schema vs snowflake","transaction fact vs periodic snapshot"]
 last_verified: "2026-10-25"
@@ -19,63 +18,13 @@ For a sales model, declare the grain as one sold order line before naming dimens
 A star keeps descriptive attributes within dimensions surrounding a fact. Date, customer and product keys identify the context of each measurement. Dimensions can use surrogate keys so facts reference the intended historical version.
 
 
-{% capture diagram_3 %}
-erDiagram
-DIM_DATE ||--o{ FACT_SALES : dates
-DIM_CUSTOMER ||--o{ FACT_SALES : describes
-DIM_PRODUCT ||--o{ FACT_SALES : categorizes
-DIM_DATE { int date_key PK }
-DIM_CUSTOMER {
-  bigint customer_key PK
-  string customer_id
-  string region
-}
-DIM_PRODUCT {
-  bigint product_key PK
-  string category
-}
-FACT_SALES {
-  bigint order_id
-  int line_number
-  int date_key FK
-  bigint customer_key FK
-  bigint product_key FK
-  decimal quantity
-  decimal net_revenue
-}
-{% endcapture %}
-{% capture fallback_3 %}
-Date, customer and product dimensions each join to order-line sales facts. Many facts can reference the same dimension version.
-{% endcapture %}
-{% include diagram.html title="A sales star with one fact row per order line" code=diagram_3 fallback=fallback_3 caption=true %}
+{% include figure.html id="sales-star" %}
 
 
 A snowflake separates a hierarchy into related dimension tables, such as product, subcategory and category. It reduces repeated hierarchy attributes and can simplify centralized maintenance, while consumers navigate more joins. Query engines, cached data and table sizes determine whether this improves performance.
 
 
-{% capture diagram_4 %}
-erDiagram
-CATEGORY ||--o{ SUBCATEGORY : groups
-SUBCATEGORY ||--o{ PRODUCT : groups
-PRODUCT ||--o{ SALES_LINE : describes
-CATEGORY { int category_key PK }
-SUBCATEGORY {
-  int subcategory_key PK
-  int category_key FK
-}
-PRODUCT {
-  bigint product_key PK
-  int subcategory_key FK
-}
-SALES_LINE {
-  bigint order_id
-  bigint product_key FK
-}
-{% endcapture %}
-{% capture fallback_4 %}
-A sales line joins to a product; product joins to subcategory, then category. The hierarchy is normalized across dimension tables.
-{% endcapture %}
-{% include diagram.html title="A snowflaked product hierarchy" code=diagram_4 fallback=fallback_4 caption=true %}
+{% include figure.html id="product-snowflake" %}
 
 
 Choose the hierarchy's history policy explicitly. Moving a product between categories can either restate historical sales under today's category or preserve the category at sale time.
@@ -102,9 +51,13 @@ Returns and reversals need explicit event semantics. Recording a refund as a neg
 
 Conformed dimensions let several business processes use compatible customer, date or product definitions. A bus matrix lists business processes against these shared dimensions, revealing where cross-process analysis is possible.
 
+{% include figure.html id="conformed-dimensions" %}
+
 A sale credited to two representatives is many-to-many. A bridge can assign weights 0.6 and 0.4, producing attributed revenue of 60 and 40 for a 100-unit sale. Without weights, counting full revenue for both representatives yields 200; that may be deliberate participation reporting, but it is not allocated company revenue. Check that weights sum to one for the relevant effective interval.
 
 When comparing separate facts, aggregate each fact to compatible conformed keys before joining. Joining detailed sales lines directly to detailed support tickets by customer produces fanout.
+
+{% include figure.html id="multivalued-dimension" %}
 
 ## Grain, key and temporal validation
 

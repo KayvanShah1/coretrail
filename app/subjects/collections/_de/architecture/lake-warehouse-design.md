@@ -5,7 +5,6 @@ chapter: architecture
 order: 3
 sequence: 178
 level: Core
-mermaid: true
 last_verified: "2026-10-25"
 keywords: [data lake design, Delta Lake design, data warehouse, lakehouse, catalog, external tables, analytical serving]
 interview_queries: [when do I need a data warehouse, how would you design a Delta Lake platform]
@@ -42,25 +41,7 @@ A warehouse does not create correct identities, measures or history automaticall
 
 Consider device telemetry used for operational monitoring and settled monthly reporting. The following example uses micro-batches; a continuous processor could occupy the same transformation role.
 
-{% capture lake_design %}
-flowchart TD
-S["Devices and source changes"] --> R["Immutable raw objects and input manifest"]
-R --> T["Normalize, deduplicate and validate"]
-T -- "Rejected records" --> Q["Quarantine with source position"]
-Q -- "Approved repair" --> T
-T -- "Accepted records" --> W["Delta-aware writer"]
-W --> D["Curated Delta table: data files and log"]
-C["Catalog, schema and access policies"] -. "Resolve and authorize" .-> D
-D --> L["Lakehouse SQL engine"]
-D --> P["Publish reconciled analytical marts"]
-P --> W["Warehouse or lakehouse serving"]
-L --> A["Exploration and training"]
-W --> B["Reports at a declared freshness"]
-{% endcapture %}
-{% capture lake_fallback %}
-Raw objects and input manifests support reconstruction. Validated records enter a Delta table through a compatible writer. Catalog policies govern access, while analytical consumers use a compatible SQL engine or published serving marts. Rejected records retain enough context for repair.
-{% endcapture %}
-{% include diagram.html title="Table commits sit inside a larger data platform" code=lake_design fallback=lake_fallback caption=true %}
+{% include figure.html id="delta-platform" %}
 
 | Component | Design decision |
 |---|---|

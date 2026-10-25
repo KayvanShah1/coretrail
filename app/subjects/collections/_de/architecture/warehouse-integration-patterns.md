@@ -28,25 +28,13 @@ A Kimball approach can deliver one business process at a time while planning sha
 An Inmon-style integration store can preserve a common enterprise representation before presentation models are built. That common layer adds work, so prioritize its contracts and consumer delivery together. A normalized integration model and dimensional reporting marts can coexist.
 
 
+{% include figure.html id="warehouse-methods" %}
+
 ## Kimball bus architecture
 
 A bus matrix maps business processes to shared dimensions. Sales and returns can be delivered separately while using the same customer, product and date definitions. Conformance includes keys, attribute meaning and historical rules; a shared column name alone is insufficient.
 
-{% capture kimball_diagram %}
-flowchart TD
-S["Sales source"] --> SF["Sales facts at order-line grain"]
-R["Returns source"] --> RF["Return facts at return-line grain"]
-D["Conformed customer, product and date dimensions"] --> SF
-D --> RF
-SF --> A["Aggregate sales at the comparison grain"]
-RF --> B["Aggregate returns at the comparison grain"]
-A --> Q["Compare measures by shared dimensions"]
-B --> Q
-{% endcapture %}
-{% capture kimball_fallback %}
-Sales and returns retain their own fact grain and reuse conformed dimensions. Aggregate each process to a common comparison grain before combining its measures.
-{% endcapture %}
-{% include diagram.html title="Shared dimensions integrate separately delivered business processes" code=kimball_diagram fallback=kimball_fallback caption=true %}
+
 
 Joining line-level sales directly to multiple returns can multiply the sale amount. Shared dimensions enable cross-process analysis, while the query still has to preserve each fact's grain. The [dimensional modelling reference]({{ '/data-engineering/modelling/dimensional-facts-schemas/' | relative_url }}) explains star, snowflake and bridge mechanics.
 
@@ -54,22 +42,7 @@ Joining line-level sales directly to multiple returns can multiply the sale amou
 
 An integrated enterprise warehouse reconciles source entities and history in a shared enterprise model, typically normalized. Consumer marts then reshape that representation. The normalization rules belong to [functional dependencies and normal forms]({{ '/sql/design/normalization/' | relative_url }}).
 
-{% capture inmon_diagram %}
-flowchart TD
-A["Acquired business A"] --> S["Source staging and provenance"]
-B["Acquired business B"] --> S
-S --> I["Reconcile enterprise identities and definitions"]
-I --> E["Integrated historical enterprise warehouse"]
-E --> F["Finance dimensional mart"]
-E --> O["Operations mart"]
-F --> C["Reconciled cross-business reporting"]
-O --> C
-G["Enterprise rules and historical corrections"] -. "Apply consistently" .-> E
-{% endcapture %}
-{% capture inmon_fallback %}
-Independent source systems pass through staging and identity reconciliation into an integrated historical warehouse. Finance and operations marts consume the shared representation, and enterprise corrections propagate through their declared dependencies.
-{% endcapture %}
-{% include diagram.html title="Enterprise integration precedes consumer-specific marts" code=inmon_diagram fallback=inmon_fallback caption=true %}
+
 
 The common integration model can reduce repeated reconciliation in marts. It also creates coordination and delivery work. A mart-specific interpretation still needs an owner and explicit lineage back to the enterprise definition.
 
@@ -78,42 +51,7 @@ The common integration model can reduce repeated reconciliation in marts. It als
 A hub captures a business-key identity. A link captures a relationship between identities. A satellite holds descriptive context and its history/provenance. Operational implementations need explicit record grain, load timestamps and source identity. In the simplified schema below, the suffixes BK and HK mean business key and hash key.
 
 
-{% capture diagram_1 %}
-erDiagram
-HUB_CUSTOMER ||--o{ LINK_CUSTOMER_ORDER : participates
-HUB_ORDER ||--o{ LINK_CUSTOMER_ORDER : participates
-HUB_CUSTOMER ||--o{ SAT_CUSTOMER : describes
-HUB_ORDER ||--o{ SAT_ORDER : describes
-HUB_CUSTOMER {
-  string customer_hk PK
-  string customer_bk
-  timestamp loaded_at
-}
-HUB_ORDER {
-  string order_hk PK
-  string order_bk
-}
-LINK_CUSTOMER_ORDER {
-  string link_hk PK
-  string customer_hk FK
-  string order_hk FK
-}
-SAT_CUSTOMER {
-  string customer_hk FK
-  timestamp loaded_at
-  string region
-  string record_source
-}
-SAT_ORDER {
-  string order_hk FK
-  timestamp loaded_at
-  string status
-}
-{% endcapture %}
-{% capture fallback_1 %}
-Customer and order hubs retain identities, the link captures their association, and satellites retain descriptive versions. Keys and timestamps shown are simplified; the full uniqueness rules depend on satellite grain.
-{% endcapture %}
-{% include diagram.html title="Customer-order integration using hubs, a link and satellites" code=diagram_1 fallback=fallback_1 caption=true %}
+{% include figure.html id="data-vault-schema" %}
 
 
 Consumers can receive a star built from this integration model. Hash keys need canonical input and collision handling; identity matching still decides whether different source identifiers name the same customer.

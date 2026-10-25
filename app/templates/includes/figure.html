@@ -1,0 +1,44 @@
+{% assign figure = site.data.figures[include.id] %}
+{% if figure %}
+  <figure class="reference-figure">
+    <div class="reference-figure-heading">{{ figure.title | escape }}</div>
+    <p class="reference-figure-hint">
+      Scroll within the image to inspect details, or
+      <a
+        href="{{ figure.path | relative_url }}"
+        target="_blank"
+        rel="noopener"
+        aria-label="Open full-size image: {{ figure.title | escape }}"
+        >open full size</a
+      >.
+    </p>
+    <div
+      class="reference-figure-image"
+      role="region"
+      tabindex="0"
+      aria-label="{{ figure.title | escape }}. Scroll horizontally to inspect the complete image."
+      style="--figure-width: {{ figure.display_width }}px"
+    >
+      <img
+        src="{{ figure.path | relative_url }}"
+        alt="{{ figure.alt | escape }}"
+        width="{{ figure.width }}"
+        height="{{ figure.height }}"
+        loading="lazy"
+        decoding="async"
+      >
+    </div>
+    <figcaption>
+      <p>{{ figure.description | escape }}</p>
+      <p class="reference-figure-credit">
+        {% if figure.original %}CoreTrail illustration. Reference: {% else %}Source: {% endif -%}
+        <a href="{{ figure.source_url | escape }}">{{ figure.author | escape }}</a>
+        {%- unless figure.original %}
+          · <a href="{{ figure.license_url | escape }}">{{ figure.license | escape }}</a> ·
+          Reproduced unchanged
+        {%- endunless -%}
+        .
+      </p>
+    </figcaption>
+  </figure>
+{% endif %}

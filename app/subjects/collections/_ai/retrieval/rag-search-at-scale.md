@@ -14,6 +14,8 @@ interview_queries:
 
 Retrieval-augmented generation (RAG) gives a language model selected information from external sources at request time. The required fact must survive source ingestion, parsing, chunking, indexing, candidate retrieval, ranking and context construction before generation can use it.
 
+{% include figure.html id="rag-architecture" %}
+
 {% capture rag_architecture %}
 flowchart TD
 subgraph OFF["Asynchronous indexing"]

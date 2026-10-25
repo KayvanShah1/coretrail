@@ -14,3 +14,6 @@ app/subjects/**/*.md
 
 # Jekyll front matter is not SCSS; format the partials in app/_sass/ instead.
 app/assets/css/main.scss
+
+# Preserve upstream diagrams and their recorded checksums.
+app/assets/img/site/

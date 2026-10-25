@@ -31,6 +31,10 @@ Types 4–7 above follow Kimball's published terminology. Other material sometim
 
 Type 6 can require updating current-value columns across many versions of one entity. Type 7 shifts that responsibility to explicit joins. The right choice depends on reporting frequency, write amplification and how clearly consumers can distinguish historical from current attributes.
 
+{% include figure.html id="scd-type-1" %}
+
+{% include figure.html id="scd-type-2" %}
+
 ## A Type 2 change at an exact boundary
 
 | customer_key | customer_id | region | valid_from | valid_to |

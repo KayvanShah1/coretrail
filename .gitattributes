@@ -1,1 +1,4 @@
 * text=auto eol=lf
+
+# Source artwork must retain its original bytes and checksums.
+app/assets/img/site/** -text

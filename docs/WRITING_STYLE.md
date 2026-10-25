@@ -290,7 +290,13 @@ A good CoreTrail diagram answers something like:
 - how does grain change?
 - which state survives a restart?
 
-Prefer repository-authored Mermaid diagrams for mental models. A diagram should still have a text fallback and should not require the reader to decode a vendor architecture chart.
+Choose the visual form from what the reader needs to inspect. Mermaid works well for branching flows, state transitions and dependency graphs. Detailed schemas, nested architecture views, storage layouts, timelines and annotated execution plans often need an SVG illustration or an image from official documentation.
+
+Use an official image directly when its details support the explanation and its reuse terms permit redistribution. Preserve the source artwork, credit its author and license, and keep a local copy under `app/assets/img/site/<subject>/<chapter>/<topic>/<descriptive-name>.<ext>`. Original CoreTrail illustrations use the same hierarchy and identify the primary references behind their mechanics.
+
+Use `figure.html` with an entry in `app/_data/figures.json` for static figures. Record the source page, original asset URL, retrieval date, dimensions, checksum and reuse terms. Include alt text and a caption that explains how to read the figure. Keep internal labels readable with a keyboard-accessible scroll region and a full-size link. Preserve the original colors and background across site themes.
+
+A diagram should have an adjacent text explanation. Mermaid figures also retain their text fallback. Replace overlapping figures when a more detailed image teaches the same relationship; keep a flowchart when it explains a separate process.
 
 Do not add a diagram merely because the page feels text-heavy.
 

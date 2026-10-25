@@ -37,6 +37,8 @@ Clustering or sorting places related values near one another so file or block st
 
 **Compaction** combines small files into fewer larger files. **Reclustering** rewrites layout to improve locality. Both consume resources; fewer files alone does not guarantee more selective reads.
 
+{% include figure.html id="parquet-layout" %}
+
 ## Choose a partition key and granularity
 
 | Workload | Candidate layout | Check before adopting it |
@@ -52,6 +54,8 @@ Use the time that matches the contract. Ingestion-date partitions make arrival m
 Estimate bytes per partition before creating it. For an illustrative 60 GB/day dataset with 10,000 evenly sized tenants, day-and-tenant partitioning averages only 6 MB per partition. A day partition retains 60 GB for file sizing and tenant clustering. Real tenants are rarely uniform, so inspect the smallest and largest groups as well as the mean.
 
 Delta's conventional partitioning guidance suggests roughly 1 GB or more per partition. BigQuery advises considering clustering when partitioning would produce partitions below approximately 10 GB. These are engine-specific guidelines, not interchangeable capacity limits.
+
+{% include figure.html id="partition-cluster" %}
 
 ## File size is a measured target
 

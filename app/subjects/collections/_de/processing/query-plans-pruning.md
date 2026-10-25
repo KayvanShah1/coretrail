@@ -75,6 +75,8 @@ Native expressions give optimizers more visibility than opaque Python user-defin
 
 Likewise, LIMIT bounds returned rows; a grouped query may still scan and aggregate all eligible input before returning those rows.
 
+{% include figure.html id="query-stages" %}
+
 ## Plans belong to their engine
 
 Spark SQL and DataFrame APIs can produce equivalent optimized plans. Resilient Distributed Dataset (RDD) code gives more manual control and generally exposes less relational structure to the SQL optimizer. See [Spark plans, repartitioning and adaptive query execution]({{ '/data-engineering/processing/spark-partitions-aqe/' | relative_url }}) for execution partitions and skew remedies.

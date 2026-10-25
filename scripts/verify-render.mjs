@@ -43,6 +43,20 @@ const cases = [
     text: 'GPU scheduling',
   },
   {
+    name: 'rag-image',
+    route: '/coretrail/ai-engineering/retrieval/rag-search-at-scale/',
+    text: 'From source documents',
+    figures: 1,
+    mermaid: true,
+  },
+  {
+    name: 'kubernetes-image',
+    route: '/coretrail/infrastructure/kubernetes/pods-nodes-deployments/',
+    text: 'Pods, nodes',
+    figures: 1,
+    mermaid: true,
+  },
+  {
     name: 'ai-subject-map',
     route: '/coretrail/ai-engineering/',
     text: 'AI Engineering',
@@ -148,9 +162,10 @@ const cases = [
   },
   {
     name: 'agent-context',
+    figures: 1,
     route: '/coretrail/ai-engineering/agents/shared-context-handoffs/',
     text: 'Shared agent context',
-    mermaid: true,
+    mermaid: false,
   },
   {
     name: 'etl-path',
@@ -244,14 +259,15 @@ cases.push(
   },
   {
     name: 'de-modelling-dimensional-facts-schemas',
-    relationshipLabels: true,
+    figures: 4,
     route: '/coretrail/data-engineering/modelling/dimensional-facts-schemas/',
     text: 'Dimensional modelling, star schemas and fact grain',
-    mermaid: true,
+    mermaid: false,
     math: false,
   },
   {
     name: 'de-modelling-scd-temporal-history',
+    figures: 2,
     route: '/coretrail/data-engineering/modelling/scd-temporal-history/',
     text: 'Slowly changing dimensions and temporal history',
     mermaid: true,
@@ -266,7 +282,7 @@ cases.push(
   },
   {
     name: 'de-architecture-warehouse-integration-patterns',
-    relationshipLabels: true,
+    figures: 2,
     route: '/coretrail/data-engineering/architecture/warehouse-integration-patterns/',
     text: 'Kimball, Inmon, Data Vault and hybrid warehouse design',
     mermaid: true,
@@ -274,13 +290,15 @@ cases.push(
   },
   {
     name: 'de-architecture-lambda-kappa-medallion',
+    figures: 3,
     route: '/coretrail/data-engineering/architecture/lambda-kappa-medallion/',
     text: 'Lambda, Kappa, medallion and hybrid processing',
-    mermaid: true,
+    mermaid: false,
     math: false,
   },
   {
     name: 'de-storage-delta-iceberg-hudi-operations',
+    figures: 1,
     route: '/coretrail/data-engineering/storage/delta-iceberg-hudi-operations/',
     text: 'Delta Lake, Iceberg and Hudi: selection and operations',
     mermaid: true,
@@ -338,12 +356,14 @@ cases.push(
 cases.push(
   {
     name: 'lake-warehouse-design',
+    figures: 1,
     route: '/coretrail/data-engineering/architecture/lake-warehouse-design/',
     text: 'Data lake and Delta Lake design',
-    mermaid: true,
+    mermaid: false,
   },
   {
     name: 'lake-physical-layout',
+    figures: 2,
     route: '/coretrail/data-engineering/storage/partitioning-file-sizing/',
     text: 'Lake partitioning, clustering',
     mermaid: true,
@@ -355,6 +375,7 @@ cases.push(
   },
   {
     name: 'lakehouse-query-plans',
+    figures: 1,
     route: '/coretrail/data-engineering/processing/query-plans-pruning/',
     text: 'Lakehouse query plans',
   },
@@ -573,6 +594,48 @@ try {
           );
         }
       }
+      const imageFigures = page.locator('.reference-figure');
+      if (test.figures && (await imageFigures.count()) !== test.figures) {
+        errors.push(
+          'Expected ' + test.figures + ' static figures, found ' + (await imageFigures.count()),
+        );
+      }
+      for (const figure of await imageFigures.all()) {
+        await figure.scrollIntoViewIfNeeded();
+        const img = figure.locator('img');
+        try {
+          await img.evaluate((image) => image.decode());
+        } catch {
+          errors.push('Image failed to decode: ' + (await img.getAttribute('src')));
+        }
+        const imageState = await img.evaluate((image) => ({
+          loaded: image.complete && image.naturalWidth > 0,
+          alt: image.alt,
+          width: image.getBoundingClientRect().width,
+          region: image.parentElement.clientWidth,
+        }));
+        if (!imageState.loaded || !imageState.alt) errors.push('Image missing pixels or alt text');
+        if ((await figure.locator('figcaption').innerText()).trim().length < 40)
+          errors.push('Image explanation missing');
+        if (
+          !(await figure.locator('.reference-figure-hint a').getAttribute('href'))?.startsWith(
+            '/coretrail/assets/img/site/',
+          )
+        )
+          errors.push('Full-size link missing local base URL');
+        const region = figure.locator('[role="region"]');
+        if (imageState.width > imageState.region + 2) {
+          await region.focus();
+          await region.press('ArrowRight');
+          try {
+            await page.waitForFunction(() => document.activeElement?.scrollLeft > 0, null, {
+              timeout: 3000,
+            });
+          } catch {
+            errors.push('Image cannot be scrolled with the keyboard');
+          }
+        }
+      }
       const sizes = await page.evaluate(() => ({
         scroll: document.documentElement.scrollWidth,
         viewport: document.documentElement.clientWidth,
@@ -584,6 +647,32 @@ try {
         path: resolve(evidence, test.name + '-' + v.label + '.png'),
         fullPage: true,
       });
+      if (test.figures) {
+        const currentTheme = await page.getAttribute('html', 'data-theme');
+        await page
+          .getByRole('button', {
+            name: 'Switch to ' + (currentTheme === 'dark' ? 'light' : 'dark') + ' mode',
+          })
+          .first()
+          .click();
+        const nextTheme = await page.getAttribute('html', 'data-theme');
+        if (nextTheme === currentTheme) errors.push('Theme toggle did not change the theme');
+        const filteredImages = await page
+          .locator('.reference-figure-image img')
+          .evaluateAll((images) =>
+            images.some((image) => {
+              const style = getComputedStyle(image);
+              return (
+                style.filter !== 'none' || Number(style.opacity) !== 1 || image.naturalWidth === 0
+              );
+            }),
+          );
+        if (filteredImages) errors.push('Theme changed source image colors or lost pixels');
+        await page.screenshot({
+          path: resolve(evidence, test.name + '-' + v.label + '-' + nextTheme + '.png'),
+          fullPage: true,
+        });
+      }
       outcomes.push({ name: test.name, viewport: v.label, route: test.route, errors, sizes });
       await page.close();
     }

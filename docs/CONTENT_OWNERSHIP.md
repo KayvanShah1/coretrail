@@ -46,3 +46,7 @@ Three overlapping introductions were merged into their detailed references or ch
 Retired pages are deleted. Internal references, search inputs and navigation use the final locations. No redirect pages, route aliases or compatibility stubs are introduced.
 
 The audit preserves short contextual definitions and distinct worked examples. It does not claim that all repeated terminology should disappear; a direct-search landing page still needs enough context to interpret its example.
+
+## Static figures
+
+`app/_data/figures.json` owns image descriptions, provenance and asset paths. `docs/IMAGE_SOURCES.md` records licensing and placement. The canonical topic includes its figure; related topics link to that explanation. Use Mermaid for flow and branching where it remains the clearest form.

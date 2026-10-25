@@ -41,6 +41,8 @@ Writers prepare data and validate commit assumptions. A successful table commit 
 
 The exact isolation, retry behavior and supported operations depend on the engine, connector, catalog and enabled table features. Check that combination before enabling a new feature for a table shared by several engines.
 
+{% include figure.html id="iceberg-metadata" %}
+
 ## Selection starts with workload and interoperability
 
 | Candidate | Investigate when | Validate on the actual stack |

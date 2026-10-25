@@ -46,6 +46,8 @@ Deployment wants 3 replicas → Pods A/B/C → scheduler places Pods across Node
 {% endcapture %}
 {% include diagram.html title="Deployment controls Pods; Pods run on nodes" code=diagram_code fallback=diagram_fallback caption=true %}
 
+{% include figure.html id="kubernetes-components" %}
+
 ## Node: the resource pool
 
 A node contributes central processing unit (CPU) capacity, memory, local storage, networking, and possibly GPUs or other devices.

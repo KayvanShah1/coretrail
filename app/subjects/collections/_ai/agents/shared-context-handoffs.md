@@ -5,7 +5,6 @@ chapter: agents
 order: 3
 sequence: 703
 level: Intermediate
-mermaid: true
 keywords: [multi agent shared state, context window, supervisor, artifact store, handoff, checkpoint, concurrency]
 aliases: [shared agent context, agent memory, context engineering]
 interview_queries: [how do agents share context, how does a multi agent handoff work]
@@ -27,22 +26,7 @@ A task that passes through a research agent, analysis agent and report agent nee
 
 A model context window is reconstructed from these stores when a model call occurs. The authoritative record remains outside the model. A summary preserves conversational continuity. Verified amounts, permissions, operation status and citations remain in typed records with their own versions, so summarization cannot change the authoritative values.
 
-{% capture diagram_code %}
-flowchart TD
-A["User and request identity"] --> B["Supervisor / workflow controller"]
-B --> C["Research agent"]
-B --> D["Analysis agent"]
-B --> E["Report agent"]
-C <-->|"Permitted artifact versions"| F["Artifact store"]
-D <-->|"Permitted artifact versions"| F
-E <-->|"Permitted artifact versions"| F
-B <-->|"Task transitions and state versions"| G["Durable workflow checkpoints"]
-F --> H["Source spans and knowledge release"]
-{% endcapture %}
-{% capture diagram_fallback %}
-User request → supervisor → research, analysis and report agents. Agents read permitted versioned artifacts and write results/checkpoints to a shared store. The controller manages task transitions.
-{% endcapture %}
-{% include diagram.html title="Structured handoffs backed by durable artifacts" code=diagram_code fallback=diagram_fallback caption=true %}
+{% include figure.html id="shared-agent-context" %}
 
 ## Passing a task contract
 
