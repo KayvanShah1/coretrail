@@ -1010,7 +1010,8 @@
           },
           {
             "from": "request",
-            "to": "server"
+            "to": "server",
+            "via": "left"
           },
           {
             "from": "server",
