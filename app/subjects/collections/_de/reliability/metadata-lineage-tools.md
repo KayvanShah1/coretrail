@@ -85,3 +85,5 @@ Given a bad output snapshot, identify its producing run, input versions, code an
 Lineage identifies possible impact; validation establishes actual impact. A downstream model may depend on a table but only read unaffected partitions. Preserve enough interval-level information to avoid rebuilding the entire platform unnecessarily.
 
 [Pipeline fundamentals]({{ '/data-engineering/foundations/pipeline-run-lifecycle/' | relative_url }}) defines the execution records. [Recovery and backfills]({{ '/data-engineering/reliability/recovery-replay-backfills/' | relative_url }}) uses them to reconstruct data.
+
+For the distinction between runtime diagnosis, explanations, provenance and reviewable action records, use [observability, explainability, traceability and auditability]({{ '/infrastructure/observability/observability-explainability-traceability-auditability/' | relative_url }}).

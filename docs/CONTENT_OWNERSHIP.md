@@ -37,6 +37,20 @@ Use a section for a supporting concept that fits the page's main question. Use a
 | Workload and node scaling                   | [Infrastructure scaling](../app/subjects/collections/_infra/scaling/workload-node-autoscaling.md)             | LLM queue/cache signals and GPU startup consequences                                                                                    |
 | Point-in-time feature semantics             | [Feature construction](../app/subjects/collections/_ml/features/point-in-time-features.md)                    | Wide-table and temporal-join consequences                                                                                               |
 
+## Deployment and decision evidence
+
+| Concept                                                       | Canonical explanation                                                                                                             | Applied pages                                                                  |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Artifact-to-service release, runtime model download           | [Model deployment](../app/subjects/collections/_ml/serving/model-deployment-serving.md)                                           | AI owns checkpoint placement, GPU loading and warmup                           |
+| Multiple models, loaded copies and grouping                   | [Multi-model placement](../app/subjects/collections/_ml/serving/multi-model-serving.md)                                           | AI routing and parallelism own request placement and distributed replicas      |
+| Experiment, registry and deployed identities                  | [Lifecycle provenance](../app/subjects/collections/_ml/operations/model-lifecycle-monitoring.md)                                  | Infrastructure owns general image and deployment primitives                    |
+| Drift definitions, reference windows and statistical evidence | [Drift diagnosis](../app/subjects/collections/_ml/operations/drift-detection.md)                                                  | AI evaluation owns retrieval, response and trajectory quality                  |
+| Retraining triggers and candidate promotion                   | [Retraining policy](../app/subjects/collections/_ml/operations/retraining-triggers.md)                                            | AI prompt/index/provider changes link to stage-specific release gates          |
+| Observability, explainability, traceability and auditability  | [Evidence properties](../app/subjects/collections/_infra/observability/observability-explainability-traceability-auditability.md) | DE owns dataset lineage; ML owns release records; AI owns tool execution state |
+| Prompt releases, context allocation and answer caching        | [AI application lifecycle](../app/subjects/collections/_ai/production/prompt-context-caching.md)                                  | Retrieval owns embedding/index compatibility; inference owns prefix execution  |
+| Prompting, RAG, SFT and preference interventions              | [Adaptation decisions](../app/subjects/collections/_ai/inference/adaptation-strategy.md)                                          | Transformer page owns attention and LoRA mathematics                           |
+| Voice turn-taking, first audio and interruption               | [Streaming voice](../app/subjects/collections/_ai/production/streaming-voice-agents.md)                                           | Typed tools own side-effect recovery; evaluation owns task gates               |
+
 ## Audit and consolidation
 
 The pass inventoried 184 topic pages and 41 chapter overviews across the published collections. Exact-paragraph and five-word overlap scans were used to locate candidates; manual comparison of headings, examples and responsibilities determined what to merge. Similarity scores alone do not establish duplication.

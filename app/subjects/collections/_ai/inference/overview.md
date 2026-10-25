@@ -41,6 +41,7 @@ The serving problems in this chapter follow directly from four facts:
 <li><a href="{{ '/ai-engineering/inference/transformers-embeddings-adaptation/' | relative_url }}">Transformer attention, embeddings and fine-tuning</a><span>Recall scaled attention, contrastive objectives and parameter-efficient adaptation.</span></li>
 <li><a href="{{ '/ai-engineering/inference/tokenizers-decoding-sampling/' | relative_url }}">Tokenization, logits, sampling and generation behavior</a><span>BPE, subword tokens, softmax temperature, top-p/top-k and decoding cost.</span></li>
 <li><a href="{{ '/ai-engineering/inference/nlp-representations-preprocessing/' | relative_url }}">NLP preprocessing, representations and entity resolution</a><span>Trace normalization, sparse features, sentence pooling and canonical record identity.</span></li>
+<li><a href="{{ '/ai-engineering/inference/adaptation-strategy/' | relative_url }}">Choosing prompting, RAG, SFT and preference tuning</a><span>Match knowledge, behavior and preference gaps to evidence-driven interventions.</span></li>
 </ul>
 
 Compute, memory, waiting, communication and model quality create different symptoms. Identify which one constrains the request before choosing an optimization.

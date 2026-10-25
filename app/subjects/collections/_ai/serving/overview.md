@@ -34,3 +34,5 @@ One running large language model (LLM) server can answer requests. A production 
 </ul>
 
 An **inference engine** schedules model execution. The **serving platform** gets traffic to enough healthy inference replicas and manages the capacity around them.
+
+For several distinct models, [multi-model placement]({{ '/ml/serving/multi-model-serving/' | relative_url }}) compares shared servers, isolated deployments and compatible adapters, including memory arithmetic.

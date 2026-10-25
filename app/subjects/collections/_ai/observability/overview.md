@@ -33,3 +33,5 @@ Large language model (LLM) observability connects user-visible latency to queuei
 </ul>
 
 The useful path is short: start with the user-visible symptom, then follow the few signals that can explain it. Time to first token (TTFT) and time per output token (TPOT) split waiting/prefill from ongoing generation before lower-level metrics enter the investigation.
+
+Serving telemetry explains runtime behavior. [Observability, explainability, traceability and auditability]({{ '/infrastructure/observability/observability-explainability-traceability-auditability/' | relative_url }}) extends the evidence to source revisions, model decisions, authorization and confirmed tool outcomes.

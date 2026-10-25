@@ -50,8 +50,8 @@ Each component should answer a concrete question: where the request goes, where 
 <li><a href="{{ '/ai-engineering/inference/overview/' | relative_url }}">LLM inference</a><span>Prefill, decode, key-value (KV) cache, batching, and graphics processing unit (GPU) work behind token generation.</span></li>
 <li><a href="{{ '/ai-engineering/serving/overview/' | relative_url }}">LLM serving</a><span>Inference engines, replicas, parallelism, routing, and concurrent users.</span></li>
 <li><a href="{{ '/ai-engineering/deployment/overview/' | relative_url }}">Deploying LLMs</a><span>Artifacts, containers, model weights, GPU startup, readiness, and rollouts.</span></li>
-<li><a href="{{ '/ai-engineering/production/overview/' | relative_url }}">Production LLM systems</a><span>Gateways, queues, backpressure, autoscaling, cold starts, capacity, and failures.</span></li>
-<li><a href="{{ '/ai-engineering/observability/overview/' | relative_url }}">LLM observability</a><span>Time to first token (TTFT), time per output token (TPOT), queue pressure, KV-cache utilization, GPU signals, and cost.</span></li>
+<li><a href="{{ '/ai-engineering/production/overview/' | relative_url }}">Production LLM systems</a><span>Traffic control, capacity, prompt/context releases, caching, streaming voice and recovery.</span></li>
+<li><a href="{{ '/ai-engineering/observability/overview/' | relative_url }}">LLM observability</a><span>Latency, queue/cache pressure, GPU state and cost, with links to decision evidence and provenance.</span></li>
 <li><a href="{{ '/ai-engineering/retrieval/overview/' | relative_url }}">RAG & retrieval</a><span>Parsing, embeddings, hybrid search, reranking, context selection, and scale.</span></li>
 <li><a href="{{ '/ai-engineering/agents/overview/' | relative_url }}">Agents & tools</a><span>Typed tool contracts, execution state, authorization and retries.</span></li>
 <li><a href="{{ '/ai-engineering/evaluation/overview/' | relative_url }}">AI evaluation</a><span>Retrieval diagnostics, groundedness, trajectories, latency and cost.</span></li>

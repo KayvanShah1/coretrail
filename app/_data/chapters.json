@@ -90,12 +90,12 @@
     {
       "id": "serving",
       "title": "Model serving",
-      "description": "Compare prediction APIs with autoregressive LLM serving and their operating constraints."
+      "description": "Deploy prediction pipelines, load artifacts, group models and compare ML with LLM serving."
     },
     {
       "id": "operations",
       "title": "MLOps & model monitoring",
-      "description": "Track experiments, validate releases, detect training-serving skew, and respond to drift."
+      "description": "Track experiments and releases, diagnose drift and gate retraining and rollback."
     }
   ],
   "ai-engineering": [
@@ -117,7 +117,7 @@
     {
       "id": "production",
       "title": "Production LLM systems",
-      "description": "Design routing, backpressure, autoscaling, capacity, and failure handling."
+      "description": "Traffic, capacity, prompt/context releases, caching, streaming voice and recovery."
     },
     {
       "id": "observability",
@@ -159,7 +159,7 @@
     {
       "id": "observability",
       "title": "Operations & observability",
-      "description": "Connect metrics, logs, traces, health, and deployment state during incidents."
+      "description": "Runtime telemetry, explanations, provenance and reviewable action records."
     },
     {
       "id": "cloud",

@@ -937,5 +937,87 @@
         ]
       }
     ]
+  },
+  "model-release-serving": {
+    "title": "Software, artifacts and traffic meet at the release",
+    "description": "The image and approved artifact are independent inputs. A resolved release loads both into a server; live requests use that loaded prediction pipeline.",
+    "author": "Google Cloud MLOps architecture",
+    "source_url": "https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning",
+    "panels": [
+      {
+        "columns": 2,
+        "compact_columns": 2,
+        "nodes": [
+          {
+            "id": "image",
+            "title": "Image",
+            "detail": "Server and dependencies",
+            "column": 1,
+            "row": 1
+          },
+          {
+            "id": "artifact",
+            "title": "Artifact",
+            "detail": "Model and fitted transforms",
+            "column": 2,
+            "row": 1
+          },
+          {
+            "id": "release",
+            "title": "Release manifest",
+            "detail": "Pin image, artifact and configuration",
+            "column": 1,
+            "row": 2,
+            "span": 2,
+            "emphasis": true
+          },
+          {
+            "id": "server",
+            "title": "Ready model server",
+            "detail": "Verify, load and warm the selected release",
+            "column": 1,
+            "row": 3,
+            "span": 2,
+            "emphasis": true
+          },
+          {
+            "id": "request",
+            "title": "Request",
+            "detail": "Validated inputs",
+            "column": 1,
+            "row": 4
+          },
+          {
+            "id": "result",
+            "title": "Prediction",
+            "detail": "Result and release ID",
+            "column": 2,
+            "row": 4
+          }
+        ],
+        "edges": [
+          {
+            "from": "image",
+            "to": "release"
+          },
+          {
+            "from": "artifact",
+            "to": "release"
+          },
+          {
+            "from": "release",
+            "to": "server"
+          },
+          {
+            "from": "request",
+            "to": "server"
+          },
+          {
+            "from": "server",
+            "to": "result"
+          }
+        ]
+      }
+    ]
   }
 }

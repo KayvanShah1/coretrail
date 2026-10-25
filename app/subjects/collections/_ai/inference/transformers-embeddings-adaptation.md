@@ -66,3 +66,5 @@ Supervised fine-tuning (SFT) trains against demonstrations. Direct Preference Op
 Retrieval-augmented generation (RAG) supplies changing knowledge and provenance at inference time. Adaptation changes learned behavior. A specialized fine-tuned model may still need retrieval for current or access-controlled facts.
 
 For serving cost, continue with [prefill, decode and KV cache]({{ '/ai-engineering/inference/prefill-decode-kv-cache/' | relative_url }}).
+
+For dataset design, preference objectives and intervention choice, use [prompting, RAG, SFT and preference tuning]({{ '/ai-engineering/inference/adaptation-strategy/' | relative_url }}).

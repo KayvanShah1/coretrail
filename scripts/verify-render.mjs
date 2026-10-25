@@ -452,6 +452,55 @@ cases.push(
     text: 'BigQuery slots',
   },
 );
+cases.push(
+  {
+    name: 'ml-deployment',
+    route: '/coretrail/ml/serving/model-deployment-serving/',
+    text: 'From trained model to prediction service',
+  },
+  {
+    name: 'ml-multi-model',
+    route: '/coretrail/ml/serving/multi-model-serving/',
+    text: 'Multi-model serving, grouping and memory capacity',
+  },
+  {
+    name: 'ml-lifecycle-records',
+    route: '/coretrail/ml/operations/model-lifecycle-monitoring/',
+    text: 'Experiment tracking, model registries and release provenance',
+    mermaid: true,
+  },
+  {
+    name: 'ml-drift-types',
+    route: '/coretrail/ml/operations/drift-detection/',
+    text: 'Data drift, concept drift and training-serving skew',
+  },
+  {
+    name: 'ml-retraining-policy',
+    route: '/coretrail/ml/operations/retraining-triggers/',
+    text: 'Retraining triggers, evaluation gates and rollback',
+  },
+  {
+    name: 'evidence-properties',
+    route:
+      '/coretrail/infrastructure/observability/observability-explainability-traceability-auditability/',
+    text: 'Observability, explainability, traceability and auditability',
+  },
+  {
+    name: 'ai-prompt-context',
+    route: '/coretrail/ai-engineering/production/prompt-context-caching/',
+    text: 'Prompt releases, context budgets and application caching',
+  },
+  {
+    name: 'ai-adaptation-choice',
+    route: '/coretrail/ai-engineering/inference/adaptation-strategy/',
+    text: 'Choosing prompting, RAG, SFT and preference tuning',
+  },
+  {
+    name: 'ai-streaming-voice',
+    route: '/coretrail/ai-engineering/production/streaming-voice-agents/',
+    text: 'Streaming voice agents, turn-taking and recovery',
+  },
+);
 // Match every authored expression to its rendered DOM node. A page can render its
 // display equations while Markdown silently corrupts inline include output.
 const config = YAML.parse(await readFile('_config.yml', 'utf8'));

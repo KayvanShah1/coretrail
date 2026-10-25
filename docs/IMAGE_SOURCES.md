@@ -1,6 +1,6 @@
 # Figures, native diagrams and source references
 
-Verified October 25, 2026. CoreTrail uses ten source-backed HTML diagrams and four unchanged official images. Schemas remain Mermaid ER diagrams. Slowly changing dimension examples use native tables with a shared customer change and explicit reporting results.
+Verified October 25, 2026. CoreTrail uses eleven source-backed HTML diagrams and four unchanged official images. Schemas remain Mermaid ER diagrams. Slowly changing dimension examples use native tables with a shared customer change and explicit reporting results.
 
 ## Match the handbook
 
@@ -14,6 +14,7 @@ SCD examples use accessible tables so the customer identity, change date, versio
 
 | Diagram                  | Technical reference                                                                                                                                                                         |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| model-release-serving    | [Google Cloud MLOps architecture](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning)                                             |
 | warehouse-methods        | [Kimball Group](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/enterprise-data-warehouse-bus-architecture/) |
 | shared-agent-context     | [LangGraph persistence](https://docs.langchain.com/oss/python/langgraph/persistence)                                                                                                        |
 | medallion-models         | [Databricks data warehousing architecture](https://docs.databricks.com/gcp/en/sql/get-started/data-warehousing-concepts)                                                                    |

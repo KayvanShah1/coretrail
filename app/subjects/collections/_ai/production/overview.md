@@ -37,4 +37,6 @@ What changes is the resource profile. Model replicas are large, graphics process
 <li><a href="{{ '/ai-engineering/production/failures/' | relative_url }}">Failures and recovery</a><span>Define the real failure unit when a replica spans several GPUs or machines.</span></li>
 <li><a href="{{ '/ai-engineering/production/tradeoffs/' | relative_url }}">Serving trade-offs</a><span>Connect latency, throughput, quality, context length, and cost.</span></li>
 <li><a href="{{ '/ai-engineering/production/stack-tradeoffs/' | relative_url }}">AI platform tool choices and replacement triggers</a><span>Compare search, inference, orchestration and storage alternatives by operating constraint.</span></li>
+<li><a href="{{ '/ai-engineering/production/prompt-context-caching/' | relative_url }}">Prompt releases, context budgets and application caching</a><span>Bind application versions, allocate context and invalidate cached answers safely.</span></li>
+<li><a href="{{ '/ai-engineering/production/streaming-voice-agents/' | relative_url }}">Streaming voice agents, turn-taking and recovery</a><span>Trace first audio, interruptions, cancellation and recoverable tool actions.</span></li>
 </ul>

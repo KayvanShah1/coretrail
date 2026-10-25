@@ -46,3 +46,5 @@ Golden datasets and adversarial tests run before release. Shadow traffic checks 
 Alert immediately for infrastructure outages, authorization violations, missing critical features or error-rate breaches. Retraining is a candidate response to verified predictive degradation; it cannot repair a broken embedding index, a bad tool contract or missing source documents.
 
 A successful rollout needs explicit quality, safety, latency and cost gates. See [large language model (LLM) serving metrics]({{ '/ai-engineering/observability/metrics/' | relative_url }}) for inference-side diagnostics.
+
+Use [drift diagnosis]({{ '/ml/operations/drift-detection/' | relative_url }}) for distribution changes and [retraining triggers]({{ '/ml/operations/retraining-triggers/' | relative_url }}) for guarded candidate creation. [Prompt releases and caching]({{ '/ai-engineering/production/prompt-context-caching/' | relative_url }}) identifies application changes that can affect quality without retraining.

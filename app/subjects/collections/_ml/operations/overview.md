@@ -13,5 +13,7 @@ A training metric has limited value unless the dataset, feature definitions, cod
 ## In this chapter
 
 <ul class="topic-list">
-<li><a href="{{ '/ml/operations/model-lifecycle-monitoring/' | relative_url }}">Experiment tracking, rollouts and drift diagnosis</a><span>Version the full prediction pipeline and use evidence to decide whether to roll back, repair features or retrain.</span></li>
+<li><a href="{{ '/ml/operations/model-lifecycle-monitoring/' | relative_url }}">Experiment tracking, model registries and release provenance</a><span>Connect training runs, registry artifacts and actual deployments through retained release identities.</span></li>
+<li><a href="{{ '/ml/operations/drift-detection/' | relative_url }}">Data drift, concept drift and training-serving skew</a><span>Identify the changed quantity, choose valid references and confirm predictive impact.</span></li>
+<li><a href="{{ '/ml/operations/retraining-triggers/' | relative_url }}">Retraining triggers, evaluation gates and rollback</a><span>Apply label maturity, data checks, persistence, cooldowns and candidate promotion gates.</span></li>
 </ul>

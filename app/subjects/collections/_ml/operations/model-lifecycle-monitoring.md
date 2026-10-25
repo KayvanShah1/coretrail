@@ -1,76 +1,67 @@
 ---
-title: "Experiment tracking, rollouts and drift diagnosis"
-description: "Version data, features and model artifacts, then distinguish operational failures from genuine changes in predictive behavior."
+title: "Experiment tracking, model registries and release provenance"
+description: "Connect training runs, evaluated artifacts and running deployments through immutable identities and retained release evidence."
 chapter: operations
 order: 1
 sequence: 201
 level: Core
 mermaid: true
-math: true
-keywords:
-  - MLOps
-  - MLflow
-  - model registry
-  - model monitoring
-  - concept drift
-  - feature drift
-  - continuous training
-  - shadow deployment
-interview_queries:
-  - explain a production ML pipeline
-  - what is concept drift vs data drift
-  - when should you retrain a model
+keywords: [MLOps, experiment tracking, MLflow, model registry, release manifest, model versioning, CI CD CT, champion challenger]
+interview_queries: [explain a production ML pipeline, experiment tracker vs model registry, what should be versioned in MLOps]
+last_verified: "2026-10-25"
+references:
+  - title: MLflow model registry workflows
+    url: https://mlflow.org/docs/latest/ml/model-registry/workflow/
+  - title: Google Cloud MLOps architecture
+    url: https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning
 ---
 
-An experiment is reproducible when another run can identify the same source snapshot, label definition, feature transformations, code, dependency versions, random seeds and model configuration. Tracking a single area under the curve (AUC) score does not provide that guarantee.
+A model score is reproducible only when the run identifies its source data, labels, fitted transformations, code, dependencies, seeds and configuration. A model's production behavior additionally depends on the release that loaded it and the live features supplied to it.
 
-## From training to a controlled release
+## Experiment, registry and deployment records
+
+| Record | What it establishes | What it does not establish alone |
+|---|---|---|
+| Experiment run | Training inputs/configuration, metrics and generated artifacts | That the artifact passed a release gate or is currently serving |
+| Registry version | Identified model artifact, metadata and links to evaluation evidence | Which version is loaded in every running replica |
+| Release manifest | Image, resolved model, preprocessing, feature contract and configuration | That rollout completed or the service meets quality targets |
+| Deployment observation | Loaded versions, ready replicas, rollout state and traffic assignment | That delayed predictive outcomes have improved |
+
+Experiment trackers such as MLflow collect run parameters, metrics and artifacts. Registries organize identified model versions. Deployment controllers or serving platforms perform the actual loading, rollout and routing. Connect these records so “what changed?” can be answered from retained evidence.
 
 {% capture diagram_code %}
 flowchart TD
-A["Versioned data + features"] --> B["Train + track experiment"]
+A["Versioned data and features"] --> B["Train and track"]
 B --> C["Holdout evaluation"]
-C --> D{"Meets release gate?"}
-D -- "No" --> B
-D -- "Yes" --> E["Model registry"]
-E --> F["Shadow / canary rollout"]
-F --> G["Monitor + compare"]
+C --> D{"Release gate passes?"}
+D -- "No" --> E["Retain rejected candidate"]
+D -- "Yes" --> F["Register approved artifact"]
+F --> G["Deploy resolved release"]
+G --> H["Observe traffic and outcomes"]
 {% endcapture %}
 {% capture diagram_fallback %}
-Versioned data and features → train and track → holdout evaluation → release gate. Candidates that pass enter the registry, then shadow or canary rollout, followed by monitoring and comparison.
+Versioned data and features produce a tracked training run and holdout evaluation. Failed candidates retain their evidence. Passing candidates become approved registry artifacts, enter a resolved deployment release, and are monitored on traffic and eventual outcomes.
 {% endcapture %}
-{% include diagram.html title="Model release uses data and evaluation gates" code=diagram_code fallback=diagram_fallback caption=true %}
+{% include diagram.html title="A trained artifact needs a separate release decision" code=diagram_code fallback=diagram_fallback caption=true %}
 
-Experiment trackers such as MLflow record run parameters, metrics and artifacts. A model registry records deployable versions and their promotion status. The continuous integration (CI) pipeline checks code and data contracts. A scheduled or event-triggered training pipeline produces candidates that must pass evaluation before they replace a deployed model.
+## Immutable versions and mutable aliases
 
-**Shadow deployment** computes predictions on copied traffic without exposing new decisions to users. **Canary deployment** sends a controlled slice of real traffic to the candidate. The acceptance thresholds should include latency, error rate and model quality, with rollback conditions agreed before rollout.
+MLflow supports immutable version identities and mutable aliases such as `champion`. An alias lets promotion choose a different version without renaming the logical model. Resolve the alias into the release record; record the concrete loaded version in serving telemetry. Changing an alias does not automatically replace models already held in server memory.
 
-## Drift: identify what moved
+A usable release record includes the training run, source/feature/label snapshots, evaluation report and dataset version, artifact checksum, image digest, model signature, thresholds, configuration, approver or automated gate, and prior compatible release. Record actual rollout status separately from desired state.
 
-**Covariate shift** changes input distribution. **Concept drift** changes the relationship between features and labels. Their usual notation is:
+A **champion** is the incumbent selected for use; a **challenger** is a candidate compared against it. These are roles, not guarantees of quality. A higher aggregate score can conceal a regression in a critical segment.
 
-{% include math.html tex="P_{\mathrm{train}}(X)\ne P_{\mathrm{live}}(X)" block=true %}
-{% include math.html tex="P_{\mathrm{train}}(Y\mid X)\ne P_{\mathrm{live}}(Y\mid X)" block=true %}
+## CI, CD and continuous training
 
-A rising null rate can originate in a broken ingestion job. A changed feature distribution can also leave predictive quality stable. Check versioned inputs, feature freshness and training-serving parity before drawing conclusions.
+Continuous integration (CI) checks code, transformations, schemas and representative prediction behavior. Continuous delivery/deployment (CD) packages and promotes evaluated releases. Continuous training (CT) produces new candidate artifacts from approved data under a trigger policy. Training success is an input to promotion, not an approval by itself.
 
-Accuracy, precision or forecast error often require labels that arrive days or weeks later. Until then, monitor input distributions, scores, serving latency, schema failures and delayed-outcome coverage. Report whether the quality sample is mature and representative.
+Use held-out quality and important slices alongside latency, startup, memory and compatibility checks. A shadow release scores copied traffic without exposing its decisions; suppress external side effects. A canary receives a controlled portion of real traffic, with predeclared acceptance and rollback conditions. With delayed outcomes, operational stability is available earlier than reliable predictive-quality evidence.
 
-## What deserves an alert?
+## Retain the evidence after release
 
-| Signal | Immediate investigation |
-|---|---|
-| Nulls or missing entities spike | Source ingestion, joins and feature materialization |
-| Feature age exceeds contract | Stream lag, scheduled jobs or store update failures |
-| p95 inference time rises | Queue, dependencies, compute saturation, rollout |
-| Model score distribution shifts | Input changes, feature parity and deployment versions |
-| Confirmed precision/recall drops | Thresholds, population, labels, concept drift |
-| Business cost rises | Mistake severity, calibration, acceptance threshold |
+Join predictions to eventual outcomes through stable prediction IDs, keeping event time, observation time, feature references and resolved release. Report label maturity and coverage. A seven-day quality dashboard based only on immediately resolved cases may misrepresent the deployed population.
 
-Retraining is a candidate remedy after these checks. An upstream transformation bug will usually persist if you retrain on the same corrupt inputs.
+In a fraud service, prediction `p901` made by release `r18` remains attached to that release even after `r19` becomes champion. Correcting the outcome updates outcome history; it should preserve which decision was made and what evidence was available at the time. Retention, access control and explanation requirements are developed in [observability, explainability, traceability and auditability]({{ '/infrastructure/observability/observability-explainability-traceability-auditability/' | relative_url }}).
 
-## Practical example: electricity demand
-
-Forecast accuracy depends on timestamp-safe weather forecasts, load history and calendar features. If procurement penalties increase despite stable offline mean absolute error (MAE), inspect whether errors are concentrated at costly peak hours, whether feature freshness changed, and whether the model is poorly calibrated for the operational decision. Business loss and statistical loss need separate tracking.
-
-AI workflows add prompt, retrieval index, tool and model versions to this lifecycle. The corresponding evaluation techniques are covered in [AI evaluation]({{ '/ai-engineering/evaluation/overview/' | relative_url }}).
+Use [model deployment and serving]({{ '/ml/serving/model-deployment-serving/' | relative_url }}) for the artifact-to-endpoint sequence, [drift diagnosis]({{ '/ml/operations/drift-detection/' | relative_url }}) for statistical changes and [retraining triggers]({{ '/ml/operations/retraining-triggers/' | relative_url }}) for the guarded response loop.

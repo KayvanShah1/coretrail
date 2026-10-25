@@ -105,3 +105,5 @@ The storage layer therefore solves only part of cold start.
 vLLM's distributed-serving guidance explicitly recommends pre-downloading Hugging Face models on every node or storing them on a distributed filesystem accessible at the same path rather than relying on every process to fetch them independently.
 
 Next: [From container start to ready replica]({{ '/ai-engineering/deployment/startup-lifecycle/' | relative_url }}).
+
+The shared [model deployment reference]({{ '/ml/serving/model-deployment-serving/' | relative_url }}) shows an image without weights and the pinned-download, verification and publication contract. This page develops checkpoint placement and GPU loading.
